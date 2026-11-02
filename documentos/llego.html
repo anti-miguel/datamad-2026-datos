@@ -1,0 +1,479 @@
+<title>Llego a tiempo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F3F5F7; --surface:#FFFFFF; --ink:#16202B; --ink-2:#4A5866; --line:#D9DFE5;
+  --accent:#0E6E78; --accent-soft:#DDEFF0;
+  --ok:#1E7D46; --ok-soft:#E0F2E7; --warn:#A86200; --warn-soft:#FBEFD9; --bad:#B42323; --bad-soft:#F8E1E1;
+  --phone:#0F151C; --screen:#FFFFFF;
+  --c5:#F2B600; --c10:#A5C73B; --c7:#E0312F; --c2:#6A2C8E; --c3:#7C3F97;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10161C; --surface:#18212A; --ink:#E7ECF1; --ink-2:#9DAAB7; --line:#2A3642;
+    --accent:#5CC3CC; --accent-soft:#16363A;
+    --ok:#5FC98A; --ok-soft:#173424; --warn:#E8A94A; --warn-soft:#3A2A12; --bad:#F07A7A; --bad-soft:#3E1C1C;
+    --phone:#05080B; --screen:#1B242D; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10161C; --surface:#18212A; --ink:#E7ECF1; --ink-2:#9DAAB7; --line:#2A3642;
+  --accent:#5CC3CC; --accent-soft:#16363A;
+  --ok:#5FC98A; --ok-soft:#173424; --warn:#E8A94A; --warn-soft:#3A2A12; --bad:#F07A7A; --bad-soft:#3E1C1C;
+  --phone:#05080B; --screen:#1B242D; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:15px/1.55 "IBM Plex Sans",system-ui,sans-serif;padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(40px,7vw,64px);line-height:1;font-weight:700}
+h2{font-size:32px;font-weight:600;line-height:1.1}
+h3{font-size:21px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}
+.mono,.t{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+header{display:flex;flex-direction:column;gap:14px}
+.lede{font-size:18px;color:var(--ink-2)}
+section{display:flex;flex-direction:column;gap:20px}
+
+/* comparación */
+.versus{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.panel .who{font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2)}
+.big{font-family:"Barlow Condensed",sans-serif;font-size:44px;font-weight:700;line-height:1}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:22px;padding:0 6px;border-radius:5px;font:600 12px/1 "IBM Plex Sans",sans-serif;color:#111}
+.chip.c5{background:var(--c5)} .chip.c10{background:var(--c10)} .chip.c7{background:var(--c7);color:#fff} .chip.c2{background:var(--c2);color:#fff} .chip.c3{background:var(--c3);color:#fff}
+.arrow{color:var(--ink-2)}
+.verdict{border-radius:10px;padding:12px 14px;font-weight:500}
+.verdict.bad{background:var(--bad-soft);color:var(--bad)}
+.verdict.ok{background:var(--ok-soft);color:var(--ok)}
+.small{font-size:13px;color:var(--ink-2)}
+
+/* tabla simulación */
+.tablebox{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{font:500 11px/1.2 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+td.t{white-space:nowrap}
+table.states{min-width:720px}
+table.states td{vertical-align:top;font-size:13.5px;line-height:1.45}
+table.states td:first-child{white-space:nowrap}
+table.states td:nth-child(2){color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+.bar{display:flex;gap:3px}
+.bar i{width:14px;height:14px;border-radius:3px;background:var(--line)}
+.bar i.y{background:var(--ok)} .bar i.n{background:var(--bad)}
+tr.google td{background:var(--bad-soft)}
+tr.pick td{background:var(--ok-soft)}
+.tag{font:600 11px/1 "IBM Plex Sans",sans-serif;padding:3px 7px;border-radius:99px;background:var(--surface);border:1px solid currentColor;white-space:nowrap}
+
+/* móviles */
+.phones{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;justify-items:center}
+.phone-col{display:flex;flex-direction:column;gap:12px;align-items:center;max-width:300px;width:100%}
+.phone{width:100%;max-width:290px;aspect-ratio:9/18.5;background:var(--phone);border-radius:38px;padding:10px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45)}
+.screen{height:100%;background:var(--screen);border-radius:30px;overflow:hidden;display:flex;flex-direction:column;font-size:13px}
+.sbar{display:flex;justify-content:space-between;padding:12px 22px 6px;font:500 11px/1 "IBM Plex Mono",monospace;color:var(--ink-2)}
+.scontent{padding:8px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1;overflow:hidden}
+.goal{font-size:12px;color:var(--ink-2)}
+.goal b{color:var(--ink)}
+.leave{background:var(--accent);color:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px}
+:root[data-theme="dark"] .leave{color:#0B1B1D}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .leave{color:#0B1B1D}}
+.leave .lbl{font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;opacity:.85}
+.leave .hh{font:700 46px/1 "Barlow Condensed",sans-serif}
+.conf{display:flex;align-items:center;gap:8px;font-weight:600}
+.dots{display:flex;gap:2px}.dots i{width:8px;height:8px;border-radius:2px;background:currentColor}
+.dots i.off{opacity:.3}
+.leg{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:12px}
+.leg .st{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line);align-items:start}
+.leg .st:last-child{border-bottom:0}
+.leg .st .t{font-size:12px}
+.leg .note{font-size:11.5px;color:var(--ink-2)}
+.pill{display:inline-block;font:600 10.5px/1 "IBM Plex Sans",sans-serif;padding:3px 6px;border-radius:99px}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)}
+.notif{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:0 6px 18px -10px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:4px}
+.notif .app{font:500 10.5px/1 "IBM Plex Mono",monospace;color:var(--ink-2);display:flex;justify-content:space-between}
+.notif b{font-size:13.5px}
+.lock{flex:1;display:flex;flex-direction:column;gap:10px;justify-content:flex-start;padding-top:18px}
+.clock{font:600 64px/1 "Barlow Condensed",sans-serif;text-align:center}
+.date{text-align:center;color:var(--ink-2);font-size:12px;margin-top:-6px}
+.btn{border:0;border-radius:10px;padding:10px;font:600 13px/1 "IBM Plex Sans",sans-serif;background:var(--accent);color:#fff;text-align:center}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.alert{border-radius:12px;padding:10px 12px;background:var(--warn-soft);color:var(--warn);font-size:12.5px;display:flex;flex-direction:column;gap:3px}
+.alert b{color:var(--warn)}
+.caption{font-size:13.5px;color:var(--ink-2);text-align:center;max-width:32ch}
+.caption strong{color:var(--ink)}
+
+/* hallazgos */
+.findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.finding{border-top:3px solid var(--bad);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.finding.fix{border-top-color:var(--ok)}
+.finding p{font-size:14.5px;color:var(--ink-2)}
+.sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.src{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.src .st{font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+.src .st.yes{color:var(--ok)} .src .st.part{color:var(--warn)} .src .st.no{color:var(--bad)}
+.src p{font-size:13.5px;color:var(--ink-2)}
+footer{font-size:12.5px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:16px}
+footer p{max-width:none}
+a{color:var(--accent)}
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Maqueta · DATAMAD 2026 · datos del 1 al 26 de septiembre</span>
+  <h1>Llego a tiempo</h1>
+  <p class="lede">Una app de transporte para Madrid que no te dice cuánto tarda el tren según el horario, sino <strong>a qué hora tienes que salir para llegar de verdad</strong>, te avisa antes de salir si hoy hay un problema y, si falla una conexión, te da el plan B.</p>
+</header>
+
+<section>
+  <span class="eyebrow">El caso real que he probado</span>
+  <h2>Móstoles → Nuevos Ministerios, llegar antes de las 9:00</h2>
+  <div class="versus">
+    <div class="panel">
+      <span class="who">Google Maps · consultado el 23/09 para el jue 24/09</span>
+      <div class="big t">Sal a las 8:05</div>
+      <div class="row"><span class="small">A pie 12 min</span><span class="arrow">›</span><span class="chip c5">C5</span><span class="small t">8:17</span><span class="arrow">›</span><span class="small">Atocha, transbordo de 6 min</span><span class="arrow">›</span><span class="chip c10">C10</span></div>
+      <div class="small">Llegada prevista <span class="t">8:57</span>: 3 minutos de margen. Ninguna indicación de fiabilidad.</div>
+      <div class="verdict bad">Ese C5 de las 8:17 llegó tarde 8 de los 9 laborables grabados con GPS (24/09–13/10), hasta las 9:19; el noveno entró a las 8:59.</div>
+    </div>
+    <div class="panel">
+      <span class="who">Llego a tiempo · mismo trayecto</span>
+      <div class="big t">Sal a las 7:35</div>
+      <div class="row"><span class="small">A pie 12 min</span><span class="arrow">›</span><span class="chip c5">C5</span><span class="small t">7:47</span><span class="arrow">›</span><span class="small">Atocha</span><span class="arrow">›</span><span class="small">cualquier tren a N. Ministerios</span></div>
+      <div class="small">Llegada habitual <span class="t">8:39</span>, peor día medido <span class="t">8:56</span>.</div>
+      <div class="verdict ok">Llegó antes de las 9:00 los 8 laborables en que hay GPS de ese tren. Te cuesta 30 minutos más de madrugón, no un retraso.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Simulación con retrasos observados</span>
+  <h2>Qué C5 te deja en Nuevos Ministerios antes de las 9:00</h2>
+  <p class="small">Para cada salida de Móstoles Central se toma su llegada real a Atocha, 4 min de transbordo, el primer tren real hacia Nuevos Ministerios y 1 min a pie. Cada cuadrado es un laborable medido: <span style="color:var(--ok)">■</span> a tiempo, <span style="color:var(--bad)">■</span> tarde.</p>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Sale Móstoles C.</th><th>Días medidos</th><th>Resultado</th><th>Llegada habitual</th><th>Peor llegada</th><th></th></tr></thead>
+      <tbody id="simbody"></tbody>
+    </table>
+  </div>
+  <p class="small">Fuente: histórico de retrasos de <a href="https://github.com/Abadalina/rodalies-observatorio" target="_blank" rel="noopener">rodalies-observatorio</a> (feed de Renfe, CC BY 4.0), laborables del 1 al 11 de septiembre. Con 3 a 9 días por tren la muestra es corta: sirve para demostrar la idea, no para dar porcentajes definitivos.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Medido con nuestro propio grabador · 24 de septiembre a 2 de octubre</span>
+  <h2>El «tiempo real» de Renfe no sirve para decidir cuándo salir</h2>
+  <p>Un grabador en un NAS guarda cada 30 s la posición GPS y la predicción de retraso de todos los Cercanías de Madrid: 9 días, unas 2.870 consultas de 2.880 posibles cada día y un solo hueco propio de 6 minutos. Comparando cada predicción con la llegada real por GPS (~11.000–17.000 llegadas por día):</p>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Aciertos a ±2 min</th><th>Jue 24</th><th>Vie 25</th><th>Lun 28</th><th>Mar 29</th><th>Mié 30</th><th>Jue 1</th><th>Vie 2</th><th>Sáb 26</th><th>Dom 27</th></tr></thead>
+      <tbody>
+        <tr><td>Renfe, &lt; 5 min antes de llegar</td><td class="t">78 %</td><td class="t">79 %</td><td class="t">80 %</td><td class="t">79 %</td><td class="t">79 %</td><td class="t">78 %</td><td class="t">78 %</td><td class="t">79 %</td><td class="t">78 %</td></tr>
+        <tr class="google"><td>Renfe, 10–20 min antes</td><td class="t">38 %</td><td class="t">45 %</td><td class="t">48 %</td><td class="t">46 %</td><td class="t">47 %</td><td class="t">40 %</td><td class="t">40 %</td><td class="t">58 %</td><td class="t">57 %</td></tr>
+        <tr><td>Horario teórico, sin predicción</td><td class="t">38 %</td><td class="t">46 %</td><td class="t">49 %</td><td class="t">48 %</td><td class="t">49 %</td><td class="t">41 %</td><td class="t">41 %</td><td class="t">64 %</td><td class="t">64 %</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">Los 9 días sin excepción: con 10 min o más de antelación, la predicción no acierta más que el horario y además es optimista (anuncia llegadas 1–3 min antes de lo real). Solo es útil cuando ya estás en el andén. Para decidir a qué hora salir de casa hace falta el histórico.</p>
+
+  <div class="alert"><b>Y a veces la información de Renfe se apaga justo en hora punta, con los trenes circulando.</b>El lunes 28 y el miércoles 30 el feed oficial no publicó trenes de 5:00 a ~10:30 (como mucho 1–2 en toda la red; también el sábado 26 por la mañana y otra vez el sábado 3 de octubre). Cuando volvió aparecieron de golpe 95 y 89 trenes, lo normal a esa hora, muchos a mitad de recorrido y con 2–4 min de retraso mediano: el servicio funcionó, lo que cayó fue la información. Una app que dependa solo del tiempo real se queda ciega cuando más falta hace; con el histórico, sigue sabiendo qué margen necesitas.</div>
+
+  <div class="versus">
+    <div class="panel">
+      <span class="who">Un día no se parece al siguiente · punta de mañana</span>
+      <div class="tablebox" style="border:0">
+        <table style="min-width:0">
+          <thead><tr><th>Retraso mediano</th><th>todas</th><th>p95</th></tr></thead>
+          <tbody>
+            <tr><td>Jue 24</td><td class="t">5,5 min</td><td class="t">17 min</td></tr>
+            <tr><td>Vie 25</td><td class="t">2,5 min</td><td class="t">13 min</td></tr>
+            <tr><td>Mar 29</td><td class="t">3,3 min</td><td class="t">16 min</td></tr>
+            <tr><td>Jue 1</td><td class="t">5,9 min</td><td class="t">15 min</td></tr>
+            <tr><td>Vie 2</td><td class="t">5,4 min</td><td class="t">28 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <span class="who">El plan de Google, en los días grabados</span>
+      <div class="tablebox" style="border:0">
+        <table style="min-width:0">
+          <thead><tr><th>C5 desde Móstoles C.</th><th>Jue 24</th><th>Vie 25</th><th>Mar 29</th><th>Jue 1</th><th>Vie 2</th><th>Mar 7</th><th>Mié 8</th><th>Jue 9</th><th>Mar 13</th></tr></thead>
+          <tbody>
+            <tr class="google"><td>8:17 · Google</td><td class="t">9:09</td><td class="t">9:07</td><td class="t">9:02</td><td class="t">9:01</td><td class="t">9:19</td><td class="t">8:59</td><td class="t">9:10</td><td class="t">9:07</td><td class="t">9:19</td></tr>
+            <tr><td>8:12</td><td class="t">9:07</td><td class="t">8:53</td><td class="t">8:59</td><td class="t">8:57</td><td class="t">9:13</td><td class="t">8:59</td><td class="t">9:05</td><td class="t">9:00</td><td class="t">9:02</td></tr>
+            <tr><td>7:52</td><td class="t">8:40</td><td class="t">8:33</td><td class="t">—</td><td class="t">8:45</td><td class="t">9:01</td><td class="t">8:37</td><td class="t">8:52</td><td class="t">8:44</td><td class="t">9:26</td></tr>
+            <tr class="pick"><td>7:47 · Llego</td><td class="t">8:39</td><td class="t">8:29</td><td class="t">8:39</td><td class="t">8:38</td><td class="t">8:56</td><td class="t">—</td><td class="t">8:33</td><td class="t">8:35</td><td class="t">8:31</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="small">Llegada a Nuevos Ministerios medida por GPS, con 4 min de transbordo en Atocha y 1 min a pie. «—»: sin GPS de ese tren. El lunes 28 y el miércoles 30 no hay datos de mañana porque Renfe no publicó información (los trenes sí circularon).</div>
+    </div>
+  </div>
+  <p class="small">Límites: 9 laborables con mañana completa; un día malo puede tumbar también trenes anteriores (el 13/10 el de las 7:52 llegó a las 9:26). En estaciones de túnel (Sol, Nuevos Ministerios en C3/C4) el GPS no marca «parado» y la llegada se estima con un margen de ±45 s. La grabación sigue en marcha.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Medido con nuestros grabadores · 5 laborables, 5–13 de octubre</span>
+  <h2>Bus y Metro: el mismo patrón, con otra cara</h2>
+  <p>Dos grabadores más en el NAS: la API oficial de la EMT (MobilityLabs) en 25 paradas, siguiendo cada autobús por su número, y los tiempos del Metro que publica el Consorcio en 62 estaciones (unas 5 por línea), cada minuto.</p>
+  <div class="versus">
+    <div class="panel">
+      <span class="who">EMT · ¿se cumple el «llega en X min»?</span>
+      <div class="tablebox" style="border:0">
+        <table style="min-width:0">
+          <thead><tr><th>Anunciado</th><th>a ±2 min</th><th>desvío típico</th></tr></thead>
+          <tbody>
+            <tr><td>3–6 min</td><td class="t">90–91 %</td><td class="t">−0,1 a −0,2 min</td></tr>
+            <tr><td>6–10 min</td><td class="t">73–76 %</td><td class="t">−0,2 a −0,4 min</td></tr>
+            <tr class="google"><td>10–15 min</td><td class="t">63–67 %</td><td class="t">−0,3 a −0,6 min</td></tr>
+            <tr class="google"><td>15–25 min</td><td class="t">50–54 %</td><td class="t">−0,5 a −1,0 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="small">Unas 15.500 llegadas de autobús reconstruidas por día; rango de los 5 laborables. El desvío es casi siempre hacia el mismo lado: el autobús llega más tarde de lo anunciado, y más en hora punta. Igual que Renfe: fiable cuando ya está cerca, optimista desde casa.</div>
+    </div>
+    <div class="panel">
+      <span class="who">Metro · cada cuánto pasa de verdad (punta de mañana)</span>
+      <div class="tablebox" style="border:0">
+        <table style="min-width:0">
+          <thead><tr><th>Línea</th><th>intervalo</th><th>huecos (5 días)</th></tr></thead>
+          <tbody>
+            <tr class="google"><td>L12</td><td class="t">3 min</td><td class="t">24–28 %</td></tr>
+            <tr class="google"><td>L6</td><td class="t">2 min</td><td class="t">17–22 %</td></tr>
+            <tr><td>L1</td><td class="t">3 min</td><td class="t">13–18 %</td></tr>
+                        <tr><td>L2</td><td class="t">3 min</td><td class="t">10–18 %</td></tr>
+            <tr class="pick"><td>L5</td><td class="t">4 min</td><td class="t">3–12 %</td></tr>
+            <tr class="pick"><td>L3</td><td class="t">3 min</td><td class="t">2–7 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="small">«Huecos»: esperas más de 1,5 veces mayores que el intervalo habitual de la línea. L12 y L6 son las más irregulares los 5 días; L3, L5 y L7 las más regulares. Llego usaría este dato para el margen de cada transbordo en Metro.</div>
+    </div>
+  </div>
+  <p class="small">Límites: 5 laborables. La EMT se consulta cada 3 min (cuota de la cuenta gratuita), así que unas 7.500 veces al día el autobús pasó entre dos consultas y no entra en la cuenta. El Metro no publica número de tren: la llegada se toma cuando el tren desaparece de la lista, válido para medir intervalos pero no para juzgar la precisión de sus predicciones.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Un caso real · 104 en Mar de Cristal · 4 laborables, 7–13 de octubre</span>
+  <h2>«El siguiente en 35 min»… y aparece uno en 4</h2>
+  <p>Esperando el 104 en su cabecera, la app de la EMT decía «8 min» y «35 min». El de 8 era imposible de coger; 19 minutos después, el de 35 seguía a 23 y de repente apareció otro «en 4 min». Grabamos esa parada y las de alrededor durante 4 laborables para ver si era casualidad.</p>
+  <div class="versus">
+    <div class="panel">
+      <span class="who">Lo que dice la app y lo que pasa</span>
+      <div class="tablebox" style="border:0">
+        <table style="min-width:0">
+          <thead><tr><th>Situación</th><th>Qué pasa de verdad</th></tr></thead>
+          <tbody>
+            <tr class="google"><td>La app dice 15 min o más</td><td class="t">En el 40 % sale otro &gt;5 min antes; casi siempre uno que no estaba en la lista</td></tr>
+            <tr class="google"><td>Autobús ya parado en la cabecera</td><td class="t">La app dice 1–2 min; sale a los 6 min (mediana) y el 40 % &gt;5 min más tarde</td></tr>
+            <tr><td>Autobús todavía llegando</td><td class="t">Sale a ±2 min de lo anunciado el 66 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="small">1.104 consultas de la app (7–21 h) comparadas con 284 salidas medidas en la parada siguiente. La app solo ve los autobuses que ya van hacia ti: uno que termina la vuelta y sale antes no existe hasta que arranca, y uno parado espera su hora aunque marque «1 min».</div>
+    </div>
+    <div class="panel">
+      <span class="who">Cada cuánto sale de verdad</span>
+      <div class="tablebox" style="border:0">
+        <table style="min-width:0">
+          <thead><tr><th>104, laborables 7–21 h</th><th>minutos</th></tr></thead>
+          <tbody>
+            <tr><td>Horario oficial (GTFS)</td><td class="t">10–12</td></tr>
+            <tr class="google"><td>Intervalo real, mediana</td><td class="t">13</td></tr>
+            <tr class="google"><td>Esperas de más de 20 min</td><td class="t">1 de cada 8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="small">Lo que Llego diría en vez de «siguiente en 35»: <b>«puede salir otro antes; el 104 sale cada ~13 min»</b>. Y con el autobús parado: «sale hacia las 8:23», no «1 min».</div>
+    </div>
+  </div>
+  <p class="small">Límites: 4 laborables y una sola línea; consultas cada 3 min. En cambio, el interurbano 212 (Canillejas–Paracuellos) no admite este análisis: el Consorcio solo publica su horario, sin tiempo real.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Cómo se vería</span>
+  <h2>Tres momentos del mismo viaje</h2>
+  <div class="phones">
+
+    <div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>21:40</span><span>Mié 23</span></div>
+        <div class="scontent">
+          <div class="goal">Mañana, jueves · <b>Nuevos Ministerios antes de las 9:00</b></div>
+          <div class="leave">
+            <span class="lbl">Sal de casa a las</span>
+            <span class="hh t">7:43</span>
+            <span class="conf"><span class="dots"><i></i><i></i><i></i><i></i><i class="off"></i></span> Llegó a tiempo 4 de 4 días</span>
+          </div>
+          <div class="leg">
+            <div class="st"><span class="t">7:55</span><div><span class="chip c5">C5</span> Móstoles Central<div class="note">Suele pasar unos 7 min tarde: no corras</div></div></div>
+            <div class="st"><span class="t">~8:31</span><div>Atocha <span class="pill ok">transbordo holgado</span><div class="note">Pasa un tren a N. Ministerios cada 2–3 min</div></div></div>
+            <div class="st"><span class="t">8:45</span><div>Nuevos Ministerios<div class="note">Peor día medido: 8:52</div></div></div>
+          </div>
+          <div class="alert"><b>El que te daría Google (8:05) llegó tarde 3 de 3 días.</b>Suele llegar a las 9:11.</div>
+        </div>
+      </div></div>
+      <p class="caption"><strong>La noche antes.</strong> La hora de salida se calcula con retrasos reales, no con el horario teórico.</p>
+    </div>
+
+    <div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>7:23</span><span>Jue 24</span></div>
+        <div class="scontent lock">
+          <div class="clock t">7:23</div>
+          <div class="date">jueves, 24 de septiembre</div>
+          <div class="notif">
+            <div class="app"><span>LLEGO A TIEMPO</span><span>ahora</span></div>
+            <b>Hoy sal a las 7:35, no a las 7:43</b>
+            <span class="small">Incidencia en la C5 entre Móstoles y Atocha: los trenes van unos 11 min tarde. Si sales a las 7:35 llegas a las 8:50.</span>
+          </div>
+          <div class="notif">
+            <div class="app"><span>LLEGO A TIEMPO</span><span>6:45</span></div>
+            <b>Todo normal en tu trayecto de hoy</b>
+            <span class="small">Te volvemos a avisar 20 min antes de salir.</span>
+          </div>
+        </div>
+      </div></div>
+      <p class="caption"><strong>Antes de salir.</strong> Un repaso a primera hora y otro 20 min antes, con los retrasos y avisos de Renfe en directo.</p>
+    </div>
+
+    <div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>8:36</span><span>Jue 24</span></div>
+        <div class="scontent">
+          <div class="alert"><b>Tu C10 de las 8:39 no para en Atocha</b>Parada suprimida según Renfe.</div>
+          <div class="leave">
+            <span class="lbl">Coge el siguiente</span>
+            <span class="hh t">8:41</span>
+            <span class="conf"><span class="chip c7">C7</span> vía 4 · llegas a las 8:48</span>
+          </div>
+          <div class="leg">
+            <div class="st"><span class="t">8:41</span><div><span class="chip c7">C7</span> hacia Nuevos Ministerios<div class="note">Sigues con 12 min de margen</div></div></div>
+            <div class="st"><span class="t">8:44</span><div><span class="chip c2">C2</span> alternativa<div class="note">Llegas a las 8:51</div></div></div>
+          </div>
+          <div class="btn">Llevo 12 min de margen</div>
+          <div class="btn ghost">Avisar de que llego tarde</div>
+        </div>
+      </div></div>
+      <p class="caption"><strong>En ruta.</strong> Si Renfe suprime una parada o el retraso te come el margen, el plan B aparece solo.</p>
+    </div>
+
+  </div>
+  <p class="small">Las pantallas 2 y 3 muestran una incidencia inventada para enseñar el funcionamiento. La 1 usa los resultados de la simulación.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Recorrido estado por estado</span>
+  <h2>Qué hace Google en cada momento del viaje y qué haría Llego</h2>
+  <p class="small"><span class="pill ok">visto</span> probado en Google Maps web (escritorio y móvil) el 23/09 · <span class="pill warn">ayuda</span> solo existe en la app nativa y viene de la ayuda oficial de Google, sin comprobar en pantalla · <span class="pill bad">sin comprobar</span> no confirmado ni en pantalla ni en la ayuda.</p>
+  <div class="tablebox">
+    <table class="states">
+      <thead><tr><th>Momento</th><th>Google Maps</th><th>Llego a tiempo</th></tr></thead>
+      <tbody>
+        <tr><td><b>Elegir ruta</b></td><td><span class="pill ok">visto</span> Lista con "Llegada más temprano", "Más rutas en tren" y "Otras opciones". Preferencias: la mejor ruta, menos transbordos, caminar menos, accesible. No hay opción de "más fiable".</td><td>Una hora de salida y cuántos días llegó a tiempo. Selector de exigencia: "me vale llegar casi siempre" o "no puedo llegar tarde".</td></tr>
+        <tr><td><b>Llegar antes de…</b></td><td><span class="pill ok">visto</span> Propone el tren que llega más justo (8:57 para las 9:00).</td><td>Propone el primer tren que históricamente llega a tiempo, y avisa si el de Google suele fallar.</td></tr>
+        <tr><td><b>Horas del tren</b></td><td><span class="pill ok">visto</span> Bus 522/524 en verde (en directo); Cercanías y Metro en negro. A las 21:39 el C5 de las 21:43 salía como puntual y Renfe publicaba +10 min.</td><td>Retraso de Renfe en cada tren. Si una red no tiene datos en directo (Metro), se dice explícitamente.</td></tr>
+        <tr><td><b>Avisos</b></td><td><span class="pill ok">visto</span> Texto largo copiado del operador dentro de cada tramo: obras de fin de semana en un viaje de jueves, obras de la A-5 "hasta 15/1/2027", "Mantenimiento · Mantenimiento".</td><td>Solo avisos que cambian tu viaje de hoy, traducidos a una consecuencia: "sal 8 min antes".</td></tr>
+        <tr><td><b>Antes de salir</b></td><td><span class="pill bad">sin comprobar</span> No he podido confirmar si la app avisa de cuándo salir en transporte público; en la web no existe.</td><td>Repaso a primera hora y 20 min antes de tu salida con el estado real del trayecto.</td></tr>
+        <tr><td><b>Pierdes el tren o el bus</b></td><td><span class="pill warn">ayuda</span> Muestra las dos salidas siguientes y un botón "Más salidas"; eliges tú la nueva y el viaje se recalcula. <span class="pill ok">visto</span> En la web la lista se refresca sola con los siguientes, sin decirte qué supone.</td><td>Detecta que no te has subido (sigues en el andén cuando el tren ya ha salido) y te dice la consecuencia: "llegas a las 9:06, 6 min tarde", con las alternativas ordenadas por probabilidad de llegar.</td></tr>
+        <tr><td><b>En el tren</b></td><td><span class="pill warn">ayuda</span> Progreso del viaje y aviso para bajarte o hacer transbordo.</td><td>Lo mismo, más "tu transbordo en Atocha está en riesgo: el C10 sale en 2 min". Si se pierde, plan B antes de bajarte.</td></tr>
+        <tr><td><b>Ya no llegas</b></td><td><span class="pill ok">visto</span> No existe este estado: solo cambia la hora de llegada.</td><td>Lo dice claro y pronto, y ofrece mandar tu hora estimada de llegada a quien te espera.</td></tr>
+        <tr><td><b>Al volver</b></td><td><span class="pill ok">visto</span> Opción "Último disponible".</td><td>"Último que te lleva a casa con seguridad", no el último teórico.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>8:18</span><span>Jue 24</span></div>
+        <div class="scontent">
+          <div class="alert"><b>Se te ha escapado el C5 de las 8:17</b>Sigues en Móstoles Central y el tren ya ha salido.</div>
+          <div class="goal">Objetivo: <b>Nuevos Ministerios antes de las 9:00</b></div>
+          <div class="leg">
+            <div class="st"><span class="t">8:23</span><div><span class="chip c5">C5</span> + transbordo en Atocha<div class="note">Llegas 9:11 habitualmente <span class="pill bad">tarde 4 de 4 días</span></div></div></div>
+            <div class="st"><span class="t">8:21</span><div>Bus 521 + Metro L10<div class="note">Llegada 9:02 en directo <span class="pill warn">muy justo</span></div></div></div>
+            <div class="st"><span class="t">—</span><div>Taxi o VTC<div class="note">~35 min por la A-5 a esta hora</div></div></div>
+          </div>
+          <div class="btn">Avisar: llego a las 9:10</div>
+          <div class="btn ghost">Ver más salidas</div>
+        </div>
+      </div></div>
+      <p class="caption"><strong>Has perdido el tren.</strong> No te pide que elijas otra salida: te dice qué supone y te pone delante las opciones que aún pueden salvar la cita.</p>
+    </div>
+    <div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>8:29</span><span>Jue 24</span></div>
+        <div class="scontent">
+          <div class="goal">En el <span class="chip c5">C5</span> · próxima: Embajadores</div>
+          <div class="alert"><b>Tu transbordo en Atocha está en riesgo</b>Llevas 7 min de retraso: llegas a las 8:40 y el C10 sale a las 8:39.</div>
+          <div class="leave">
+            <span class="lbl">Plan B ya calculado</span>
+            <span class="hh t">8:42</span>
+            <span class="conf"><span class="chip c7">C7</span> vía 4 · llegas a las 8:49</span>
+          </div>
+          <div class="leg">
+            <div class="st"><span class="t">8:44</span><div><span class="chip c3">C3</span> otra opción<div class="note">Llegas a las 8:51</div></div></div>
+          </div>
+          <div class="btn ghost">Sigo teniendo 11 min de margen</div>
+        </div>
+      </div></div>
+      <p class="caption"><strong>Transbordo en riesgo.</strong> Te avisa antes de bajarte, no cuando ya estás en el andén viendo irse el tren.</p>
+    </div>
+  </div>
+  <p class="small">Pantallas de ejemplo. En la de "has perdido el tren", la llegada del C5 de las 8:23 es la de la simulación; las del bus, el metro y el taxi son ilustrativas.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Lo que he visto usando Google Maps</span>
+  <h2>Qué falla y qué cambiaría</h2>
+  <div class="findings">
+    <div class="finding"><h3>Te da el tren más justo</h3><p>Con "Llegar antes de las 9:00", la primera opción llega a las 8:57. Optimiza apurar al máximo, no llegar a tiempo, y no dice que ese tren suele ir tarde.</p></div>
+    <div class="finding"><h3>Transbordos sin realismo</h3><p>Da 6 min para cambiar de tren en Atocha, cuando el C5 va de mediana 6,5 min tarde en hora punta. El transbordo se pierde un día sí y otro no.</p></div>
+    <div class="finding"><h3>Avisos mal colocados</h3><p>Para un viaje de jueves mostraba un aviso de obras de fin de semana, escondido en un desplegable de "Información". Además, al entrar decía "No disponemos de los horarios más recientes para esta área".</p></div>
+    <div class="finding"><h3>El tren no sale en directo</h3><p>En la web móvil, las horas del bus 522 aparecían en verde (en directo), pero las de Cercanías salían en negro, como horario teórico, aunque Renfe publica retrasos cada 20 segundos.</p></div>
+    <div class="finding fix"><h3>Una sola cifra: a qué hora salir</h3><p>La pantalla principal responde una pregunta. Todo lo demás (líneas, paradas, mapa) queda en segundo plano.</p></div>
+    <div class="finding fix"><h3>Fiabilidad a la vista</h3><p>Cada opción dice cuántos días llegó a tiempo en el histórico, con el número real de días medidos, sin porcentajes inventados.</p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Qué es realista construir</span>
+  <h2>Datos disponibles hoy</h2>
+  <div class="sources">
+    <div class="src"><span class="st yes">Disponible</span><h3>Cercanías en directo</h3><p>Feed de Renfe cada 20 s: retrasos, paradas suprimidas, posición GPS y avisos. Abierto, CC BY 4.0.</p></div>
+    <div class="src"><span class="st yes">Disponible</span><h3>Histórico de retrasos</h3><p>rodalies-observatorio desde el 26/08/2026, más lo que grabe la propia app a partir de ahora.</p></div>
+    <div class="src"><span class="st yes">Disponible</span><h3>Horarios de todas las redes</h3><p>GTFS de Metro, EMT, interurbanos, Cercanías y Metro Ligero en el portal de datos abiertos de la Comunidad de Madrid y del Consorcio.</p></div>
+    <div class="src"><span class="st yes">Medido</span><h3>Autobuses EMT en directo</h3><p>API de MobilityLabs de la EMT (registro gratuito): tiempo, distancia y número de cada autobús. Fiable a menos de 6 min vista (91 % a ±2 min).</p></div>
+    <div class="src"><span class="st part">Parcial</span><h3>Metro en directo</h3><p>Sin API abierta de Metro, pero el Consorcio publica los próximos trenes por estación. Sin número de tren: sirve para medir cada cuánto pasa de verdad cada línea.</p></div>
+    <div class="src"><span class="st no">Solo horario</span><h3>Interurbanos en directo</h3><p>El Consorcio publica los próximos autobuses de cada parada, pero en el 212 la hora no cambió en el 99,6 % de 21.286 comparaciones: es el horario, sin tiempo real.</p></div>
+    <div class="src"><span class="st yes">Medido</span><h3>Precisión del feed</h3><p>Con ~16.700 llegadas GPS por laborable: fiable a menos de 5 min vista (78 % a ±2 min); con más antelación, igual que el horario.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>Maqueta hecha con datos reales. Google Maps se consultó el 23/09/2026 a las 21:30 en la versión web (escritorio y móvil). La simulación es reproducible: <span class="mono">analisis_margen.py</span> y <span class="mono">simular_plan.py</span>. Datos: Renfe (CC BY 4.0) vía rodalies-observatorio, EMT Madrid (MobilityLabs), Consorcio Regional de Transportes y portal de datos abiertos de la Comunidad de Madrid. Análisis de bus y Metro: <span class="mono">analisis_emt_metro.py</span>.</p>
+</footer>
+</div>
+
+<script>
+const sim=[
+  ["7:32",9,8,"8:23","10:02"],["7:37",3,3,"8:34","8:43"],["7:39",4,4,"8:28","8:41"],["7:43",4,4,"8:34","8:48"],["7:46",4,4,"8:36","8:41"],
+  ["7:49",4,4,"8:44","8:52"],["7:53",4,4,"8:40","8:45"],["7:55",4,4,"8:45","8:52","pick"],["8:00",4,4,"8:50","8:51"],
+  ["8:01",3,3,"8:55","9:00"],["8:07",8,5,"9:00","9:13"],["8:13",4,0,"9:08","9:11"],["8:14",4,1,"9:03","9:06"],
+  ["8:17",3,0,"9:11","9:13","google"],["8:23",4,0,"9:11","9:17"],["8:25",4,0,"9:20","9:25"]
+];
+const tb=document.getElementById("simbody");
+for(const [h,n,ok,med,worst,kind] of sim){
+  const tr=document.createElement("tr"); if(kind) tr.className=kind;
+  const cells=Array.from({length:n},(_,i)=>`<i class="${i<ok?'y':'n'}"></i>`).join("");
+  const tag=kind==="google"?'<span class="tag" style="color:var(--bad)">Google Maps</span>':kind==="pick"?'<span class="tag" style="color:var(--ok)">Llego a tiempo</span>':"";
+  tr.innerHTML=`<td class="t">${h}</td><td class="t">${ok} de ${n}</td><td><div class="bar">${cells}</div></td><td class="t">${med}</td><td class="t">${worst}</td><td>${tag}</td>`;
+  tb.appendChild(tr);
+}
+</script>

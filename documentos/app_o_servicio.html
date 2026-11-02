@@ -1,0 +1,208 @@
+<title>¿App o servicio?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: una columna de lectura (memo de decisión) con una tabla comparativa ancha y un recorrido tipo línea de autobús para el plan */
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --ink: #111827;
+  --muted: #566074;
+  --line: #d6dce6;
+  --accent: #0a5fb4;
+  --accent-soft: #e3eefb;
+  --signal: #b86e00;
+  --signal-soft: #fcefd9;
+  --good: #16794a;
+  --bad: #b3261e;
+  --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e131b; --surface: #161d28; --ink: #e8edf5; --muted: #9aa6b8; --line: #2a3443;
+    --accent: #6cb0f5; --accent-soft: #15283f; --signal: #f0ad48; --signal-soft: #33260f;
+    --good: #5cc98f; --bad: #f08a83; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e131b; --surface: #161d28; --ink: #e8edf5; --muted: #9aa6b8; --line: #2a3443;
+  --accent: #6cb0f5; --accent-soft: #15283f; --signal: #f0ad48; --signal-soft: #33260f;
+  --good: #5cc98f; --bad: #f08a83; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+main { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.08; text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1 { font-size: clamp(2.6rem, 7vw, 4rem); font-weight: 700; }
+h2 { font-size: 1.9rem; font-weight: 700; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+p { margin: 0; max-width: 66ch; }
+.eyebrow { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+section { display: flex; flex-direction: column; gap: 16px; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+header { display: flex; flex-direction: column; gap: 14px; }
+
+.verdict { background: var(--accent-soft); border-left: 5px solid var(--accent); border-radius: 4px 10px 10px 4px; padding: 22px 24px; display: flex; flex-direction: column; gap: 10px; }
+.verdict .label { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.verdict strong.big { font-family: var(--display); font-size: 1.9rem; line-height: 1.1; font-weight: 700; }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fact .n { font-family: var(--display); font-size: 1.9rem; font-weight: 700; color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums; }
+.fact .t { font-size: 0.92rem; color: var(--muted); line-height: 1.4; }
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+thead th { font-family: var(--display); font-size: 1.1rem; font-weight: 600; background: var(--bg); }
+thead th.rec { color: var(--accent); }
+tbody th { font-weight: 700; width: 24%; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+td.win { background: var(--accent-soft); }
+.pts { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); display: block; font-weight: 500; }
+
+ul.clean { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.box.warn { background: var(--signal-soft); border-color: transparent; }
+.box.warn h3 { color: var(--signal); }
+
+.cases { display: flex; flex-direction: column; gap: 10px; }
+.case { display: grid; grid-template-columns: 7.5rem 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.case:last-child { border-bottom: 0; }
+.case .when { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); padding-top: 2px; }
+@media (max-width: 520px) { .case { grid-template-columns: 1fr; gap: 2px; } }
+
+/* recorrido del plan, dibujado como una línea con paradas */
+.route { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.stop { position: relative; padding: 0 0 22px 34px; }
+.stop::before { content: ""; position: absolute; left: 9px; top: 6px; bottom: -6px; width: 4px; background: var(--accent); }
+.stop:last-child::before { display: none; }
+.stop::after { content: ""; position: absolute; left: 3px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--accent); }
+.stop.end::after { background: var(--accent); }
+.stop .d { font-family: var(--mono); font-size: 0.82rem; color: var(--accent); }
+.stop h3 { margin: 2px 0 4px; }
+
+.comp { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.comp .box { gap: 6px; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); color: var(--muted); width: fit-content; }
+footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 16px; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<main>
+  <header>
+    <span class="eyebrow">DATAMAD 2026 · decisión de equipo · antes del 7 de noviembre</span>
+    <h1>¿App o servicio?</h1>
+    <p class="lead">Tenemos tres semanas de datos y un problema demostrado. Antes de repartir el trabajo hay que decidir qué construimos: una app completa para el viajero o un servicio de datos con una web pequeña que lo enseñe.</p>
+  </header>
+
+  <div class="verdict">
+    <span class="label">Propuesta</span>
+    <strong class="big">Un servicio de fiabilidad del transporte, con una web de una pantalla como escaparate.</strong>
+    <p>No competimos con las apps que ya dicen cuándo pasa el bus. Construimos lo que les falta a todas: saber cuánto se cumple lo que prometen. La app, si queremos seguir después del datatón, se hace encima del servicio.</p>
+  </div>
+
+  <section>
+    <span class="eyebrow">De dónde partimos</span>
+    <h2>Lo que ya hemos medido</h2>
+    <div class="facts">
+      <div class="fact"><span class="n">8 de 9</span><span class="t">días en que el C5 de las 8:17 que propone Google llegó tarde a Nuevos Ministerios</span></div>
+      <div class="fact"><span class="n">~4 h</span><span class="t">sin tiempos de la EMT el 20/10 (18:00-21:45), en las 28 paradas que grabamos</span></div>
+      <div class="fact"><span class="n">99,6 %</span><span class="t">de las veces el «tiempo real» del interurbano 212 es solo el horario</span></div>
+      <div class="fact"><span class="n">27 %</span><span class="t">de los trenes de la L12 dejaron huecos en la punta del lunes 19/10</span></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Comparación</span>
+    <h2>Las dos opciones, punto por punto</h2>
+    <p>Las filas de DATAMAD llevan los puntos que da cada criterio en las bases (sobre 100). La columna resaltada es la que sale mejor en cada fila.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>App completa</th><th class="rec">Servicio + escaparate</th></tr></thead>
+        <tbody>
+          <tr><th>Datos de la Comunidad<span class="pts">25 puntos</span></th><td>Los usa para pintar horarios, como todas las apps</td><td class="win">Los usa como referencia de «lo prometido» y mide contra ellos todo el tiempo</td></tr>
+          <tr><th>Impacto<span class="pts">25 puntos</span></th><td>Ayuda a quien la instale</td><td class="win">Ayuda al viajero y además publica qué líneas cumplen, incluidos los pueblos</td></tr>
+          <tr><th>Originalidad<span class="pts">20 puntos</span></th><td>Otra app de tiempos de paso; ya hay varias muy valoradas</td><td class="win">Nadie mide el cumplimiento ni avisa cuando el operador deja de informar</td></tr>
+          <tr><th>Viabilidad<span class="pts">15 puntos</span></th><td>Mapa, planificador, registro y diseño pulido en tres semanas</td><td class="win">Los datos ya existen; queda el motor y una pantalla</td></tr>
+          <tr><th>Código abierto<span class="pts">10 puntos</span></th><td>Posible, pero la app no es reproducible por otros</td><td class="win">Datos abiertos, API y código que cualquiera puede ejecutar</td></tr>
+          <tr><th>Competencia</th><td>Google Maps, la app de la EMT, Madrid Transporte (4,5 en Google Play)</td><td class="win">Ninguna directa; las propias apps pueden ser clientes</td></tr>
+          <tr><th>Cómo gana dinero</th><td>Anuncios y premium, como Madrid Transporte</td><td class="win">Comisión del plan B, informes para ayuntamientos y empresas, licencia a las apps</td></tr>
+          <tr><th>Qué se ve el 26</th><td class="win">Una app navegable con muchas pantallas</td><td>Una pantalla en el móvil del jurado (QR) y el observatorio</td></tr>
+          <tr><th>Riesgo</th><td>Quedarse a medias o parecer una copia de lo que existe</td><td class="win">Que el escaparate parezca poco; se compensa con casos reales</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">El argumento</span>
+    <h2>Por qué el servicio</h2>
+    <ul class="clean">
+      <li><strong>El problema es de datos, no de pantallas.</strong> Google, la EMT y Madrid Transporte dicen cuándo debería pasar el autobús. Ninguna sabe si va a pasar.</li>
+      <li><strong>Encaja con cómo puntúa el jurado.</strong> La mitad de la nota (50 de 100) es datos de la Comunidad e impacto, y un servicio de datos abiertos es justo eso.</li>
+      <li><strong>Se puede terminar.</strong> Con ocho personas y tres semanas, un servicio acabado y enseñado con casos reales gana a una app a medias.</li>
+      <li><strong>La lección de Madrid Mobility 360.</strong> La app oficial de la EMT suma pago, CO₂ y patinetes y tiene un 1,7 en Google Play. Sumar funciones sin mejorar lo básico no funciona.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow">Pruebas</span>
+    <h2>Cuatro casos que ya podemos contar</h2>
+    <div class="cases">
+      <div class="case"><span class="when">20/10 · 18-22 h</span><p>La API de la EMT dejó de dar tiempos casi 4 horas. Lo medimos parada a parada, y en X las quejas por «no se ven los tiempos de espera» subieron a la vez, con el pico a las 21 h.</p></div>
+      <div class="case"><span class="when">20/10 · 8:24-8:53</span><p>La L6 se paró en Legazpi y Méndez Álvaro. En X la gente hablaba de 10 a 30 minutos de espera; la información oficial seguía anunciando un tren cada 4-5 minutos.</p></div>
+      <div class="case"><span class="when">19/10 · 6-9 h</span><p>Quejas en X por frecuencias de 8-9 minutos en la L12. Nuestros datos: huecos en el 27 % de los trenes de esa mañana, la peor línea del día.</p></div>
+      <div class="case"><span class="when">15/10 · 11:56</span><p>Un 212 pasó por Barajas unos 6 minutos tarde. El Consorcio y Google ya lo daban por pasado; para ellos no existía.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Qué enseñamos el 26 de noviembre</span>
+    <h2>Tres piezas</h2>
+    <div class="two">
+      <div class="box"><h3>El servicio</h3><p>Cumplimiento por línea, parada y hora; detector de caídas de información; avisos de la gente contrastados con el GPS; API y datos abiertos.</p></div>
+      <div class="box"><h3>La web de una pantalla</h3><p>Eliges trayecto y te dice a qué hora salir, cuánto fiarte y qué hacer si el operador deja de informar. El jurado la abre con un QR.</p></div>
+      <div class="box"><h3>El observatorio</h3><p>Qué líneas cumplen y cuáles no, también en los interurbanos de los pueblos. Es la parte de impacto y de Agenda 2030 (ODS 10 y 11).</p></div>
+      <div class="box warn"><h3>Cuándo elegir la app completa</h3><p>Solo si queremos seguir con esto como producto de consumo después del datatón. Aun así, primero el servicio: la app se construye encima.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Con qué competimos (y con qué no)</span>
+    <h2>Lo que ya existe</h2>
+    <div class="comp">
+      <div class="box"><span class="tag">Google Maps</span><p>Planifica con el horario y el tiempo real tal cual. No sabe que el C5 de las 8:17 llega tarde.</p></div>
+      <div class="box"><span class="tag">App de la EMT</span><p>Buena con los buses azules, pero el 20/10 se quedó en blanco durante la caída.</p></div>
+      <div class="box"><span class="tag">Madrid Transporte</span><p>4,5 en Google Play; enseña el horario cuando no hay tiempo real. Promete GPS en los interurbanos, donde solo hay horario.</p></div>
+      <div class="box"><span class="tag">Madrid Mobility 360</span><p>App oficial con pago, BiciMAD y CO₂. 1,7 en Google Play.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Recorrido hasta la final</span>
+    <h2>Qué hacemos y cuándo</h2>
+    <ol class="route">
+      <li class="stop"><span class="d">Esta semana</span><h3>Decidir</h3><p>Votar app o servicio. Elegir nombre. Mandar las dudas a la organización, sobre todo la coincidencia del 26 con IndesIAhack.</p></li>
+      <li class="stop"><span class="d">Antes del 5 nov</span><h3>Inscribirnos y repartir</h3><p>Los 8 inscritos. Un responsable por frente: Datos, Motor, Web, Comunidad y Pitch.</p></li>
+      <li class="stop"><span class="d">5-6 nov</span><h3>Formación</h3><p>APIs, espacios de datos e IA aplicada a datos abiertos. Mientras, seguimos grabando y reuniendo historias de fallos.</p></li>
+      <li class="stop"><span class="d">7-13 nov</span><h3>Datos y motor</h3><p>Histórico unificado y cumplimiento por línea, parada y hora para tres o cuatro trayectos reales.</p></li>
+      <li class="stop"><span class="d">14-20 nov</span><h3>Web y comunidad</h3><p>La pantalla única, el plan B en bici y el botón «estoy en el bus» con un piloto entre nosotros y amigos.</p></li>
+      <li class="stop end"><span class="d">21-26 nov</span><h3>Cierre</h3><p>Observatorio, repositorio abierto, entrega antes de las 14:00 del 26 y pitch de 5 minutos ensayado.</p></li>
+    </ol>
+  </section>
+
+  <footer>
+    Datos propios grabados desde el 23/09 (Renfe, EMT, Metro, interurbanos 212 y 691, tráfico) y menciones públicas a los operadores en X, solo como recuentos. Las cifras de muestras cortas indican el patrón, no son definitivas.
+  </footer>
+</main>

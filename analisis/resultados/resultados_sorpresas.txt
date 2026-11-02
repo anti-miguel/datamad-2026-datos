@@ -1,0 +1,20 @@
+2026-10-07: 3689 autobuses aparecen ya a <=8 min sin estar 3 min antes (437 de ellos cuando el primero anunciado estaba a >8 min o no había ninguno); 1 de cada 197 consultas de una línea. Saltos de >5 min del mismo autobús entre consultas: 764 de 142449 (0.5%)
+   líneas con más apariciones que cambian la decisión: 504 (1 de 1 consultas), 501 (1 de 1 consultas), 505 (1 de 1 consultas), 506 (1 de 1 consultas), 507 (1 de 1 consultas), 522 (1 de 2 consultas)
+   p. ej. parada 168, línea N18, 00:03: 3 min antes primero en 39 min -> ahora uno en 2 min
+   p. ej. parada 599, línea N18, 00:04: 3 min antes primero en 41 min -> ahora uno en 4 min
+   p. ej. parada 82, línea N26, 00:09: 3 min antes primero en 51 min -> ahora uno en 3 min
+2026-10-08: 3729 autobuses aparecen ya a <=8 min sin estar 3 min antes (494 de ellos cuando el primero anunciado estaba a >8 min o no había ninguno); 1 de cada 172 consultas de una línea. Saltos de >5 min del mismo autobús entre consultas: 743 de 140264 (0.5%)
+   líneas con más apariciones que cambian la decisión: 174 (8 de 350 consultas), 203 (7 de 319 consultas), N3 (2 de 114 consultas), 176 (6 de 353 consultas), 147 (34 de 2049 consultas), 104 (23 de 1419 consultas)
+   p. ej. parada 742, línea NC1, 00:16: 3 min antes primero en 39 min -> ahora uno en 0 min
+   p. ej. parada 168, línea N16, 00:22: 3 min antes primero en 56 min -> ahora uno en 5 min
+   p. ej. parada 69, línea N16, 00:24: 3 min antes primero en 48 min -> ahora uno en 0 min
+2026-10-09: 3552 autobuses aparecen ya a <=8 min sin estar 3 min antes (405 de ellos cuando el primero anunciado estaba a >8 min o no había ninguno); 1 de cada 212 consultas de una línea. Saltos de >5 min del mismo autobús entre consultas: 811 de 142650 (0.6%)
+   líneas con más apariciones que cambian la decisión: 203 (8 de 330 consultas), 173 (7 de 351 consultas), 124 (7 de 357 consultas), 66 (5 de 373 consultas), N20 (5 de 399 consultas), 27 (43 de 3502 consultas)
+   p. ej. parada 168, línea N18, 00:04: 3 min antes primero en 38 min -> ahora uno en 1 min
+   p. ej. parada 69, línea N16, 00:31: 3 min antes primero en 41 min -> ahora uno en 0 min
+   p. ej. parada 168, línea N16, 00:31: 3 min antes primero en 46 min -> ahora uno en 4 min
+2026-10-13: 3595 autobuses aparecen ya a <=8 min sin estar 3 min antes (320 de ellos cuando el primero anunciado estaba a >8 min o no había ninguno); 1 de cada 265 consultas de una línea. Saltos de >5 min del mismo autobús entre consultas: 669 de 141100 (0.5%)
+   líneas con más apariciones que cambian la decisión: 147 (24 de 2000 consultas), 67 (4 de 339 consultas), 203 (4 de 339 consultas), 8 (8 de 682 consultas), 66 (4 de 366 consultas), 176 (3 de 347 consultas)
+   p. ej. parada 82, línea N17, 00:11: 3 min antes primero en 46 min -> ahora uno en 7 min
+   p. ej. parada 82, línea N14, 00:14: 3 min antes primero en 24 min -> ahora uno en 1 min
+   p. ej. parada 5511, línea N14, 00:14: 3 min antes primero en 25 min -> ahora uno en 2 min

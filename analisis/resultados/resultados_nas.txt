@@ -1,0 +1,48 @@
+Trenes con GPS: 1281 | llegadas observadas: 14967 de 20007 paradas programadas (75%) — {'gps parado': np.int64(10426), 'gps estimado': np.int64(4541)}
+
+== Retraso real al llegar (min), por franja ==
+                      count  50%   90%   95%
+franja                                      
+punta mañana 7-9:30  3133.0  5.5  14.5  16.8
+punta tarde 17-20    2644.0  5.8  18.2  22.1
+resto                9190.0  3.3  12.8  16.0 
+
+== Punta de mañana por línea ==
+       llegadas  mediana   p95  mas_5min
+linea                                   
+C5         1214      8.7  16.5      70.3
+C2          338      5.5  18.2      55.9
+C4a         317      4.3  19.5      47.6
+C10         295      5.3  27.2      52.2
+C4b         286      3.0  14.7      33.6
+C3          247      4.2  17.2      44.9
+C7          218      3.2  12.2      40.8
+C8b          84      4.2  10.0      44.0
+C8a          78      2.2  15.2      33.3
+C1           42      1.5   7.1       9.5
+C4           14      8.3  15.7      71.4 
+
+== ¿Acierta Renfe? Error de la predicción según cuánto antes se hizo (min; negativo = optimista) ==
+           predicciones  error mediano  error abs p90  % a ±1 min  % a ±2 min  horario: % a ±2 min
+bin                                                                                               
+0-2 min           22011            0.9            2.8        45.7        75.8                 32.2
+2-5 min           56633           -0.2            2.8        48.1        78.5                 29.3
+5-10 min          30626           -1.5            5.8        20.3        40.7                 28.2
+10-20 min         26304           -2.2           10.2        16.1        37.7                 37.1
+20-40 min         37387           -2.8           12.2        14.0        36.4                 36.6 
+
+== Supresiones: 571 paradas suprimidas en 61 trenes ==
+[('C5', 162), ('C2', 137), ('C4a', 98), ('C10', 85), ('C7', 43), ('C8b', 26), ('C4b', 16), ('C3', 3)] 
+
+== Hoy 24/09: C5 desde Móstoles Central, transbordo 4 min en Atocha, 1 min a pie; ¿antes de las 9:00? ==
+  07:32  Atocha 08:01 (prog 08:00)  ->  N. Ministerios 08:16  a tiempo
+  07:37  Atocha 08:15 (prog 08:05)  ->  N. Ministerios 08:35  a tiempo
+  07:42  Atocha 08:19 (prog 08:10)  ->  N. Ministerios 08:35  a tiempo
+  07:47  Atocha 08:23 (prog 08:15)  ->  N. Ministerios 08:39  a tiempo
+  07:52  Atocha 08:27 (prog 08:20)  ->  N. Ministerios 08:40  a tiempo
+  07:57  Atocha 08:41 (prog 08:25)  ->  N. Ministerios 09:00  TARDE
+  08:02  Atocha 08:45 (prog 08:30)  ->  N. Ministerios 09:00  TARDE
+  08:07  Atocha 08:48 (prog 08:35)  ->  N. Ministerios 09:04  TARDE
+  08:12  Atocha 08:52 (prog 08:40)  ->  N. Ministerios 09:07  TARDE
+  08:17  Atocha 08:55 (prog 08:45)  ->  N. Ministerios 09:09  TARDE
+  08:21  Atocha 08:59 (prog 08:49)  ->  N. Ministerios 09:15  TARDE

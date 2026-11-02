@@ -1,0 +1,27 @@
+### Saturday 26/09/2026 (servicio 1067S)
+Trenes con GPS: 558 | llegadas observadas: 6786 de 8570 paradas programadas (79%) — {'gps parado': np.int64(4612), 'gps estimado': np.int64(2174)}
+
+== Retraso real al llegar (min), por franja ==
+                    count  50%  90%  95%
+franja                                  
+punta tarde 17-20  2338.0  1.7  6.6  8.4
+resto              4448.0  1.6  5.7  7.8 
+
+== Punta de mañana por línea ==
+Empty DataFrame
+Columns: [llegadas, mediana, p95, mas_5min]
+Index: [] 
+
+== ¿Acierta Renfe? Error de la predicción según cuánto antes se hizo (min; negativo = optimista) ==
+           predicciones  error mediano  error abs p90  % a ±1 min  % a ±2 min  horario: % a ±2 min
+bin                                                                                               
+0-2 min            9738            1.2            3.0        39.6        70.3                 59.6
+2-5 min           25068            0.0            3.0        51.0        78.9                 55.6
+5-10 min          13195           -0.6            6.0        28.1        50.8                 51.3
+10-20 min         10806           -1.0            6.7        30.4        58.3                 63.9
+20-40 min         13950           -1.4            4.6        33.6        65.2                 65.3 
+
+== Supresiones: 33 paradas suprimidas en 6 trenes ==
+[('C7', 27), ('C4b', 4), ('C10', 2)] 
+
+== 26/09: C5 desde Móstoles Central, transbordo 4 min en Atocha, 1 min a pie; ¿antes de las 9:00? ==

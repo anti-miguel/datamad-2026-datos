@@ -1,0 +1,12 @@
+104 en Mar de Cristal, 4 laborables, 7-21 h: 1104 consultas de la app comparadas con 284 salidas reales
+  el autobús que sale a continuación es el que anunciaba la app: 77%; no aparecía en la lista: 8%
+  autobús ya parado en la cabecera (344): sale a ±2 min de lo anunciado 51%, sale >5 min ANTES 1%, sale >5 min DESPUÉS 40%
+  autobús todavía llegando (760): sale a ±2 min de lo anunciado 66%, sale >5 min ANTES 7%, sale >5 min DESPUÉS 11%
+  cuando la app dice 15 min o más (113 consultas): sale uno >5 min antes en 40% de los casos; mediana de lo que se adelanta: -1.4 min
+    p. ej. 2026-10-07 10:52: la app decía 39 min, salió uno a los 26 min
+    p. ej. 2026-10-07 10:55: la app decía 36 min, salió uno a los 23 min
+    p. ej. 2026-10-07 10:58: la app decía 33 min, salió uno a los 20 min
+  intervalo real entre salidas (7-21 h): mediana 13 min, p10 9, p90 21 min; esperas >20 min: 12%
+
+212: 21286 comparaciones de la hora anunciada de un mismo viaje entre consultas seguidas (1 min)
+  la hora cambia en 0.37% de ellas (mediana del cambio +2.7 min)

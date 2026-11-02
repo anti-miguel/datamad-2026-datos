@@ -1,0 +1,43 @@
+### Sunday 27/09/2026 (servicio 1068D)
+Trenes con GPS: 1125 | llegadas observadas: 13442 de 16581 paradas programadas (81%) — {'gps parado': np.int64(9068), 'gps estimado': np.int64(4374)}
+
+== Retraso real al llegar (min), por franja ==
+                      count  50%  90%   95%
+franja                                     
+punta mañana 7-9:30  1903.0  1.3  4.6   6.3
+punta tarde 17-20    2334.0  1.6  6.8  11.1
+resto                9205.0  1.6  7.6  10.6 
+
+== Punta de mañana por línea ==
+       llegadas  mediana   p95  mas_5min
+linea                                   
+C5          579      1.0   3.8       2.9
+C10         257      1.6  10.6       9.3
+C7          202      1.6   6.6      12.9
+C4b         197      1.0   4.6       1.0
+C4a         192      1.6   5.0       4.2
+C2          160      1.9  12.6      23.8
+C3          159      1.6   5.6       6.3
+C8b          60      1.7   7.0      15.0
+C8a          49      1.6   6.8      14.3
+C1           48      0.6   1.6       0.0 
+
+== ¿Acierta Renfe? Error de la predicción según cuánto antes se hizo (min; negativo = optimista) ==
+           predicciones  error mediano  error abs p90  % a ±1 min  % a ±2 min  horario: % a ±2 min
+bin                                                                                               
+0-2 min           20061            1.3            3.2        36.9        68.0                 58.4
+2-5 min           50589            0.2            3.0        49.8        78.1                 55.3
+5-10 min          26940           -0.6            6.0        29.2        51.8                 53.3
+10-20 min         24103           -1.0            7.6        30.8        56.5                 64.1
+20-40 min         32161           -1.6            5.7        34.4        63.5                 64.0 
+
+== Supresiones: 72 paradas suprimidas en 16 trenes ==
+[('C10', 30), ('C5', 23), ('C4a', 10), ('C3', 6), ('C1', 3)] 
+
+== 27/09: C5 desde Móstoles Central, transbordo 4 min en Atocha, 1 min a pie; ¿antes de las 9:00? ==
+  07:34  sin llegada GPS a Atocha
+  07:44  sin llegada GPS a Atocha
+  07:54  sin llegada GPS a Atocha
+  08:04  sin llegada GPS a Atocha
+  08:14  sin llegada GPS a Atocha
+  08:24  sin llegada GPS a Atocha

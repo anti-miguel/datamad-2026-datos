@@ -1,0 +1,37 @@
+EMT (2026-10-07): 15527 llegadas de autobús reconstruidas (7592 visitas sin cerrar: el autobús pasó entre dos consultas)
+¿Acierta el 'llega en X min'? (error = previsto - real; negativo = llegó más tarde de lo anunciado)
+           predicciones  error mediano (min)  % a ±1 min  % a ±2 min  error abs p90
+bin                                                                                
+0-3 min              27                 -0.2        63.0        96.3            1.7
+3-6 min           14806                 -0.2        64.4        90.7            2.0
+6-10 min          21592                 -0.4        45.3        74.0            3.2
+10-15 min         16559                 -0.4        38.6        65.2            4.1
+15-25 min         27584                 -0.8        29.2        50.9            6.1 
+
+  con 6-15 min de antelación, por franja: {'punta mañana': '67% a ±2 min, mediana -0.8', 'punta tarde': '67% a ±2 min, mediana -0.7', 'resto': '72% a ±2 min, mediana -0.2'} 
+
+METRO (2026-10-07): 42029 llegadas de tren reconstruidas en 62 estaciones
+¿Acierta el 'llega en X min' del Metro?
+           predicciones  error mediano (min)  % a ±1 min  % a ±2 min  error abs p90
+bin                                                                                
+0-3 min          122622                  0.0        83.1        94.5            1.4
+3-6 min          117019                  0.1        68.8        90.4            2.0
+6-10 min         132062                  0.0        57.9        85.5            2.4
+10-15 min         75195                 -0.1        47.6        76.2            3.0
+15-25 min         11892                 -0.4        33.6        59.8            3.9 
+
+Intervalo real entre trenes en punta de mañana (min) y % de huecos >1,5× el intervalo mediano:
+       trenes  intervalo_mediano  p90  pct_huecos
+linea                                            
+6         828                2.0  3.1        18.6
+4         824                3.0  5.0        10.7
+1         705                3.0  5.0        18.4
+2         620                3.0  5.0        11.9
+5         619                4.1  6.3        11.6
+10        530                3.0  5.0        11.5
+3         442                3.0  4.1         6.3
+9         435                4.0  6.1        13.8
+8         391                4.0  6.0         9.5
+7         345                5.1  7.0         5.5
+11        311                5.0  7.5        10.3
+12        222                3.0  6.0        28.4

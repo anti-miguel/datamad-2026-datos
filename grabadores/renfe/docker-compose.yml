@@ -1,0 +1,167 @@
+# Grabador de posiciones y retrasos de Cercanías Madrid (Renfe GTFS-RT, CC BY 4.0)
+# Los datos quedan en la carpeta data/ del proyecto: un .jsonl.gz por día (~7 MB/día) y el horario de Renfe en data/gtfs/.
+services:
+  renfe-logger:
+    image: python:3.12-alpine
+    container_name: renfe-logger
+    restart: unless-stopped
+    environment:
+      TZ: "CET-1CEST,M3.5.0,M10.5.0/3"   # hora de Madrid sin depender de tzdata
+      INTERVAL_S: "30"
+      NUCLEO: "10"
+    volumes:
+      - ./data:/data
+    entrypoint: ["python", "-u", "-c"]
+    command:
+      - |
+        """Graba cada 30 s la posición y el retraso de los trenes de Cercanías Madrid (feeds abiertos de Renfe, CC BY 4.0).
+
+        Salida: /data/AAAA-MM-DD.jsonl.gz, una línea por tren y consulta:
+          {"t": epoch_consulta, "k": "vp"|"tu", "trip": ..., ...}
+        más una línea {"k": "poll", ...} por consulta con recuentos, marca de tiempo y error (si lo hubo) de cada feed.
+        Solo biblioteca estándar: corre en la imagen python:3-alpine sin instalar nada.
+        """
+        import gzip, hashlib, json, os, time, urllib.request
+        from datetime import datetime, timezone
+
+        FEEDS = {"vp": "https://gtfsrt.renfe.com/vehicle_positions.json",
+                 "tu": "https://gtfsrt.renfe.com/trip_updates.json"}
+        DATA = os.environ.get("DATA_DIR", "/data")
+        EVERY = int(os.environ.get("INTERVAL_S", "30"))
+        NUCLEO = os.environ.get("NUCLEO", "10")  # 10 = Madrid
+
+
+        def madrid(trip_id: str) -> bool:
+            return trip_id.startswith(NUCLEO) or trip_id.startswith(f"SPECIAL_{NUCLEO}_")
+
+
+        def fetch(url):
+            req = urllib.request.Request(url, headers={"User-Agent": "renfe-logger (DATAMAD 2026)"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                return json.load(r)
+
+
+        def rows(kind, feed, t):
+            for e in feed.get("entity", []):
+                if kind == "vp":
+                    v = e.get("vehicle", {})
+                    trip = v.get("trip", {}).get("tripId", "")
+                    if madrid(trip):
+                        p = v.get("position", {})
+                        yield {"t": t, "k": "vp", "trip": trip, "stop": v.get("stopId"), "st": v.get("currentStatus"),
+                               "ts": v.get("timestamp"), "lat": p.get("latitude"), "lon": p.get("longitude"),
+                               "lbl": v.get("vehicle", {}).get("label")}
+                else:
+                    u = e.get("tripUpdate", {})
+                    trip = u.get("trip", {}).get("tripId", "")
+                    if madrid(trip):
+                        yield {"t": t, "k": "tu", "trip": trip, "rel": u.get("trip", {}).get("scheduleRelationship"),
+                               "delay": u.get("delay"),
+                               "stops": [[s.get("stopId"), s.get("arrival", {}).get("delay"), s.get("scheduleRelationship")]
+                                         for s in u.get("stopTimeUpdate", [])]}
+
+
+        RETRIES = 3      # Renfe publica a menudo instantáneas sin ningún tren del núcleo durante 10-20 s
+        RETRY_WAIT = 5
+
+
+        SIN_TRENES = 3   # consultas seguidas sin trenes para dar el servicio por terminado (noche) y dejar de reintentar
+
+        # Renfe solo publica el horario de los próximos ~30 días: se archiva cada versión para poder comparar
+        # los retrasos grabados con su horario aunque Renfe ya lo haya retirado.
+        GTFS_URL = "https://ssl.renfe.com/ftransit/Fichero_CER_FOMENTO/fomento_transit.zip"
+        GTFS_CADA = 6 * 3600
+
+
+        GTFS_INTENTOS = 2  # los servidores de Renfe no están sincronizados: unos sirven la versión nueva y otros la vieja
+        _huellas = None    # sha256 de los horarios ya archivados
+
+
+        def archivar_gtfs():
+            """Descarga el horario y lo guarda si su contenido es nuevo. No se fía de HEAD ni de Last-Modified:
+            cada servidor de Renfe puede responder con una versión distinta."""
+            global _huellas
+            carpeta = os.path.join(DATA, "gtfs")
+            os.makedirs(carpeta, exist_ok=True)
+            if _huellas is None:
+                _huellas = set()
+                for n in os.listdir(carpeta):
+                    if n.endswith(".zip"):
+                        with open(os.path.join(carpeta, n), "rb") as f:
+                            _huellas.add(hashlib.sha256(f.read()).hexdigest())
+            for _ in range(GTFS_INTENTOS):
+                try:
+                    req = urllib.request.Request(GTFS_URL, headers={"User-Agent": "renfe-logger (DATAMAD 2026)"})
+                    with urllib.request.urlopen(req, timeout=300) as r:
+                        datos = r.read()
+                        modif = datetime.strptime(r.headers["Last-Modified"], "%a, %d %b %Y %H:%M:%S GMT")
+                    sha = hashlib.sha256(datos).hexdigest()
+                    if sha in _huellas:
+                        continue
+                    destino = os.path.join(carpeta, f"fomento_transit_{modif:%Y-%m-%d_%H%M}_{sha[:8]}.zip")
+                    with open(destino, "wb") as f:  # nombre único por contenido: nunca sobrescribe otra versión
+                        f.write(datos)
+                    _huellas.add(sha)
+                    print(f"{datetime.now():%H:%M:%S} horario de Renfe archivado: {os.path.basename(destino)} "
+                          f"({len(datos) // 1_000_000} MB)", flush=True)
+                except Exception as ex:  # no debe parar la grabación: se reintenta en la siguiente ronda
+                    print(f"{datetime.now():%H:%M:%S} no se pudo archivar el horario de Renfe: {ex}", flush=True)
+
+
+        def main():
+            os.makedirs(DATA, exist_ok=True)
+            print(f"renfe-logger: núcleo {NUCLEO}, cada {EVERY} s -> {DATA}", flush=True)
+            stats = dict(consultas=0, filas=0, recuperadas=0, perdidas=0, errores=0)
+            vacias = dict.fromkeys(FEEDS, 0)  # consultas seguidas sin trenes del núcleo, por feed
+            ultimo_gtfs = 0
+            while True:
+                start = time.time()
+                t = int(start)
+                if t - ultimo_gtfs >= GTFS_CADA:
+                    archivar_gtfs()
+                    ultimo_gtfs = t
+                    start = time.time()  # la descarga puede tardar: la consulta se fecha después
+                    t = int(start)
+                path = os.path.join(DATA, datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d") + ".jsonl.gz")
+                lines, poll = [], {"t": t, "k": "poll"}
+                for kind, url in FEEDS.items():
+                    got, total, hdr, tries, err = [], 0, None, 0, None
+                    while True:
+                        try:
+                            feed = fetch(url)
+                            total, hdr, err = len(feed.get("entity") or []), feed.get("header", {}).get("timestamp"), None
+                            got = list(rows(kind, feed, t))
+                        except Exception as ex:  # Renfe corta la conexión de vez en cuando: se cuenta y se reintenta
+                            stats["errores"] += 1
+                            err = f"{type(ex).__name__}: {ex}"[:120]
+                        if got or tries >= RETRIES or vacias[kind] >= SIN_TRENES:
+                            break
+                        tries += 1
+                        time.sleep(RETRY_WAIT)
+                    vacias[kind] = 0 if got else vacias[kind] + 1
+                    lines += [json.dumps(r, separators=(",", ":")) for r in got]
+                    # hdr con valor y total 0 = Renfe respondió con el feed vacío; err = Renfe no respondió (último intento)
+                    poll.update({f"{kind}_n": len(got), f"{kind}_total": total, f"{kind}_hdr": hdr, f"{kind}_retries": tries,
+                                 f"{kind}_err": err})
+                # la fila "poll" se escribe siempre: distingue "Renfe no publicó trenes" de "el grabador no corrió"
+                lines.append(json.dumps(poll, separators=(",", ":")))
+                with gzip.open(path, "at", encoding="utf-8") as f:  # cada escritura es un miembro gzip válido
+                    f.write("\n".join(lines) + "\n")
+                stats["consultas"] += 1
+                stats["filas"] += len(lines) - 1
+                for kind in FEEDS:
+                    if poll[f"{kind}_retries"] and poll[f"{kind}_n"]:
+                        stats["recuperadas"] += 1
+                    elif poll[f"{kind}_retries"] >= RETRIES and vacias[kind] < SIN_TRENES:  # hueco de Renfe, no fin de servicio
+                        stats["perdidas"] += 1
+                if t % 600 < EVERY:  # resumen cada 10 min; los huecos de Renfe ya recuperados no son un problema
+                    estado = "sin servicio" if min(vacias.values()) >= SIN_TRENES else "ok"
+                    print(f"{datetime.now():%H:%M:%S} {estado}: {stats['consultas']} consultas, "
+                          f"{stats['filas']} filas | recuperadas con reintento {stats['recuperadas']}, "
+                          f"perdidas {stats['perdidas']}, cortes de conexión {stats['errores']}", flush=True)
+                    stats = dict.fromkeys(stats, 0)
+                time.sleep(max(1, EVERY - (time.time() - start)))
+
+
+        if __name__ == "__main__":
+            main()

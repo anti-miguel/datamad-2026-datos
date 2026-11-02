@@ -1,0 +1,296 @@
+{
+ "proyecto": "DATAMAD 2026: fiabilidad del transporte público de Madrid (sin nombre todavía)",
+ "corte": "2026-11-02",
+ "convenciones": {
+  "formato": "un fichero AAAA-MM-DD.jsonl.gz por día (día de Madrid), JSON Lines",
+  "t": "epoch UTC de la consulta",
+  "zona": "Europe/Madrid",
+  "lector": "cargar.py"
+ },
+ "conjuntos": [
+  {
+   "id": "renfe",
+   "ruta": "datos/renfe/",
+   "ficheros": 41,
+   "desde": "2026-09-23",
+   "hasta": "2026-11-02",
+   "mb": 248.0,
+   "filas": 15422627,
+   "filas_por_tipo": {
+    "vp": 7513831,
+    "tu": 7796833,
+    "poll": 111963
+   },
+   "cadencia_s": 30,
+   "origen": "GTFS-RT de Renfe (vehicle_positions.json, trip_updates.json), núcleo de Madrid",
+   "licencia": "CC BY 4.0",
+   "esquema": {
+    "vp": {
+     "trip": "id de viaje GTFS",
+     "stop": "stop_id",
+     "st": "STOPPED_AT|INCOMING_AT|IN_TRANSIT_TO",
+     "ts": "epoch GPS (texto)",
+     "lat": "float",
+     "lon": "float",
+     "lbl": "línea-tren-vía"
+    },
+    "tu": {
+     "trip": "id de viaje",
+     "rel": "scheduleRelationship",
+     "delay": "s",
+     "stops": "[[stop_id, retraso_s, relación]]"
+    },
+    "poll": {
+     "vp_n|tu_n": "trenes de Madrid",
+     "vp_total|tu_total": "trenes de España",
+     "vp_hdr|tu_hdr": "marca del feed",
+     "*_err": "error o null"
+    }
+   },
+   "cruce": "datos/horarios_oficiales/renfe_gtfs_*.zip",
+   "lector": [
+    "cargar.renfe_posiciones",
+    "cargar.renfe_retrasos"
+   ],
+   "advertencias": [
+    "retrasos de ~±86400 s son viajes de otro día",
+    "sin GPS en túneles",
+    "GTFS del paquete hasta el 30/10",
+    "29/10: feed con solo 10-50 trenes de Madrid todo el día"
+   ]
+  },
+  {
+   "id": "emt",
+   "ruta": "datos/emt/",
+   "ficheros": 30,
+   "desde": "2026-10-04",
+   "hasta": "2026-11-02",
+   "mb": 118.6,
+   "filas": 435571,
+   "filas_por_tipo": {
+    "flota_descubrir": 2,
+    "flota": 41483,
+    "consulta": 370279,
+    "login": 9785,
+    "err": 14022
+   },
+   "cadencia_s": 180,
+   "origen": "API MobilityLabs EMT, llegadas por parada",
+   "paradas": 28,
+   "paradas_detalle": "25 céntricas desde 04/10 (nombres en grabadores/emt/docker-compose.yml); 5848, 4900, 4897 (línea 104) desde 06/10",
+   "esquema": {
+    "consulta": {
+     "s": "parada",
+     "a": "[[línea, nº_bus, llega_en_s, distancia_m, lon, lat, positionTypeBus, destino]]"
+    },
+    "login|flota|flota_descubrir|err": "control/errores; flota siempre 404"
+   },
+   "lector": [
+    "cargar.emt"
+   ],
+   "advertencias": [
+    "llega_en_s=999999: sin estimación o >20 min"
+   ]
+  },
+  {
+   "id": "crtm",
+   "ruta": "datos/crtm/",
+   "ficheros": 32,
+   "desde": "2026-10-02",
+   "hasta": "2026-11-02",
+   "mb": 163.0,
+   "filas": 3088640,
+   "filas_por_tipo": {
+    "metro": 2515288,
+    "ligero": 28706,
+    "interurbanos": 420974,
+    "emt": 80024,
+    "interurbanos_err": 7063,
+    "emt_err": 398,
+    "metro_err": 36046,
+    "ligero_err": 141
+   },
+   "cadencia_s": 60,
+   "origen": "widget del Consorcio GetStopsTimes.php",
+   "cobertura": {
+    "metro": "62 estaciones fijas, 02/10→02/11; nombres en grabadores/crtm/paradas_metro.json",
+    "interurbanos_212": "6 paradas, 09/10→02/11",
+    "interurbanos_691": "6 paradas, 14/10→02/11",
+    "pruebas_iniciales": "25 paradas interurbanas (3 con el 691), Metro Ligero (10_) y EMT (6_) solo del 02/10 al 04/10",
+    "rotatoria": "desde el 24/10: 1 parada al día al azar sin repetir, alternando metro/ligero/interurbanos/emt; filas con r=1; registro en datos/crtm/rotacion.json",
+    "sin_interurbanos": "05/10→08/10: grabador solo con Metro, no es una caída"
+   },
+   "esquema": {
+    "s": "parada (prefijo 4_ Metro, 8_ interurbanos, 10_ Ligero, 6_ EMT)",
+    "m": "modo",
+    "a": "[[línea, sentido, parada_destino, llegada_epoch, codIssue]]",
+    "err": "si falla",
+    "codIssue": "código del viaje en interurbanos; vacío en Metro, Ligero y EMT"
+   },
+   "lector": [
+    "cargar.crtm"
+   ]
+  },
+  {
+   "id": "trafico",
+   "ruta": "datos/trafico/",
+   "ficheros": 20,
+   "desde": "2026-10-14",
+   "hasta": "2026-11-02",
+   "mb": 149.7,
+   "filas": 9968,
+   "filas_por_tipo": {
+    "pm": 4666,
+    "incid": 1,
+    "dgt": 5294,
+    "err": 7
+   },
+   "cadencia_s": 300,
+   "origen": "informo.madrid.es pm.xml e incidencias; DGT NAP DATEX II v3.7",
+   "esquema": {
+    "pm": {
+     "c": [
+      "idelem",
+      "intensidad (veh/h)",
+      "ocupacion (%)",
+      "carga (0-100)",
+      "nivelServicio (0 fluido-3 congestión)",
+      "error (N=válido)"
+     ],
+     "r": "filas por punto"
+    },
+    "incid": "incidencias del Ayuntamiento (solo cuando cambian)",
+    "dgt": "incidencias DGT en la Comunidad (solo cuando cambian)"
+   },
+   "catalogo_puntos": "datos/trafico/puntos_medida.json.gz: idelem -> [descripción, utm_x, utm_y, subárea], UTM 30N ETRS89 con coma decimal",
+   "lector": [
+    "cargar.trafico",
+    "cargar.puntos_medida"
+   ],
+   "advertencias": [
+    "incid no ha cambiado desde el 14/10"
+   ]
+  },
+  {
+   "id": "meteo",
+   "ruta": "datos/meteo/",
+   "origen": "Open-Meteo (CC BY 4.0), respuesta original de la API",
+   "ficheros": {
+    "lluvia_horaria_2026-09-23_a_10-13.json": "hourly.time, precipitation, rain",
+    "lluvia_horaria_desde_2026-09-14.json": "hourly.time, precipitation"
+   }
+  },
+  {
+   "id": "x",
+   "ruta": "datos/redes/x_menciones_agregadas.json",
+   "origen": "menciones públicas a operadores en X, muestras por día",
+   "esquema": {
+    "busquedas.<id>.mensajes": "n",
+    "busquedas.<id>.por_hora_y_tema": "[{hora, tema, n}]"
+   },
+   "advertencias": [
+    "solo agregados",
+    "muestras de 15-40 mensajes"
+   ]
+  },
+  {
+   "id": "rodalies",
+   "ruta": "datos/externos/rodalies-observatorio_observaciones.csv.gz",
+   "filas": 863651,
+   "licencia": "CC BY 4.0",
+   "origen": "rodalies-observatorio, versión 2026-09-14, Cercanías de toda España",
+   "columnas": "service_date,nucleo_id,linea,trip_id,numero_tren,stop_id,estacion,provincia,comunidad,provincia_origen,stop_sequence,scheduled_arrival,arrival_time,delay_s,schedule_relationship,matched_gtfs,last_seen,source"
+  },
+  {
+   "id": "horarios_oficiales",
+   "ruta": "datos/horarios_oficiales/",
+   "ficheros": {
+    "renfe_gtfs_2026-09-24.zip": "GTFS Renfe",
+    "renfe_gtfs_2026-10-01.zip": "GTFS Renfe, versión posterior",
+    "crtm_gtfs_metro.zip": "oferta planificada Metro (feed 2025-05-27, por frecuencias)",
+    "crtm_gtfs_ligero.zip": "Metro Ligero (2026-07-22)",
+    "crtm_gtfs_interurbanos.zip": "interurbanos (2026-09-10)",
+    "crtm_gtfs_emt.zip": "EMT, solo frecuencias",
+    "pdf_consorcio/": "1180 horarios impresos {6|8}{línea}H{1|2}.pdf (6=EMT, 8=interurbanos; H=sentido)",
+    "pdf_consorcio_indice.json": "índice red/línea/sentido"
+   },
+   "advertencias": [
+    "PDF aún sin analizar",
+    "renfe_gtfs_2026-10-01 cubre hasta el 30/10"
+   ]
+  }
+ ],
+ "huecos": [
+  {
+   "fuente": "renfe",
+   "tipo": "grabador",
+   "desde": "2026-10-06T02:05",
+   "hasta": "2026-10-06T24:00"
+  },
+  {
+   "fuente": "renfe",
+   "tipo": "operador",
+   "fechas": [
+    "2026-09-26",
+    "2026-09-28 05:00-10:31",
+    "2026-09-30 05:00-10:42",
+    "2026-10-03",
+    "2026-10-20 10:08-10:31"
+   ]
+  },
+  {
+   "fuente": "emt",
+   "tipo": "operador",
+   "desde": "2026-10-20T14:24",
+   "hasta": "2026-10-20T14:42"
+  },
+  {
+   "fuente": "emt",
+   "tipo": "mixto",
+   "desde": "2026-10-20T17:58",
+   "hasta": "2026-10-21T07:10",
+   "nota": "timeouts y después respuestas vacías; CRTM también perdió 17:58-18:30, y CRTM y tráfico 21:50-24:00"
+  },
+  {
+   "fuente": "crtm",
+   "tipo": "grabador o conexión",
+   "desde": "2026-10-20T17:58",
+   "hasta": "2026-10-20T18:30"
+  },
+  {
+   "fuente": "crtm",
+   "tipo": "grabador o conexión",
+   "desde": "2026-10-20T21:50",
+   "hasta": "2026-10-21T00:00"
+  },
+  {
+   "fuente": "trafico",
+   "tipo": "grabador o conexión",
+   "desde": "2026-10-20T21:50",
+   "hasta": "2026-10-21T00:00"
+  },
+  {
+   "fuente": "renfe",
+   "tipo": "operador",
+   "fechas": [
+    "2026-10-29: solo 10-50 trenes de Madrid todo el día",
+    "2026-10-29 08:50-09:10"
+   ]
+  }
+ ],
+ "analisis": {
+  "ruta": "analisis/",
+  "resultados": "analisis/resultados/",
+  "ejecutar_desde": "raíz datos-transporte"
+ },
+ "grabadores": {
+  "ruta": "grabadores/",
+  "despliegue": "Docker Compose en la NAS, python:3.12-alpine, script embebido en el compose",
+  "credenciales": "no incluidas (marcadores)"
+ },
+ "tabla_fiabilidad": {
+  "csv": "analisis/resultados/fiabilidad.csv",
+  "consulta": "analisis/fiabilidad.py",
+  "validacion": "analisis/resultados/fiabilidad_validacion.txt"
+ }
+}

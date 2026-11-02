@@ -1,0 +1,94 @@
+{
+ "usadas": [
+  {
+   "fecha": "2026-10-24",
+   "m": "metro",
+   "s": "4_34",
+   "nombre": "SEVILLA",
+   "motivo": "diaria",
+   "consultas": 485,
+   "llegadas": 2679
+  },
+  {
+   "fecha": "2026-10-25",
+   "m": "ligero",
+   "s": "10_35",
+   "nombre": "NUEVO MUNDO",
+   "motivo": "diaria",
+   "consultas": 1028,
+   "llegadas": 5206
+  },
+  {
+   "fecha": "2026-10-26",
+   "m": "interurbanos",
+   "s": "8_11896",
+   "nombre": "CTRA.M117-URB.LA CUEVA",
+   "motivo": "diaria",
+   "consultas": 1004,
+   "llegadas": 2904
+  },
+  {
+   "fecha": "2026-10-27",
+   "m": "emt",
+   "s": "6_3600",
+   "nombre": "Arroyo Pozuelo - Carretera De De Húmera",
+   "motivo": "diaria",
+   "consultas": 991,
+   "llegadas": 1258
+  },
+  {
+   "fecha": "2026-10-28",
+   "m": "metro",
+   "s": "4_24",
+   "nombre": "MIGUEL HERNANDEZ",
+   "motivo": "diaria",
+   "consultas": 984,
+   "llegadas": 5275
+  },
+  {
+   "fecha": "2026-10-29",
+   "m": "ligero",
+   "s": "10_51",
+   "nombre": "JULIO ROMERO DE TORRES",
+   "motivo": "diaria",
+   "consultas": 997,
+   "llegadas": 1267
+  },
+  {
+   "fecha": "2026-10-30",
+   "m": "interurbanos",
+   "s": "8_08538",
+   "nombre": "POLVORANCA-AV.ALCALDE JOSÉ ARANDA",
+   "motivo": "diaria",
+   "consultas": 994,
+   "llegadas": 3074
+  },
+  {
+   "fecha": "2026-10-31",
+   "m": "emt",
+   "s": "6_350",
+   "nombre": "Colonia De La Prensa",
+   "motivo": "diaria",
+   "consultas": 1021,
+   "llegadas": 825
+  },
+  {
+   "fecha": "2026-11-01",
+   "m": "metro",
+   "s": "4_111",
+   "nombre": "MENDEZ ALVARO",
+   "motivo": "diaria",
+   "consultas": 1028,
+   "llegadas": 4476
+  },
+  {
+   "fecha": "2026-11-02",
+   "m": "ligero",
+   "s": "10_18",
+   "nombre": "BELGICA",
+   "motivo": "diaria",
+   "consultas": 822,
+   "llegadas": 4044
+  }
+ ]
+}

@@ -1,0 +1,135 @@
+"""Graba el tráfico de Madrid: intensidad de los ~4.100 puntos de medida del Ayuntamiento (cada 5 min), sus incidencias
+en la vía pública y las incidencias de carretera de la DGT en la Comunidad de Madrid. Para cruzar con los autobuses.
+
+Salida: /data/AAAA-MM-DD.jsonl.gz, una línea por lectura:
+  {"t": epoch, "k": "pm", "f": "fecha del fichero", "c": ["idelem","intensidad","ocupacion","carga","nivelServicio","error"],
+   "r": [[...], ...]}                                  puntos de medida (solo si el fichero ha cambiado)
+  {"t": epoch, "k": "incid", "r": [{...}, ...]}       incidencias del Ayuntamiento (solo si han cambiado)
+  {"t": epoch, "k": "dgt", "r": [{...}, ...]}         incidencias DGT con coordenadas dentro de la Comunidad (si cambian)
+  {"t": epoch, "k": "err", "src": ..., "err": ...}
+Una vez al día guarda en /data/puntos/ la descripción y coordenadas de los puntos de medida si han cambiado.
+Solo biblioteca estándar.
+"""
+import gzip, hashlib, json, os, time, urllib.request
+import xml.etree.ElementTree as ET
+from datetime import datetime
+
+DATA = os.environ.get("DATA_DIR", "/data")
+CICLO = int(os.environ.get("CICLO_S", "300"))
+UA = {"User-Agent": "trafico-logger (DATAMAD 2026, investigación; 1 consulta/5 min)"}
+PM = "https://informo.madrid.es/informo/tmadrid/pm.xml"
+INCID = "https://informo.madrid.es/informo/tmadrid/incid_aytomadrid.xml"
+DGT = "https://nap.dgt.es/datex2/v3/dgt/SituationPublication/datex2_v37.xml"
+CAMPOS = ["idelem", "intensidad", "ocupacion", "carga", "nivelServicio", "error"]
+BBOX = (39.85, 41.20, -4.60, -3.00)  # Comunidad de Madrid (lat_min, lat_max, lon_min, lon_max)
+
+
+def bajar(url):
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=90) as r:
+        return r.read()
+
+
+def num(x):
+    try:
+        return int(x)
+    except (TypeError, ValueError):
+        return x
+
+
+def leer_pm(xml):
+    raiz = ET.fromstring(xml)
+    filas, puntos = [], {}
+    for pm in raiz.iter("pm"):
+        g = {c.tag: (c.text or "").strip() for c in pm}
+        filas.append([num(g.get(c)) for c in CAMPOS])
+        puntos[g.get("idelem")] = [g.get("descripcion"), g.get("st_x"), g.get("st_y"), g.get("subarea")]
+    return raiz.findtext("fecha_hora"), filas, puntos
+
+
+def leer_incid(xml):
+    return [{c.tag: (c.text or "").strip() for c in inc} for inc in ET.fromstring(xml).iter("Incidencia")]
+
+
+def sin_ns(tag):
+    return tag.rsplit("}", 1)[-1]
+
+
+def leer_dgt(xml):
+    salida = []
+    for sit in ET.fromstring(xml).iter():
+        if sin_ns(sit.tag) != "situation":
+            continue
+        lats = [float(e.text) for e in sit.iter() if sin_ns(e.tag) == "latitude" and e.text]
+        lons = [float(e.text) for e in sit.iter() if sin_ns(e.tag) == "longitude" and e.text]
+        if not lats or not lons:
+            continue
+        hojas = {}
+        for e in sit.iter():
+            nombre = sin_ns(e.tag)
+            if e.text and e.text.strip() and len(e) == 0 and nombre not in hojas:
+                hojas[nombre] = e.text.strip()[:200]
+        if "province" in hojas or "autonomousCommunity" in hojas:  # la DGT indica la provincia: solo Madrid
+            if hojas.get("province") != "Madrid" and not hojas.get("autonomousCommunity", "").startswith("Madrid"):
+                continue
+        elif not any(BBOX[0] <= la <= BBOX[1] and BBOX[2] <= lo <= BBOX[3] for la, lo in zip(lats, lons)):
+            continue
+        hojas["id"] = sit.get("id")
+        hojas["version"] = sit.get("version")
+        hojas["lat"], hojas["lon"] = lats[0], lons[0]
+        salida.append(hojas)
+    return salida
+
+
+def huella(obj):
+    return hashlib.sha256(json.dumps(obj, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def main():
+    os.makedirs(os.path.join(DATA, "puntos"), exist_ok=True)
+    print(f"trafico-logger: cada {CICLO} s -> {DATA}", flush=True)
+    ultimo = {"pm": None, "incid": None, "dgt": None, "puntos": None}
+    stats = {"pm": 0, "incid": 0, "dgt": 0, "err": 0}
+    ult_resumen = 0
+    while True:
+        inicio = time.time()
+        lineas = []
+        for src, url in (("pm", PM), ("incid", INCID), ("dgt", DGT)):
+            try:
+                xml = bajar(url)
+                if src == "pm":
+                    fecha, filas, puntos = leer_pm(xml)
+                    if fecha != ultimo["pm"]:
+                        ultimo["pm"] = fecha
+                        lineas.append({"t": int(inicio), "k": "pm", "f": fecha, "c": CAMPOS, "r": filas})
+                        stats["pm"] += 1
+                        h = huella(puntos)
+                        if h != ultimo["puntos"]:
+                            ultimo["puntos"] = h
+                            ruta = os.path.join(DATA, "puntos", f"puntos_{datetime.now():%Y-%m-%d}_{h[:8]}.json.gz")
+                            if not os.path.exists(ruta):
+                                with gzip.open(ruta, "wt", encoding="utf-8") as f:
+                                    json.dump(puntos, f, ensure_ascii=False)
+                else:
+                    r = leer_incid(xml) if src == "incid" else leer_dgt(xml)
+                    h = huella(r)
+                    if h != ultimo[src]:
+                        ultimo[src] = h
+                        lineas.append({"t": int(inicio), "k": src, "r": r})
+                        stats[src] += 1
+            except Exception as ex:  # una fuente caída no para las demás
+                lineas.append({"t": int(inicio), "k": "err", "src": src, "err": f"{type(ex).__name__}: {ex}"[:200]})
+                stats["err"] += 1
+        if lineas:
+            ruta = os.path.join(DATA, datetime.now().strftime("%Y-%m-%d") + ".jsonl.gz")
+            with gzip.open(ruta, "at", encoding="utf-8") as f:  # cada escritura es un miembro gzip válido
+                f.write("\n".join(json.dumps(x, separators=(",", ":"), ensure_ascii=False) for x in lineas) + "\n")
+        if inicio - ult_resumen >= 3600:
+            print(f"{datetime.now():%H:%M:%S} última hora: {stats['pm']} lecturas de puntos, {stats['incid']} cambios "
+                  f"de incidencias Ayto, {stats['dgt']} cambios DGT, {stats['err']} errores", flush=True)
+            stats = {k: 0 for k in stats}
+            ult_resumen = inicio
+        time.sleep(max(5, inicio + CICLO - time.time()))
+
+
+if __name__ == "__main__":
+    main()

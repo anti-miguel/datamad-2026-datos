@@ -1,0 +1,49 @@
+### Thursday 08/10/2026 (servicio 1079J)
+Trenes con GPS: 1297 | llegadas observadas: 16424 de 20622 paradas programadas (80%) — {'gps parado': np.int64(11502), 'gps estimado': np.int64(4922)}
+
+== Retraso real al llegar (min), por franja ==
+                       count  50%   90%   95%
+franja                                       
+punta mañana 7-9:30   3085.0  5.8  14.8  17.1
+punta tarde 17-20     2638.0  4.5  14.1  18.5
+resto                10701.0  3.3  14.1  19.1 
+
+== Punta de mañana por línea ==
+       llegadas  mediana   p95  mas_5min
+linea                                   
+C5         1215      6.3  15.1      62.2
+C2          343      4.1  24.5      44.0
+C4a         296      7.1  15.6      66.9
+C4b         285      6.1  20.4      56.5
+C10         266      4.5  23.4      48.1
+C3          243      6.8  16.1      70.0
+C7          215      5.1  15.5      50.7
+C8b          85      5.5   9.5      55.3
+C8a          78      3.1  18.1      38.5
+C1           44      1.5   6.3       9.1
+C4           15      5.1  20.7      66.7 
+
+== ¿Acierta Renfe? Error de la predicción según cuánto antes se hizo (min; negativo = optimista) ==
+           predicciones  error mediano  error abs p90  % a ±1 min  % a ±2 min  horario: % a ±2 min
+bin                                                                                               
+0-2 min           24201            0.9            2.9        47.8        77.6                 29.5
+2-5 min           63168           -0.1            2.8        47.0        77.6                 27.4
+5-10 min          33439           -1.5            5.8        20.0        41.2                 26.4
+10-20 min         27908           -2.1           10.1        14.6        36.7                 35.1
+20-40 min         40099           -2.8           12.1        11.7        34.5                 34.1 
+
+== Supresiones: 710 paradas suprimidas en 97 trenes ==
+[('C5', 265), ('C4a', 130), ('C4b', 108), ('C2', 86), ('C10', 48), ('C3', 46), ('C7', 27)] 
+
+== 08/10: C5 desde Móstoles Central, transbordo 4 min en Atocha, 1 min a pie; ¿antes de las 9:00? ==
+  07:32  Atocha 07:59 (prog 08:00)  ->  N. Ministerios 08:13  a tiempo
+  07:37  Atocha 08:09 (prog 08:05)  ->  N. Ministerios 08:22  a tiempo
+  07:42  Atocha 08:13 (prog 08:10)  ->  N. Ministerios 08:27  a tiempo
+  07:47  Atocha 08:18 (prog 08:15)  ->  N. Ministerios 08:33  a tiempo
+  07:52  Atocha 08:35 (prog 08:20)  ->  N. Ministerios 08:52  a tiempo
+  07:57  Atocha 08:39 (prog 08:25)  ->  N. Ministerios 08:54  a tiempo
+  08:02  Atocha 08:42 (prog 08:30)  ->  N. Ministerios 09:02  TARDE
+  08:07  Atocha 08:46 (prog 08:35)  ->  N. Ministerios 09:02  TARDE
+  08:12  Atocha 08:51 (prog 08:40)  ->  N. Ministerios 09:05  TARDE
+  08:17  Atocha 08:55 (prog 08:45)  ->  N. Ministerios 09:10  TARDE
+  08:21  Atocha 08:58 (prog 08:49)  ->  N. Ministerios 09:17  TARDE
