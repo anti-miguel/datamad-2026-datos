@@ -1,4 +1,4 @@
-# Datos de transporte de Madrid: lo grabado hasta el 02/11/2026
+# Datos de transporte de Madrid
 
 Paquete de trabajo del equipo para DATAMAD 2026. Reúne lo que hemos medido sobre si el transporte público de Madrid cumple lo que anuncia:
 - si el tren o el bus llega cuando dice la app o el panel,
@@ -6,6 +6,8 @@ Paquete de trabajo del equipo para DATAMAD 2026. Reúne lo que hemos medido sobr
 - cómo influyen la lluvia y el tráfico.
 
 De momento el planteamiento es una **app**. Todavía no hay nombre de proyecto. Los nombres de algunos ficheros (`llego...`) son provisionales.
+
+**El repo se actualiza solo.** Cada noche, desde las 4:00, la NAS sube los días ya cerrados de los cuatro grabadores: haz `git pull` para tenerlos. Las cifras, la tabla de fiabilidad y `catalogo.json` no se regeneran solas y se calcularon con datos hasta el 02/11. El día en curso nunca está en el repo.
 
 Si vas a usar un agente de IA, que empiece por [AGENTS.md](AGENTS.md). [catalogo.json](catalogo.json) describe cada conjunto de datos de forma legible por máquina.
 
@@ -32,7 +34,6 @@ datos-transporte/
 Son unos 1.000 MB en total. 345 MB corresponden a los horarios oficiales.
 
 **Lo que no está en el paquete:**
-- **Datos posteriores al 02/11.** Los grabadores siguen funcionando en la NAS de Miguel; pídeselos si los necesitas. El fichero del 02/11 está incompleto: se descargó a las 20:20.
 - **Credenciales.** El `docker-compose.yml` de la EMT trae marcadores (`ESCRIBE_AQUI_...`), no claves.
 - **Datos personales.** De X solo hay recuentos por hora y tema, sin usuarios ni textos.
 
@@ -85,7 +86,7 @@ for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
 - En los túneles no hay GPS. Para estimar el paso por una estación se toma el punto medio entre la última posición antes del túnel y la primera después.
 - **Hueco nuestro:** el grabador estuvo parado el 06/10 de 02:05 a ~24:00.
 - **29/10:** el grabador consultó con normalidad, pero el feed de Renfe solo daba unos 10–50 trenes de Madrid durante todo el día, frente a unos 100–130 de un día normal. No sabemos la causa.
-- **Horarios:** los GTFS de Renfe del paquete llegan hasta el 30/10. Para cruzar los días siguientes hace falta una versión posterior, que está en la NAS.
+- **Horarios:** cada versión del GTFS de Renfe llega unas semanas por delante. La NAS sube la más reciente como mucho una vez por semana, en `datos/horarios_oficiales/`.
 - **Caídas de Renfe:** la información en tiempo real de Renfe falló (feed vacío o congelado):
   - 26/09
   - 28/09, 05:00–10:31
@@ -306,6 +307,8 @@ Cada carpeta contiene `logger.py` y `docker-compose.yml`. El compose lleva el mi
 | emt | ~3 min por parada | `openapi.emtmadrid.es`. Necesita cuenta de MobilityLabs (variables `EMT_*`) |
 | crtm | ~1 min por parada | `crtm.es/widgets/api/GetStopsTimes.php` (+ GTFS cada 24 h) |
 | trafico | 5 min | `informo.madrid.es` (pm.xml, incidencias) + `nap.dgt.es` (DATEX II) |
+
+`grabadores/sync/` es el proyecto que sube los datos a este repo. Usa una clave SSH que se genera en la NAS y no sale de ella, con permiso de escritura solo en este repo. Ve las carpetas `data/` de los grabadores en modo lectura. No sube `puntos/` del tráfico.
 
 **Pendiente:** el catálogo de puntos de medida se reescribe casi a diario porque cambia el campo `subarea` (~20 MB por semana). Hay que guardar solo cuando cambien la descripción o las coordenadas.
 

@@ -35,5 +35,5 @@ Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de 
   - No pidas ni escribas claves en ficheros del repositorio.
 - `datos/redes/` solo contiene agregados. No intentes reconstruir mensajes ni usuarios.
 - No modifiques `datos/`: es la copia de referencia. Escribe los resultados nuevos en `analisis/resultados/` o en una carpeta tuya.
-- Los datos posteriores al 02/11/2026 están en la NAS del equipo, no aquí.
+- La NAS añade los días cerrados cada noche: haz `git pull` antes de analizar. `catalogo.json` y la tabla de fiabilidad se calcularon con datos hasta el 02/11/2026 y no se actualizan solos.
 - El proyecto aún no tiene nombre. No le pongas uno en los materiales que generes.

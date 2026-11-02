@@ -1,0 +1,134 @@
+"""Sube cada noche a GitHub los días ya cerrados de los cuatro grabadores (y el registro de paradas rotatorias).
+
+Lee /fuentes/{renfe,emt,crtm,trafico} (solo lectura) y compara cada fichero con el que hay en el repo: sube los nuevos
+y los que han cambiado. El día en curso nunca se sube, porque sigue creciendo. Del horario de Renfe sube el más reciente
+si el último del repo tiene una semana o más. Si falla, reintenta a los 10 min.
+No necesita copia del repo: cada vez clona solo los árboles (unos MB) en una carpeta temporal y la borra al terminar.
+
+Acceso: una clave SSH que se genera aquí la primera vez, en /clave, y no sale de la NAS. Su parte pública sale en el
+registro del contenedor y hay que añadirla al repo como Deploy key con permiso de escritura.
+Solo biblioteca estándar, más git y ssh, que se instalan al arrancar si no están.
+"""
+import glob, os, re, shutil, subprocess, tempfile, time
+from datetime import datetime, timedelta
+
+REPO = os.environ.get("REPO", "git@github.com:anti-miguel/datamad-2026-datos.git")
+RAMA = os.environ.get("RAMA", "main")
+FUENTES = os.environ.get("FUENTES_DIR", "/fuentes")
+CLAVE = os.environ.get("CLAVE_DIR", "/clave")
+HORA = int(os.environ.get("HORA_SYNC", "4"))  # desde esta hora se sube el día anterior
+REINTENTO = int(os.environ.get("REINTENTO_S", "600"))
+GRABADORES = ("renfe", "emt", "crtm", "trafico")
+AUTOR = {"GIT_AUTHOR_NAME": "anti-miguel", "GIT_AUTHOR_EMAIL": "38762912+anti-miguel@users.noreply.github.com",
+         "GIT_COMMITTER_NAME": "anti-miguel", "GIT_COMMITTER_EMAIL": "38762912+anti-miguel@users.noreply.github.com"}
+GITHUB_ED25519 = "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n"
+MAX_BYTES = 95_000_000  # GitHub rechaza ficheros de más de 100 MB
+GTFS_CADA_DIAS = 7
+
+
+def log(*a):
+    print(f"{datetime.now():%Y-%m-%d %H:%M:%S}", *a, flush=True)
+
+
+def git(*args, env=None):
+    r = subprocess.run(["git", *args], capture_output=True, text=True, env={**os.environ, **(env or {})})
+    if r.returncode:
+        raise RuntimeError(f"git {args[0]}: {(r.stderr or r.stdout).strip()[-400:]}")
+    return r.stdout.strip()
+
+
+def preparar():
+    while not (shutil.which("git") and shutil.which("ssh")):
+        if subprocess.run(["apk", "add", "--no-cache", "git", "openssh-client"]).returncode:
+            log(f"no se pudo instalar git; reintento en {REINTENTO} s")
+            time.sleep(REINTENTO)
+    if not REPO.startswith("git@"):
+        return
+    os.makedirs(CLAVE, exist_ok=True)
+    clave = os.path.join(CLAVE, "id_ed25519")
+    if not os.path.exists(clave):
+        subprocess.run(["ssh-keygen", "-t", "ed25519", "-N", "", "-C", "nas-datos-sync", "-f", clave], check=True,
+                       capture_output=True)
+    hosts = os.path.join(CLAVE, "known_hosts")
+    with open(hosts, "w") as f:
+        f.write(GITHUB_ED25519)
+    os.environ["GIT_SSH_COMMAND"] = f"ssh -i {clave} -o UserKnownHostsFile={hosts} -o StrictHostKeyChecking=yes -o BatchMode=yes"
+    with open(clave + ".pub") as f:
+        log("clave pública (añádela al repo como Deploy key con escritura):", f.read().strip())
+
+
+def ficheros(hoy):
+    """(ruta en el repo, fichero local) de todo lo que debería estar subido."""
+    for g in GRABADORES:
+        for f in sorted(glob.glob(os.path.join(FUENTES, g, "*.jsonl.gz"))):
+            if os.path.basename(f)[:10] < hoy:
+                yield f"datos/{g}/{os.path.basename(f)}", f
+    rot = os.path.join(FUENTES, "crtm", "rotacion.json")
+    if os.path.exists(rot):
+        yield "datos/crtm/rotacion.json", rot
+
+
+def gtfs_renfe(arbol):
+    """El horario de Renfe más reciente, si toca: fomento_transit_AAAA-MM-DD_HHMM_sha.zip -> renfe_gtfs_AAAA-MM-DD_HHMM.zip"""
+    subidos = [m.group(1) for r in arbol for m in [re.search(r"renfe_gtfs_(\d{4}-\d\d-\d\d)", r)] if m]
+    zips = sorted(glob.glob(os.path.join(FUENTES, "renfe", "gtfs", "fomento_transit_*.zip")))
+    m = re.search(r"fomento_transit_(\d{4}-\d\d-\d\d)_(\d{4})_", os.path.basename(zips[-1])) if zips else None
+    if not m or (subidos and datetime.strptime(m.group(1), "%Y-%m-%d") < datetime.strptime(max(subidos), "%Y-%m-%d") + timedelta(days=GTFS_CADA_DIAS)):
+        return []
+    return [(f"datos/horarios_oficiales/renfe_gtfs_{m.group(1)}_{m.group(2)}.zip", zips[-1])]
+
+
+def subir(hoy):
+    """Devuelve cuántos ficheros ha subido."""
+    tmp = tempfile.mkdtemp(prefix="sync")
+    try:
+        r = os.path.join(tmp, "r")
+        git("clone", "-q", "--bare", "--depth", "1", "--filter=blob:none", "--single-branch", "-b", RAMA, REPO, r)
+        arbol = {}
+        for linea in git("-C", r, "ls-tree", "-r", RAMA, "--", "datos").splitlines():
+            meta, ruta = linea.split("\t", 1)
+            arbol[ruta] = meta.split()[2]
+        indice = {"GIT_INDEX_FILE": os.path.join(tmp, "indice")}
+        git("-C", r, "read-tree", RAMA, env=indice)
+        cambios = []
+        for ruta, f in [*ficheros(hoy), *gtfs_renfe(arbol)]:
+            if os.path.getsize(f) > MAX_BYTES:
+                log("demasiado grande, no se sube:", ruta)
+            elif git("-C", r, "hash-object", "--no-filters", f) != arbol.get(ruta):
+                sha = git("-C", r, "hash-object", "--no-filters", "-w", f)
+                git("-C", r, "update-index", "--add", "--cacheinfo", f"100644,{sha},{ruta}", env=indice)
+                cambios.append(ruta)
+        if not cambios:
+            return 0
+        arbol_nuevo = git("-C", r, "write-tree", env=indice)
+        dias = sorted(os.path.basename(c)[:10] for c in cambios if c.endswith(".jsonl.gz"))
+        msg = f"Datos hasta el {dias[-1]}" if dias else "Actualiza horarios y registro de paradas"
+        commit = git("-C", r, "commit-tree", arbol_nuevo, "-p", RAMA, "-m", msg, env=AUTOR)
+        git("-C", r, "push", "-q", REPO, f"{commit}:refs/heads/{RAMA}")
+        log(f"subidos {len(cambios)} ficheros: {', '.join(cambios[:6])}{' ...' if len(cambios) > 6 else ''}")
+        return len(cambios)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def main():
+    preparar()
+    log(f"sync: {REPO} rama {RAMA}, cada día desde las {HORA}:00, fuentes en {FUENTES}")
+    hecho = None
+    while True:
+        ahora = datetime.now()
+        hoy = ahora.strftime("%Y-%m-%d")
+        if hecho != hoy and (hecho is None or ahora.hour >= HORA):
+            try:
+                if not subir(hoy):
+                    log("nada nuevo que subir")
+                hecho = hoy
+            except Exception as ex:  # sin la clave en GitHub o sin red: se reintenta, no se para
+                log(f"no se pudo subir: {ex}")
+                time.sleep(REINTENTO)
+                continue
+        time.sleep(600)
+
+
+if __name__ == "__main__":
+    main()
