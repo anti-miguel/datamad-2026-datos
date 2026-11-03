@@ -87,8 +87,17 @@
    "s": "10_18",
    "nombre": "BELGICA",
    "motivo": "diaria",
-   "consultas": 869,
-   "llegadas": 4247
+   "consultas": 1030,
+   "llegadas": 4922
+  },
+  {
+   "fecha": "2026-11-03",
+   "m": "interurbanos",
+   "s": "8_3782",
+   "nombre": "MARIA PORTUGAL-LEONOR AUSTRIA",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
