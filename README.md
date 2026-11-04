@@ -226,7 +226,7 @@ Los números exactos y el método están en `analisis/resultados/`.
 
 **EMT** (`fiabilidad.csv`):
 - **"Llega en 3–6 min":** se cumple a ±2 min el 82% de las veces.
-- **"Llega en 15–25 min":** se cumple el 55%, y los autobuses llegan tarde algo más a menudo que antes de tiempo (26% frente a 19%).
+- **"Llega en 15–25 min":** se cumple el 55%, y los autobuses llegan tarde algo más a menudo que antes de tiempo (27% frente a 19%).
 
 **El 104** (`resultados_104_212.txt`, `resultados_sorpresas.txt`):
 - **Autobuses fantasma:** el 40% de las veces aparecen autobuses que no estaban anunciados.
@@ -272,7 +272,7 @@ Es la primera versión de "la probabilidad que aporta la API": dado lo que anunc
 |---|---|---|---|
 | 3–6 min | 82% | 91% | 67% |
 | 6–10 min | 72% | 84% | 48% |
-| 10–15 min | 65% | 77% | 39% |
+| 10–15 min | 64% | 77% | 39% |
 | 15–25 min | 55% | 57% | 42% |
 | 25–40 min | 47% | sin dato | 45% |
 
