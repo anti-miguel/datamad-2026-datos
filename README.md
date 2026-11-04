@@ -122,8 +122,8 @@ for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
   - **888888:** líneas nocturnas. La app de la EMT muestra `>90`, y la API no lo documenta: dice que 999999 cubre también las nocturnas.
   - **En nuestros datos** cada código sale solo en su tipo de línea (140.939 filas de 999999 en diurnas y 143.227 de 888888 en nocturnas, ninguna cruzada).
   - **El límite real:** las diurnas casi nunca dan minutos por encima de 45 (166 filas). Las nocturnas casi nunca pasan de 60 (693 filas), así que en ellas el cambio parece estar en ~60 min, no en 90.
-  - **No siempre es un bus lejano:** el 20% de estas filas tiene el autobús a menos de 400 m.
-- `tipo_posición` es el campo `positionTypeBus` de la EMT. Casi siempre vale `"0"` y a veces `"3"`; no lo hemos usado.
+  - **Su distancia no siempre es real:** el 20% de estas filas marca 360–400 m, pero el GPS de esos autobuses está a unos 5 km de la parada (mediana). Casi todas tienen `tipo_posición` 3 y salen al empezar el servicio.
+- `tipo_posición` es el campo `positionTypeBus` de la EMT. Casi siempre vale `"0"` y a veces `"3"`; con `"3"` la distancia puede no ser real. La tabla de fiabilidad no lo filtra.
 - La lista de paradas con nombre está en `grabadores/emt/docker-compose.yml`. Esa copia tiene las 25 iniciales; las 3 del 104 se añadieron directamente en la NAS.
 
 **Cómo reconstruimos la llegada real:** por cada autobús (parada, línea, nº de autobús), la última consulta en la que aparecía a ≤120 s y ≤600 m. En cabeceras se usa ≤400 s para las salidas.
