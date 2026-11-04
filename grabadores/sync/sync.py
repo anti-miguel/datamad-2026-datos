@@ -1,6 +1,6 @@
-"""Sube cada noche a GitHub los días ya cerrados de los cuatro grabadores (y el registro de paradas rotatorias).
+"""Sube cada noche a GitHub los días ya cerrados de los grabadores (y el registro de paradas rotatorias).
 
-Lee /fuentes/{renfe,emt,crtm,trafico} (solo lectura) y compara cada fichero con el que hay en el repo: sube los nuevos
+Lee /fuentes/{renfe,emt,crtm,trafico,avisos} (solo lectura) y compara cada fichero con el que hay en el repo: sube los nuevos
 y los que han cambiado. El día en curso nunca se sube, porque sigue creciendo. Del horario de Renfe sube el más reciente
 si el último del repo tiene una semana o más. Si falla, reintenta a los 10 min.
 No necesita copia del repo: cada vez clona solo los árboles (unos MB) en una carpeta temporal y la borra al terminar.
@@ -18,7 +18,7 @@ FUENTES = os.environ.get("FUENTES_DIR", "/fuentes")
 CLAVE = os.environ.get("CLAVE_DIR", "/clave")
 HORA = int(os.environ.get("HORA_SYNC", "4"))  # desde esta hora se sube el día anterior
 REINTENTO = int(os.environ.get("REINTENTO_S", "600"))
-GRABADORES = ("renfe", "emt", "crtm", "trafico")
+GRABADORES = ("renfe", "emt", "crtm", "trafico", "avisos")
 AUTOR = {"GIT_AUTHOR_NAME": "anti-miguel", "GIT_AUTHOR_EMAIL": "38762912+anti-miguel@users.noreply.github.com",
          "GIT_COMMITTER_NAME": "anti-miguel", "GIT_COMMITTER_EMAIL": "38762912+anti-miguel@users.noreply.github.com"}
 GITHUB_ED25519 = "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n"

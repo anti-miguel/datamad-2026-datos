@@ -7,6 +7,7 @@
   df = cargar.crtm("2026-10-15")            # una fila por llegada anunciada (Metro e interurbanos)
   df = cargar.renfe_posiciones("2026-10-15")
   df = cargar.trafico("2026-10-15")         # una fila por punto de medida y lectura (5 min)
+  df = cargar.avisos()                      # avisos de la EMT, en su última versión conocida
 
 Las horas se devuelven en hora de Madrid (columna "hora"); "t" es el epoch UTC de la consulta.
 pandas solo hace falta para las funciones que devuelven DataFrame.
@@ -14,7 +15,7 @@ pandas solo hace falta para las funciones que devuelven DataFrame.
 import glob, gzip, json, os
 
 RAIZ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "datos")
-FUENTES = ("renfe", "emt", "crtm", "trafico")
+FUENTES = ("renfe", "emt", "crtm", "trafico", "avisos")
 
 
 def dias(fuente):
@@ -76,3 +77,17 @@ def puntos_medida():
     """Catálogo de los puntos de medida de tráfico (id, descripción, coordenadas)."""
     with gzip.open(os.path.join(RAIZ, "trafico", "puntos_medida.json.gz"), "rt", encoding="utf-8") as f:
         return json.load(f)
+
+
+def avisos():
+    """Última versión de cada aviso de la EMT. "desde" y "hasta" pasan a hora de Madrid."""
+    import pandas as pd
+    ultimos = {}
+    for dia in dias("avisos"):
+        for r in filas("avisos", dia):
+            if r.get("k") == "aviso":
+                ultimos[r["guid"]] = r
+    df = pd.DataFrame(ultimos.values())
+    for c in ("desde", "hasta"):
+        df[c] = pd.to_datetime(df[c], unit="s", utc=True).dt.tz_convert("Europe/Madrid")
+    return df

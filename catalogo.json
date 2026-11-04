@@ -172,6 +172,45 @@
    ]
   },
   {
+   "id": "avisos",
+   "ruta": "datos/avisos/",
+   "desde": "2026-11-04",
+   "avisos_publicados_desde": "2026-10-11",
+   "cadencia_s": 300,
+   "origen": "RSS público de alteraciones del servicio de la EMT, http://feeds.emtmadrid.es:8082/",
+   "esquema": {
+    "aviso": {
+     "estado": "nuevo|cambio",
+     "guid": "id del aviso",
+     "titulo": "texto",
+     "texto": "texto",
+     "enlace": "PDF del aviso",
+     "pub|fin_pub|desde|hasta": "epoch UTC",
+     "causa": "código y texto",
+     "efecto": "código y texto",
+     "lineas": "lista, a veces con ceros delante"
+    },
+    "baja": {
+     "guid": "aviso que ya no está en el RSS"
+    },
+    "poll": {
+     "n": "avisos en el RSS",
+     "novedades": "cuántas",
+     "sin_cambios": "1 si no cambió",
+     "err": "si falla"
+    }
+   },
+   "lector": [
+    "cargar.avisos"
+   ],
+   "advertencias": [
+    "el RSS solo conserva unas semanas",
+    "pub puede ser posterior a desde",
+    "un aviso no afecta necesariamente a todas las paradas de la línea",
+    "las obras pueden durar meses"
+   ]
+  },
+  {
    "id": "meteo",
    "ruta": "datos/meteo/",
    "origen": "Open-Meteo (CC BY 4.0), respuesta original de la API",

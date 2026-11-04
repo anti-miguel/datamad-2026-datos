@@ -9,7 +9,7 @@ Este paquete reúne los datos y el código de un proyecto de DATAMAD 2026 (datat
 3. `cargar.py`: usa sus funciones en vez de reimplementar el parseo.
    - `cargar.dias(fuente)`
    - `cargar.filas(fuente, dia)`
-   - `cargar.emt`, `cargar.crtm`, `cargar.renfe_posiciones`, `cargar.renfe_retrasos`, `cargar.trafico`: estas devuelven DataFrames de pandas.
+   - `cargar.emt`, `cargar.crtm`, `cargar.renfe_posiciones`, `cargar.renfe_retrasos`, `cargar.trafico`, `cargar.avisos`: estas devuelven DataFrames de pandas.
    - `cargar.puntos_medida()`
 
 Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de `analisis/` cuentan con ello.

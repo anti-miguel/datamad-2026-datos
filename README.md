@@ -7,7 +7,7 @@ Paquete de trabajo del equipo para DATAMAD 2026. Reúne lo que hemos medido sobr
 
 De momento el planteamiento es una **app**. Todavía no hay nombre de proyecto. Los nombres de algunos ficheros (`llego...`) son provisionales.
 
-**El repo se actualiza solo.** Cada noche, desde las 4:00, la NAS sube los días ya cerrados de los cuatro grabadores: haz `git pull` para tenerlos. Las cifras, la tabla de fiabilidad y `catalogo.json` no se regeneran solas y se calcularon con datos hasta el 03/11. El día en curso nunca está en el repo.
+**El repo se actualiza solo.** Cada noche, desde las 4:00, la NAS sube los días ya cerrados de los grabadores: haz `git pull` para tenerlos. Las cifras, la tabla de fiabilidad y `catalogo.json` no se regeneran solas y se calcularon con datos hasta el 03/11. El día en curso nunca está en el repo.
 
 Si vas a usar un agente de IA, que empiece por [AGENTS.md](AGENTS.md). [catalogo.json](catalogo.json) describe cada conjunto de datos de forma legible por máquina.
 
@@ -22,11 +22,12 @@ datos-transporte/
 │   ├── emt/                   EMT, "llega en X" de 28 paradas cada ~3 min  04/10 → 03/11   124 MB
 │   ├── crtm/                  Metro e interurbanos (widget del Consorcio)   02/10 → 03/11   169 MB
 │   ├── trafico/               4.100 puntos de medida + incidencias           14/10 → 03/11   160 MB
+│   ├── avisos/                alteraciones de servicio de la EMT (RSS)       desde 04/11
 │   ├── meteo/                 lluvia horaria (Open-Meteo)
 │   ├── redes/                 menciones públicas a los operadores en X (solo agregados)
 │   ├── externos/              histórico de Cercanías de toda España (rodalies-observatorio, CC BY 4.0)
 │   └── horarios_oficiales/    GTFS de Renfe y del Consorcio + 1.180 horarios impresos en PDF
-├── grabadores/                código de los 4 grabadores que corren en la NAS (Docker)
+├── grabadores/                código de los 5 grabadores que corren en la NAS (Docker)
 ├── analisis/                  scripts de análisis y sus resultados en texto
 └── documentos/                propuesta, sprint 1, prototipo HTML
 ```
@@ -49,6 +50,7 @@ df = cargar.crtm("2026-10-15")        # una fila por llegada anunciada (Metro e 
 df = cargar.renfe_posiciones("2026-10-15")
 df = cargar.renfe_retrasos("2026-10-15")
 df = cargar.trafico("2026-10-15")     # una fila por punto de medida y lectura
+df = cargar.avisos()                  # última versión de cada aviso de la EMT
 for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
 ```
 
@@ -192,7 +194,27 @@ Esa tarde el Consorcio también falló: casi solo errores de 17:20 a 18:30 y de 
 
 **Ojo:** las incidencias del Ayuntamiento no han cambiado desde el 14/10 (hay una sola fila `incid`). Puede que ese servicio no se actualice.
 
-### 5. Otras fuentes
+### 5. Avisos de la EMT (`datos/avisos/`)
+
+- **Origen:** RSS público de alteraciones del servicio, `http://feeds.emtmadrid.es:8082/`: desvíos, obras, manifestaciones, eventos.
+- **Cadencia:** se consulta cada 5 min, y solo se descarga si ha cambiado.
+- **Cobertura:** desde el 04/11. La primera copia trae los avisos que el RSS aún conservaba, publicados desde el 11/10. El RSS los retira al cabo de unas semanas, así que lo anterior se ha perdido.
+
+| `k` | Contenido |
+|---|---|
+| `aviso` | `estado` (`nuevo` o `cambio`), `guid`, `titulo`, `texto`, `enlace` (PDF), `pub`, `fin_pub`, `desde`, `hasta`, `causa`, `efecto`, `lineas` |
+| `baja` | `guid` de un aviso que ya no está en el RSS |
+| `poll` | control de cada consulta: `n`, `novedades`, `sin_cambios` o `err` |
+
+`pub`, `fin_pub`, `desde` y `hasta` son epoch UTC. `cargar.avisos()` devuelve la última versión de cada aviso.
+
+**Ojo:**
+- `lineas` viene como en el RSS, a veces con ceros delante (`002`). Hay que normalizarlas para cruzarlas con la EMT.
+- `desde` y `hasta` son aproximados, y un aviso afecta a una parte de la línea, no necesariamente a todas sus paradas.
+- `pub` puede ser posterior a `desde`: no todos los avisos llegan antes del problema. No sabemos si esa fecha cambia al editarlos.
+- Las obras pueden durar meses: filtra por duración si buscas sucesos puntuales.
+
+### 6. Otras fuentes
 
 - **`meteo/`:** precipitación horaria de Open-Meteo para un punto de Madrid. Hay dos descargas:
   - del 23/09 al 13/10, con `precipitation` y `rain`;
@@ -313,6 +335,7 @@ Cada carpeta contiene `logger.py` y `docker-compose.yml`. El compose lleva el mi
 | emt | ~3 min por parada | `openapi.emtmadrid.es`. Necesita cuenta de MobilityLabs (variables `EMT_*`) |
 | crtm | ~1 min por parada | `crtm.es/widgets/api/GetStopsTimes.php` (+ GTFS cada 24 h) |
 | trafico | 5 min | `informo.madrid.es` (pm.xml, incidencias) + `nap.dgt.es` (DATEX II) |
+| avisos | 5 min | `feeds.emtmadrid.es:8082` (RSS de alteraciones de la EMT) |
 
 `grabadores/sync/` es el proyecto que sube los datos a este repo. Usa una clave SSH que se genera en la NAS y no sale de ella, con permiso de escritura solo en este repo. Ve las carpetas `data/` de los grabadores en modo lectura. No sube `puntos/` del tráfico.
 
