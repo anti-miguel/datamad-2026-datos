@@ -23,7 +23,7 @@ Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de 
   - caída del dato del operador (lo que el proyecto quiere detectar);
   - caída de nuestro grabador (no es un hallazgo).
 - **Renfe:** hay retrasos de alrededor de ±86.400 s que corresponden a viajes de otro día. Descártalos.
-- **EMT:** `llega_en_s = 999999` significa "sin estimación o más de 20 min".
+- **EMT:** `llega_en_s` = 888888 o 999999 son códigos sin estimación, no segundos. Fíltralos: `cargar.emt` los deja tal cual. Los valores reales llegan hasta unos 90 min.
 - **Paradas del Consorcio:** cada consulta del widget devuelve las próximas llegadas de una parada. Un tren o bus se sigue entre consultas por (parada, línea, sentido, destino) y la hora de llegada anunciada.
 - **Horarios oficiales:** están en zips GTFS sin descomprimir (`datos/horarios_oficiales/`). Descomprímelos fuera del paquete (por ejemplo en una carpeta temporal) si los necesitas.
 - **Conclusiones:** algunas muestras son pequeñas (2 días de lluvia, 15–40 mensajes de X por búsqueda). Indícalo al sacar conclusiones.
@@ -35,5 +35,5 @@ Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de 
   - No pidas ni escribas claves en ficheros del repositorio.
 - `datos/redes/` solo contiene agregados. No intentes reconstruir mensajes ni usuarios.
 - No modifiques `datos/`: es la copia de referencia. Escribe los resultados nuevos en `analisis/resultados/` o en una carpeta tuya.
-- La NAS añade los días cerrados cada noche: haz `git pull` antes de analizar. `catalogo.json` y la tabla de fiabilidad se calcularon con datos hasta el 02/11/2026 y no se actualizan solos.
+- La NAS añade los días cerrados cada noche: haz `git pull` antes de analizar. `catalogo.json` y la tabla de fiabilidad se calcularon con datos hasta el 03/11/2026 y no se actualizan solos.
 - El proyecto aún no tiene nombre. No le pongas uno en los materiales que generes.

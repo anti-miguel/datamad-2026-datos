@@ -1,12 +1,12 @@
-EMT (2026-10-05): 15725 llegadas de autobús reconstruidas (7342 visitas sin cerrar: el autobús pasó entre dos consultas)
+EMT (2026-10-05): 15839 llegadas de autobús reconstruidas (7189 visitas sin cerrar: el autobús pasó entre dos consultas)
 ¿Acierta el 'llega en X min'? (error = previsto - real; negativo = llegó más tarde de lo anunciado)
            predicciones  error mediano (min)  % a ±1 min  % a ±2 min  error abs p90
 bin                                                                                
 0-3 min               7                  0.2        71.4       100.0            1.3
-3-6 min           15037                 -0.1        65.2        91.2            1.9
-6-10 min          21906                 -0.2        46.6        75.8            3.0
-10-15 min         16742                 -0.4        39.3        66.3            3.9
-15-25 min         27133                 -0.6        31.9        53.9            5.6 
+3-6 min           15145                 -0.1        65.2        91.2            1.9
+6-10 min          22067                 -0.2        46.6        75.7            3.0
+10-15 min         16895                 -0.4        39.3        66.3            3.9
+15-25 min         27474                 -0.6        32.0        53.9            5.6 
 
   con 6-15 min de antelación, por franja: {'punta mañana': '72% a ±2 min, mediana -0.6', 'punta tarde': '69% a ±2 min, mediana -0.5', 'resto': '72% a ±2 min, mediana -0.1'} 
 

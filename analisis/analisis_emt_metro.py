@@ -35,7 +35,7 @@ L = [json.loads(x) for x in gzip.open(EMT, "rt", encoding="utf-8")]
 obs = C.defaultdict(list)
 for r in L:
     for lin, bus, est, dist, lon, lat, tipo, dest in r.get("a", []):
-        if bus and est is not None and est != 999999:
+        if bus and est is not None and est not in (888888, 999999):
             obs[(r["s"], lin, bus)].append((r["t"], est, dist or 0))
 err, llegadas, sin_cierre = [], 0, 0
 for k, seq in obs.items():

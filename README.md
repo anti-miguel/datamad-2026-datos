@@ -7,7 +7,7 @@ Paquete de trabajo del equipo para DATAMAD 2026. Reúne lo que hemos medido sobr
 
 De momento el planteamiento es una **app**. Todavía no hay nombre de proyecto. Los nombres de algunos ficheros (`llego...`) son provisionales.
 
-**El repo se actualiza solo.** Cada noche, desde las 4:00, la NAS sube los días ya cerrados de los cuatro grabadores: haz `git pull` para tenerlos. Las cifras, la tabla de fiabilidad y `catalogo.json` no se regeneran solas y se calcularon con datos hasta el 02/11. El día en curso nunca está en el repo.
+**El repo se actualiza solo.** Cada noche, desde las 4:00, la NAS sube los días ya cerrados de los cuatro grabadores: haz `git pull` para tenerlos. Las cifras, la tabla de fiabilidad y `catalogo.json` no se regeneran solas y se calcularon con datos hasta el 03/11. El día en curso nunca está en el repo.
 
 Si vas a usar un agente de IA, que empiece por [AGENTS.md](AGENTS.md). [catalogo.json](catalogo.json) describe cada conjunto de datos de forma legible por máquina.
 
@@ -18,10 +18,10 @@ datos-transporte/
 ├── README.md, AGENTS.md, catalogo.json
 ├── cargar.py                  funciones para leer cualquier fuente (devuelve dicts o DataFrames de pandas)
 ├── datos/
-│   ├── renfe/                 Cercanías Madrid, GPS y retrasos cada 30 s   23/09 → 02/11   248 MB
-│   ├── emt/                   EMT, "llega en X" de 28 paradas cada ~3 min  04/10 → 02/11   119 MB
-│   ├── crtm/                  Metro e interurbanos (widget del Consorcio)   02/10 → 02/11   163 MB
-│   ├── trafico/               4.100 puntos de medida + incidencias           14/10 → 02/11   150 MB
+│   ├── renfe/                 Cercanías Madrid, GPS y retrasos cada 30 s   23/09 → 03/11   264 MB
+│   ├── emt/                   EMT, "llega en X" de 28 paradas cada ~3 min  04/10 → 03/11   124 MB
+│   ├── crtm/                  Metro e interurbanos (widget del Consorcio)   02/10 → 03/11   169 MB
+│   ├── trafico/               4.100 puntos de medida + incidencias           14/10 → 03/11   160 MB
 │   ├── meteo/                 lluvia horaria (Open-Meteo)
 │   ├── redes/                 menciones públicas a los operadores en X (solo agregados)
 │   ├── externos/              histórico de Cercanías de toda España (rodalies-observatorio, CC BY 4.0)
@@ -84,7 +84,6 @@ for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
 **Ojo:**
 - Hay retrasos de alrededor de −86.400 s: son viajes del día anterior o siguiente. Hay que filtrarlos.
 - En los túneles no hay GPS. Para estimar el paso por una estación se toma el punto medio entre la última posición antes del túnel y la primera después.
-- **Hueco nuestro:** el grabador estuvo parado el 06/10 de 02:05 a ~24:00.
 - **29/10:** el grabador consultó con normalidad, pero el feed de Renfe solo daba unos 10–50 trenes de Madrid durante todo el día, frente a unos 100–130 de un día normal. No sabemos la causa.
 - **Horarios:** cada versión del GTFS de Renfe llega unas semanas por delante. La NAS sube la más reciente como mucho una vez por semana, en `datos/horarios_oficiales/`.
 - **Caídas de Renfe:** la información en tiempo real de Renfe falló (feed vacío o congelado):
@@ -105,7 +104,7 @@ for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
 - **Cobertura:** 28 paradas.
   - 25 desde el 04/10, en Cibeles, Atocha, Prado, Neptuno, Castellana, Bernabéu, Plaza de España, Ciudad Lineal...
   - 3 del 104 desde el 06/10: 5848 (cabecera de Mar de Cristal), 4900 y 4897.
-- **Volumen:** 239.000 filas.
+- **Volumen:** 386.000 consultas.
 
 | Fila | Contenido |
 |---|---|
@@ -118,17 +117,19 @@ for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
 {"t":1792447259,"s":"82","a":[["N12",5588,1017,4208,-3.6950182,40.3908577,"0","CIBELES"], ...]}
 ```
 
-- `llega_en_s` = 999999 significa "más de 20 min" o "sin estimación".
+- **`llega_en_s` = 888888 o 999999 no son segundos:** son códigos sin estimación y hay que filtrarlos antes de calcular nada. Antes decíamos que 999999 era "más de 20 min". Era un error: la EMT da minutos reales hasta unos 90 min.
+  - No sabemos qué distingue un código de otro. Suelen salir en autobuses lejanos (mediana de 14 km con 888888 y de 9 km con 999999), pero el 10% está a menos de 400 m.
+  - Cuando dejan paso a una estimación, suele ser de 50–60 min tras 888888 y de 40–50 min tras 999999.
 - `tipo_posición` es el campo `positionTypeBus` de la EMT. Casi siempre vale `"0"` y a veces `"3"`; no lo hemos usado.
 - La lista de paradas con nombre está en `grabadores/emt/docker-compose.yml`. Esa copia tiene las 25 iniciales; las 3 del 104 se añadieron directamente en la NAS.
 
 **Cómo reconstruimos la llegada real:** por cada autobús (parada, línea, nº de autobús), la última consulta en la que aparecía a ≤120 s y ≤600 m. En cabeceras se usa ≤400 s para las salidas.
 
-**Ojo:** el 20/10 no hubo datos en dos ratos:
+**Ojo:** el 20/10 la EMT no dio datos en dos ratos:
 - de 14:24 a 14:42;
 - de 17:58 al 21/10 a las ~07:10. Empieza con timeouts y errores, y después las respuestas llegan vacías, también las de los autobuses nocturnos.
 
-El grabador del Consorcio también perdió 32 min a partir de las 17:58, y el del Consorcio y el de tráfico pararon ~2 h a las 21:50. Por eso parte de ese hueco puede deberse a la NAS o a su conexión. El resto del tiempo con respuestas vacías apunta a la EMT. Entre el 04/10 y el 19/10, y del 21/10 al 02/11, no hubo ninguna caída diurna de 20 min o más.
+Esa tarde el Consorcio también falló: casi solo errores de 17:20 a 18:30 y de 19:10 a 19:30. El tráfico grabó con normalidad, así que la NAS seguía en marcha. Las respuestas vacías de la EMT desde las ~19:30, con el Consorcio ya normal, apuntan a la EMT. Antes decíamos que el Consorcio y el tráfico pararon ~2 h a las 21:50 y que Renfe estuvo parada el 06/10. Era un error: los ficheros de este paquete estaban cortados y ya están completos. Entre el 04/10 y el 19/10, y del 21/10 al 02/11, no hubo ninguna caída diurna de 20 min o más.
 
 ### 3. Consorcio: Metro e interurbanos (`datos/crtm/`)
 
@@ -138,9 +139,9 @@ El grabador del Consorcio también perdió 32 min a partir de las 17:58, y el de
 
 | Modo | Paradas | Periodo |
 |---|---|---|
-| Metro (`4_`) | 62 estaciones fijas | 02/10 → 02/11 |
-| Interurbanos 212 (`8_`) | 6 (Canillejas ⇄ Barajas ⇄ Paracuellos) | 09/10 → 02/11 |
-| Interurbanos 691 (`8_`) | 6 (Moncloa ⇄ Collado Villalba ⇄ Navacerrada) | 14/10 → 02/11 |
+| Metro (`4_`) | 62 estaciones fijas | 02/10 → 03/11 |
+| Interurbanos 212 (`8_`) | 6 (Canillejas ⇄ Barajas ⇄ Paracuellos) | 09/10 → 03/11 |
+| Interurbanos 691 (`8_`) | 6 (Moncloa ⇄ Collado Villalba ⇄ Navacerrada) | 14/10 → 03/11 |
 | Pruebas iniciales: 25 paradas de interurbanos (3 con el 691), Metro Ligero (`10_`) y EMT (`6_`) | | solo 02/10 → 04/10 |
 
 **Interurbanos, sin datos del 05/10 al 08/10.** No fue una caída: el grabador se dejó solo con Metro, que sí tiene datos esos días.
@@ -167,7 +168,7 @@ El grabador del Consorcio también perdió 32 min a partir de las 17:58, y el de
 ### 4. Tráfico (`datos/trafico/`)
 
 - **Cadencia:** cada 5 min.
-- **Cobertura:** 14/10 → 02/11.
+- **Cobertura:** 14/10 → 03/11.
 - **Fuentes:** tres, cada una en su tipo de fila:
 
 | `k` | Origen | Contenido |
@@ -203,7 +204,7 @@ El grabador del Consorcio también perdió 32 min a partir de las 17:58, y el de
   - 863.000 filas: fecha, núcleo, línea, tren, estación, hora programada y real, `delay_s`.
   - Lo usamos antes de tener nuestro grabador y para Madrid fuera de nuestras fechas.
 - **`horarios_oficiales/`:**
-  - `renfe_gtfs_2026-09-24.zip` y `renfe_gtfs_2026-10-01.zip`: dos versiones del GTFS de Renfe; el calendario cambia entre ellas.
+  - `renfe_gtfs_*.zip`: versiones del GTFS de Renfe; el calendario cambia entre ellas. La NAS añade la más reciente como mucho una vez por semana.
   - `crtm_gtfs_{metro,ligero,interurbanos,emt}.zip`: GTFS "oferta planificada" del portal de datos abiertos de la Comunidad.
     - El de Metro está fechado en 05/2025 y va por frecuencias.
     - El de la EMT también va solo por frecuencias, sin horas de paso.
@@ -220,9 +221,9 @@ Los números exactos y el método están en `analisis/resultados/`.
 - Cuando faltan 10–20 min, aciertan igual que el horario (~36%), y suelen ser optimistas por 1–3 min.
 - **Ejemplo real:** el C5 de las 8:17 que propone Google llegó tarde 8 de 9 laborables. El de las 7:47 llegó a su hora los 8 días con GPS.
 
-**EMT** (`resultados_emt_metro_*.txt`):
-- **"Llega en 3–6 min":** se cumple el 90–91% de las veces.
-- **"Llega en 15–25 min":** se cumple el 50–54%, y los autobuses tienden a llegar más tarde de lo anunciado.
+**EMT** (`fiabilidad.csv`):
+- **"Llega en 3–6 min":** se cumple a ±2 min el 82% de las veces.
+- **"Llega en 15–25 min":** se cumple el 55%, y los autobuses llegan tarde algo más a menudo que antes de tiempo (26% frente a 19%).
 
 **El 104** (`resultados_104_212.txt`, `resultados_sorpresas.txt`):
 - **Autobuses fantasma:** el 40% de las veces aparecen autobuses que no estaban anunciados.
@@ -231,7 +232,7 @@ Los números exactos y el método están en `analisis/resultados/`.
 
 **Interurbanos:**
 - **En las cabeceras es horario:** en las del 212 y en Moncloa (691) la hora anunciada no cambia nunca.
-- **Con el viaje en ruta se actualiza:** en las paradas intermedias de las dos líneas la hora cambia en el 0,2–1,1% de las consultas seguidas. Parece poco, pero a lo largo de un viaje se nota: con 15–25 min de antelación, entre un 34% y un 56% de los viajes del 691 y hasta un 50% de los del 212 se mueven más de 2 min (`fiabilidad_interurbanos_estabilidad.csv`).
+- **Con el viaje en ruta se actualiza:** en las paradas intermedias de las dos líneas la hora cambia en el 0,2–1,1% de las consultas seguidas. Parece poco, pero a lo largo de un viaje se nota: con 15–25 min de antelación, entre un 36% y un 56% de los viajes del 691 y hasta un 49% de los del 212 se mueven más de 2 min (`fiabilidad_interurbanos_estabilidad.csv`).
 - Antes decíamos que el 212 era solo horario. Era un error: esa cifra mezclaba cabeceras con paradas intermedias.
 
 **Metro:**
@@ -266,18 +267,20 @@ Es la primera versión de "la probabilidad que aporta la API": dado lo que anunc
 
 | El operador anuncia | EMT | Metro | Renfe |
 |---|---|---|---|
-| 3–6 min | 91% | 90% | 71% |
-| 6–10 min | 75% | 85% | 41% |
-| 10–15 min | 66% | 77% | 42% |
-| 15–25 min | 54% | 63% | 45% |
-| 25–40 min | 46% | sin dato | 41% |
+| 3–6 min | 82% | 91% | 67% |
+| 6–10 min | 72% | 84% | 48% |
+| 10–15 min | 65% | 77% | 39% |
+| 15–25 min | 55% | 57% | 42% |
+| 25–40 min | 47% | sin dato | 45% |
+
+Datos hasta el 03/11. Antes la tabla agrupaba por lo que tardó de verdad, no por lo anunciado, y daba cifras como un 91% en EMT a 3–6 min. Era un error: esa versión no contestaba a la pregunta de quien mira la app.
 
 **Limitaciones:**
 - **Cómo se mide la llegada:** Renfe usa GPS, la medida más independiente. EMT usa la posición del autobús a ≤600 m. Metro usa la desaparición del panel, que puede dar aciertos de más.
-- **EMT:** el 35% de las visitas de un autobús a una parada no se cierran y no entran en la cuenta, porque pasó entre dos consultas (cada 3 min) o nunca llegó. Si parte son fantasmas, la fiabilidad real es menor.
+- **EMT:** el 34% de las visitas de un autobús a una parada no se cierran y no entran en la cuenta, porque pasó entre dos consultas (cada 3 min) o nunca llegó. Si parte son fantasmas, la fiabilidad real es menor.
 - **Interurbanos:** no están en la tabla porque su panel no da una llegada real. `fiabilidad_interurbanos_estabilidad.csv` solo mide cuánto se mueve el anuncio.
-- **Renfe:** la tabla llega hasta el 30/10, por los horarios.
-- **Generalizar:** en días nuevos está bien calibrada. Por línea mejora un 3–7% frente a usar solo red y anuncio; por franja casi no aporta. En paradas que no ha visto se pasa de optimista en la parte alta: dice 94% y pasa 83% en EMT, dice 92% y pasa 84% en Renfe.
+- **Renfe:** solo entran los trenes con horario en algún GTFS del paquete (45.121 de 48.158).
+- **Generalizar:** en días nuevos está bien calibrada. Por línea mejora un 3–6% frente a usar solo red y anuncio; por franja casi no aporta. En paradas que no ha visto se pasa de optimista en la parte alta (dice 93% y pasa 83% en EMT, dice 83% y pasa 67% en Renfe), y ahí el nivel de línea no ayuda en EMT ni en Renfe.
 
 ## Análisis (`analisis/`)
 
@@ -286,7 +289,7 @@ Los scripts se ejecutan desde la raíz `datos-transporte/`. Las rutas ya apuntan
 | Script | Qué hace | Ejemplo |
 |---|---|---|
 | `analisis_nas.py` | Cercanías: llegada por GPS frente a horario y predicción | `python analisis/analisis_nas.py datos/renfe/2026-09-24.jsonl.gz <carpeta con renfe_gtfs_2026-09-24.zip descomprimido>` |
-| `analisis_emt_metro.py` | ¿Se cumple el "llega en X"? EMT y Metro | `python analisis/analisis_emt_metro.py datos/emt/2026-10-13.jsonl.gz datos/crtm/2026-10-13.jsonl.gz` |
+| `analisis_emt_metro.py` | Error de la estimación según lo que faltaba de verdad, EMT y Metro. Para "anuncia X", usa la tabla de fiabilidad | `python analisis/analisis_emt_metro.py datos/emt/2026-10-13.jsonl.gz datos/crtm/2026-10-13.jsonl.gz` |
 | `analisis_emt_sorpresas.py` | autobuses que aparecen de la nada y estimaciones que saltan | `python analisis/analisis_emt_sorpresas.py datos/emt/2026-10-1*.jsonl.gz` |
 | `analisis_104_212.py` | salidas reales del 104 en cabecera y estabilidad del 212 | `python analisis/analisis_104_212.py 2026-10-07 2026-10-08 2026-10-09 2026-10-13` |
 | `analisis_lluvia.py` | velocidad de la EMT con y sin lluvia | `python analisis/analisis_lluvia.py` |

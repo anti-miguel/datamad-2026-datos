@@ -24,7 +24,7 @@ def tramos(dia):
             continue
         ahora = {}
         for lin, bus, est, dist, *_ in r["a"]:
-            if bus and dist is not None and est != 999999:
+            if bus and dist is not None and est not in (888888, 999999):
                 ahora[(lin, bus)] = dist
         t0, antes = previa.get(r["s"], (0, {}))
         dt = r["t"] - t0

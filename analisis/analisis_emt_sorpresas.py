@@ -18,7 +18,7 @@ for fich in sys.argv[1:]:
             continue
         ahora = C.defaultdict(dict)
         for lin, bus, est, dist, *_ in r["a"]:
-            if bus and est is not None and est != 999999:
+            if bus and est is not None and est not in (888888, 999999):
                 ahora[lin][bus] = r["t"] + est
         ant = previa.get(r["s"])
         if ant and r["t"] - ant[0] <= 240:

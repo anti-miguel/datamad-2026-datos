@@ -1,6 +1,6 @@
 {
  "proyecto": "DATAMAD 2026: fiabilidad del transporte público de Madrid (sin nombre todavía)",
- "corte": "2026-11-02",
+ "corte": "2026-11-03",
  "convenciones": {
   "formato": "un fichero AAAA-MM-DD.jsonl.gz por día (día de Madrid), JSON Lines",
   "t": "epoch UTC de la consulta",
@@ -11,15 +11,15 @@
   {
    "id": "renfe",
    "ruta": "datos/renfe/",
-   "ficheros": 41,
+   "ficheros": 42,
    "desde": "2026-09-23",
-   "hasta": "2026-11-02",
-   "mb": 248.0,
-   "filas": 15422627,
+   "hasta": "2026-11-03",
+   "mb": 263.5,
+   "filas": 16381314,
    "filas_por_tipo": {
-    "vp": 7513831,
-    "tu": 7796833,
-    "poll": 111963
+    "vp": 7978150,
+    "tu": 8285021,
+    "poll": 118143
    },
    "cadencia_s": 30,
    "origen": "GTFS-RT de Renfe (vehicle_positions.json, trip_updates.json), núcleo de Madrid",
@@ -55,24 +55,24 @@
    "advertencias": [
     "retrasos de ~±86400 s son viajes de otro día",
     "sin GPS en túneles",
-    "GTFS del paquete hasta el 30/10",
+    "cada GTFS cubre unas semanas por delante; la NAS añade el más reciente como mucho una vez por semana",
     "29/10: feed con solo 10-50 trenes de Madrid todo el día"
    ]
   },
   {
    "id": "emt",
    "ruta": "datos/emt/",
-   "ficheros": 30,
+   "ficheros": 31,
    "desde": "2026-10-04",
-   "hasta": "2026-11-02",
-   "mb": 118.6,
-   "filas": 435571,
+   "hasta": "2026-11-03",
+   "mb": 123.6,
+   "filas": 454479,
    "filas_por_tipo": {
-    "flota_descubrir": 2,
-    "flota": 41483,
-    "consulta": 370279,
-    "login": 9785,
-    "err": 14022
+    "flota_descubrir": 3,
+    "flota": 43259,
+    "consulta": 386298,
+    "login": 10340,
+    "err": 14579
    },
    "cadencia_s": 180,
    "origen": "API MobilityLabs EMT, llegadas por parada",
@@ -89,33 +89,33 @@
     "cargar.emt"
    ],
    "advertencias": [
-    "llega_en_s=999999: sin estimación o >20 min"
+    "llega_en_s=888888 o 999999: códigos sin estimación, no segundos; filtrarlos. No se sabe qué los distingue. Los valores reales llegan hasta ~90 min"
    ]
   },
   {
    "id": "crtm",
    "ruta": "datos/crtm/",
-   "ficheros": 32,
+   "ficheros": 33,
    "desde": "2026-10-02",
-   "hasta": "2026-11-02",
-   "mb": 163.0,
-   "filas": 3088640,
+   "hasta": "2026-11-03",
+   "mb": 169.4,
+   "filas": 3213166,
    "filas_por_tipo": {
-    "metro": 2515288,
-    "ligero": 28706,
-    "interurbanos": 420974,
+    "metro": 2616662,
+    "ligero": 28913,
+    "interurbanos": 441907,
     "emt": 80024,
-    "interurbanos_err": 7063,
+    "interurbanos_err": 7404,
     "emt_err": 398,
-    "metro_err": 36046,
-    "ligero_err": 141
+    "metro_err": 37716,
+    "ligero_err": 142
    },
    "cadencia_s": 60,
    "origen": "widget del Consorcio GetStopsTimes.php",
    "cobertura": {
-    "metro": "62 estaciones fijas, 02/10→02/11; nombres en grabadores/crtm/paradas_metro.json",
-    "interurbanos_212": "6 paradas, 09/10→02/11",
-    "interurbanos_691": "6 paradas, 14/10→02/11",
+    "metro": "62 estaciones fijas, 02/10→03/11; nombres en grabadores/crtm/paradas_metro.json",
+    "interurbanos_212": "6 paradas, 09/10→03/11",
+    "interurbanos_691": "6 paradas, 14/10→03/11",
     "pruebas_iniciales": "25 paradas interurbanas (3 con el 691), Metro Ligero (10_) y EMT (6_) solo del 02/10 al 04/10",
     "rotatoria": "desde el 24/10: 1 parada al día al azar sin repetir, alternando metro/ligero/interurbanos/emt; filas con r=1; registro en datos/crtm/rotacion.json",
     "sin_interurbanos": "05/10→08/10: grabador solo con Metro, no es una caída"
@@ -134,15 +134,15 @@
   {
    "id": "trafico",
    "ruta": "datos/trafico/",
-   "ficheros": 20,
+   "ficheros": 21,
    "desde": "2026-10-14",
-   "hasta": "2026-11-02",
-   "mb": 149.7,
-   "filas": 9968,
+   "hasta": "2026-11-03",
+   "mb": 159.6,
+   "filas": 10624,
    "filas_por_tipo": {
-    "pm": 4666,
-    "incid": 1,
-    "dgt": 5294,
+    "pm": 4969,
+    "incid": 2,
+    "dgt": 5646,
     "err": 7
    },
    "cadencia_s": 300,
@@ -207,6 +207,7 @@
    "ficheros": {
     "renfe_gtfs_2026-09-24.zip": "GTFS Renfe",
     "renfe_gtfs_2026-10-01.zip": "GTFS Renfe, versión posterior",
+    "renfe_gtfs_2026-11-02_0309.zip": "GTFS Renfe, subido por la NAS; pueden añadirse más",
     "crtm_gtfs_metro.zip": "oferta planificada Metro (feed 2025-05-27, por frecuencias)",
     "crtm_gtfs_ligero.zip": "Metro Ligero (2026-07-22)",
     "crtm_gtfs_interurbanos.zip": "interurbanos (2026-09-10)",
@@ -216,17 +217,11 @@
    },
    "advertencias": [
     "PDF aún sin analizar",
-    "renfe_gtfs_2026-10-01 cubre hasta el 30/10"
+    "cada renfe_gtfs cubre unas semanas por delante de su fecha"
    ]
   }
  ],
  "huecos": [
-  {
-   "fuente": "renfe",
-   "tipo": "grabador",
-   "desde": "2026-10-06T02:05",
-   "hasta": "2026-10-06T24:00"
-  },
   {
    "fuente": "renfe",
    "tipo": "operador",
@@ -246,28 +241,17 @@
   },
   {
    "fuente": "emt",
-   "tipo": "mixto",
+   "tipo": "operador",
    "desde": "2026-10-20T17:58",
    "hasta": "2026-10-21T07:10",
-   "nota": "timeouts y después respuestas vacías; CRTM también perdió 17:58-18:30, y CRTM y tráfico 21:50-24:00"
+   "nota": "timeouts y después respuestas vacías. La NAS seguía en marcha: tráfico normal y Consorcio normal desde las 19:30"
   },
   {
    "fuente": "crtm",
-   "tipo": "grabador o conexión",
+   "tipo": "errores de consulta",
    "desde": "2026-10-20T17:58",
-   "hasta": "2026-10-20T18:30"
-  },
-  {
-   "fuente": "crtm",
-   "tipo": "grabador o conexión",
-   "desde": "2026-10-20T21:50",
-   "hasta": "2026-10-21T00:00"
-  },
-  {
-   "fuente": "trafico",
-   "tipo": "grabador o conexión",
-   "desde": "2026-10-20T21:50",
-   "hasta": "2026-10-21T00:00"
+   "hasta": "2026-10-20T18:30",
+   "nota": "además, casi solo errores de 17:20 a 17:58 y de 19:10 a 19:30. Tráfico normal"
   },
   {
    "fuente": "renfe",
@@ -291,6 +275,7 @@
  "tabla_fiabilidad": {
   "csv": "analisis/resultados/fiabilidad.csv",
   "consulta": "analisis/fiabilidad.py",
-  "validacion": "analisis/resultados/fiabilidad_validacion.txt"
+  "validacion": "analisis/resultados/fiabilidad_validacion.txt",
+  "datos_hasta": "2026-11-03"
  }
 }

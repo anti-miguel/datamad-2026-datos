@@ -61,7 +61,7 @@ def extraer_emt():
         obs = C.defaultdict(list)
         for r in filas(f):
             for lin, bus, est, dist, *_ in r.get("a", []):
-                if bus and est is not None and est != 999999:
+                if bus and est is not None and est not in (888888, 999999):
                     obs[(r["s"], lin, bus)].append((r["t"], est, dist or 0))
         for (s, lin, bus), seq in obs.items():
             seq.sort()
@@ -213,13 +213,14 @@ def cargar(cache, rehacer):
 
 
 def preparar(d):
-    d = d[(d.antel >= 0) & (d.antel < 40)].copy()
-    d = d[~((d.red == "metro") & (d.antel >= 25))]  # casi no hay anuncios tan lejanos y los que hay no son representativos
+    d = d.assign(anuncio=d.antel - d.retraso)  # lo que anunciaba el operador, no lo que tardó de verdad
+    d = d[(d.antel >= 0) & (d.anuncio >= 0) & (d.anuncio < 40)].copy()
+    d = d[~((d.red == "metro") & (d.anuncio >= 25))]  # casi no hay anuncios tan lejanos y los que hay no son representativos
     h = pd.to_datetime(d.t, unit="s", utc=True).dt.tz_convert("Europe/Madrid")
     d["franja"] = (h.dt.hour + h.dt.minute / 60).map(franja)
     d["tipo_dia"] = np.where(pd.to_datetime(d.dia).dt.dayofweek >= 5, "finde", "laborable")
     d.loc[d.dia == "2026-10-12", "tipo_dia"] = "finde"  # festivo
-    d["anuncio_min"] = pd.cut(d.antel, BINS, right=False, labels=ETQ).astype(str)
+    d["anuncio_min"] = pd.cut(d.anuncio, BINS, right=False, labels=ETQ).astype(str)
     d["ok"] = d.retraso.abs() <= 2
     return d
 

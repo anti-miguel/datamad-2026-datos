@@ -25,10 +25,10 @@ for dia in sys.argv[1:]:
     for l in gzip.open(f"datos/emt/{dia}.jsonl.gz", "rt", encoding="utf-8"):
         r = json.loads(l)
         if r.get("s") == CABECERA and "a" in r:
-            cab.append((r["t"], [(a[1], a[2], a[3]) for a in r["a"] if a[0] == "104" and a[2] != 999999]))
+            cab.append((r["t"], [(a[1], a[2], a[3]) for a in r["a"] if a[0] == "104" and a[2] not in (888888, 999999)]))
         elif r.get("s") == SIGUIENTE and "a" in r:
             for a in r["a"]:
-                if a[0] == "104" and a[2] != 999999:
+                if a[0] == "104" and a[2] not in (888888, 999999):
                     sig[a[1]].append((r["t"], a[2], a[3] or 0))
     # salidas reales: paso por 4900 menos el trayecto
     salidas = []
