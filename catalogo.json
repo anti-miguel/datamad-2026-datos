@@ -89,7 +89,7 @@
     "cargar.emt"
    ],
    "advertencias": [
-    "llega_en_s=888888 o 999999: códigos sin estimación, no segundos; filtrarlos. No se sabe qué los distingue. Los valores reales llegan hasta ~90 min"
+    "llega_en_s=999999: líneas diurnas, más de 45 min. llega_en_s=888888: líneas nocturnas, >90 en la app de la EMT y sin documentar en la API; en los datos las nocturnas casi nunca pasan de 60 min. Son códigos, no segundos: filtrarlos"
    ]
   },
   {

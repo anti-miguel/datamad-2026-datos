@@ -23,7 +23,7 @@ Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de 
   - caída del dato del operador (lo que el proyecto quiere detectar);
   - caída de nuestro grabador (no es un hallazgo).
 - **Renfe:** hay retrasos de alrededor de ±86.400 s que corresponden a viajes de otro día. Descártalos.
-- **EMT:** `llega_en_s` = 888888 o 999999 son códigos sin estimación, no segundos. Fíltralos: `cargar.emt` los deja tal cual. Los valores reales llegan hasta unos 90 min.
+- **EMT:** `llega_en_s` = 999999 (diurnas, más de 45 min) y 888888 (nocturnas, `>90` en la app de la EMT) son códigos, no segundos. Fíltralos: `cargar.emt` los deja tal cual.
 - **Paradas del Consorcio:** cada consulta del widget devuelve las próximas llegadas de una parada. Un tren o bus se sigue entre consultas por (parada, línea, sentido, destino) y la hora de llegada anunciada.
 - **Horarios oficiales:** están en zips GTFS sin descomprimir (`datos/horarios_oficiales/`). Descomprímelos fuera del paquete (por ejemplo en una carpeta temporal) si los necesitas.
 - **Conclusiones:** algunas muestras son pequeñas (2 días de lluvia, 15–40 mensajes de X por búsqueda). Indícalo al sacar conclusiones.
