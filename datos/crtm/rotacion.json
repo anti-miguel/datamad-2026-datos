@@ -96,8 +96,17 @@
    "s": "8_3782",
    "nombre": "MARIA PORTUGAL-LEONOR AUSTRIA",
    "motivo": "diaria",
-   "consultas": 259,
-   "llegadas": 687
+   "consultas": 987,
+   "llegadas": 2808
+  },
+  {
+   "fecha": "2026-11-04",
+   "m": "emt",
+   "s": "6_3149",
+   "nombre": "Blas Cabrera - Rafael Finat",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
