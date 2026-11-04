@@ -123,10 +123,10 @@ for fila in cargar.filas("renfe", "2026-10-15"): ...   # filas crudas
   - **En nuestros datos** cada código sale solo en su tipo de línea (140.939 filas de 999999 en diurnas y 143.227 de 888888 en nocturnas, ninguna cruzada).
   - **El límite real:** las diurnas casi nunca dan minutos por encima de 45 (166 filas). Las nocturnas casi nunca pasan de 60 (693 filas), así que en ellas el cambio parece estar en ~60 min, no en 90.
   - **Su distancia no siempre es real:** el 20% de estas filas marca 360–400 m, pero el GPS de esos autobuses está a unos 5 km de la parada (mediana). Casi todas tienen `tipo_posición` 3 y salen al empezar el servicio.
-- `tipo_posición` es el campo `positionTypeBus` de la EMT. Casi siempre vale `"0"` y a veces `"3"`; con `"3"` la distancia puede no ser real. La tabla de fiabilidad no lo filtra.
+- `tipo_posición` es el campo `positionTypeBus` de la EMT. Casi siempre vale `"0"` y a veces `"3"`; con `"3"` la distancia puede no ser real.
 - La lista de paradas con nombre está en `grabadores/emt/docker-compose.yml`. Esa copia tiene las 25 iniciales; las 3 del 104 se añadieron directamente en la NAS.
 
-**Cómo reconstruimos la llegada real:** por cada autobús (parada, línea, nº de autobús), la última consulta en la que aparecía a ≤120 s y ≤600 m. En cabeceras se usa ≤400 s para las salidas.
+**Cómo reconstruimos la llegada real:** por cada autobús (parada, línea, nº de autobús), la última consulta en la que aparecía a ≤120 s y ≤600 m. En la tabla de fiabilidad esa consulta no vale si la distancia es negativa o `tipo_posición` es 3; sus minutos sí cuentan como anuncios. En cabeceras se usa ≤400 s para las salidas.
 
 **Ojo:** el 20/10 la EMT no dio datos en dos ratos:
 - de 14:24 a 14:42;
@@ -280,7 +280,7 @@ Datos hasta el 03/11. Antes la tabla agrupaba por lo que tardó de verdad, no po
 
 **Limitaciones:**
 - **Cómo se mide la llegada:** Renfe usa GPS, la medida más independiente. EMT usa la posición del autobús a ≤600 m. Metro usa la desaparición del panel, que puede dar aciertos de más.
-- **EMT:** el 34% de las visitas de un autobús a una parada no se cierran y no entran en la cuenta, porque pasó entre dos consultas (cada 3 min) o nunca llegó. Si parte son fantasmas, la fiabilidad real es menor.
+- **EMT:** el 35% de las visitas de un autobús a una parada no se cierran y no entran en la cuenta, porque pasó entre dos consultas (cada 3 min) o nunca llegó. Si parte son fantasmas, la fiabilidad real es menor.
 - **Interurbanos:** no están en la tabla porque su panel no da una llegada real. `fiabilidad_interurbanos_estabilidad.csv` solo mide cuánto se mueve el anuncio.
 - **Renfe:** solo entran los trenes con horario en algún GTFS del paquete (45.121 de 48.158).
 - **Generalizar:** en días nuevos está bien calibrada. Por línea mejora un 3–6% frente a usar solo red y anuncio; por franja casi no aporta. En paradas que no ha visto se pasa de optimista en la parte alta (dice 93% y pasa 83% en EMT, dice 83% y pasa 67% en Renfe), y ahí el nivel de línea no ayuda en EMT ni en Renfe.

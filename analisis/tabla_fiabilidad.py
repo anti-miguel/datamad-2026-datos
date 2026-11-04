@@ -3,6 +3,7 @@
 Acierto: llega a ±2 min de lo anunciado. Cómo se conoce la llegada, según la red:
   renfe  GPS del tren (STOPPED_AT, o punto medio del paso por túnel, como analisis_nas.py). Medida independiente.
   emt    posición y estimación del autobús en la última consulta a <=120 s y <=600 m. Casi independiente.
+         Esa última consulta no vale si la distancia es negativa o falta, o si positionTypeBus es 3 (ver README).
   metro  el tren desaparece del panel (punto medio, ±30 s). No es independiente: puede dar aciertos de más.
 Los interurbanos no entran en la tabla: su panel no da una llegada real (ver README). Para ellos se calcula aparte
 cuánto se mueve el anuncio (fiabilidad_interurbanos_estabilidad.csv).
@@ -60,9 +61,10 @@ def extraer_emt():
         dia = os.path.basename(f)[:10]
         obs = C.defaultdict(list)
         for r in filas(f):
-            for lin, bus, est, dist, *_ in r.get("a", []):
+            for lin, bus, est, dist, _lon, _lat, tipo, *_ in r.get("a", []):
                 if bus and est is not None and est not in (888888, 999999):
-                    obs[(r["s"], lin, bus)].append((r["t"], est, dist or 0))
+                    fiable = dist is not None and dist >= 0 and str(tipo) != "3"
+                    obs[(r["s"], lin, bus)].append((r["t"], est, dist or 0, fiable))
         for (s, lin, bus), seq in obs.items():
             seq.sort()
             visita = [seq[0]]
@@ -71,10 +73,10 @@ def extraer_emt():
                     visita.append(o)
                     continue
                 fin = visita[-1]
-                if fin[1] <= 120 and fin[2] <= 600:
+                if fin[1] <= 120 and fin[2] <= 600 and fin[3]:
                     real, ida = fin[0] + fin[1], f"{dia}|{s}|{lin}|{bus}|{fin[0]}"
                     cierres[0] += 1
-                    for t, est, _d in visita[:-1]:
+                    for t, est, *_ in visita[:-1]:
                         out.append(("emt", dia, s, lin, "cabecera" if (lin, s) in cab else "intermedia", t,
                                     (real - t) / 60, (real - t - est) / 60, ida))
                 else:
