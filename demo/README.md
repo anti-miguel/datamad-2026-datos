@@ -17,6 +17,6 @@ const r = consultar(datos, { red: "emt", minutos: 18, hora: 8.5, finde: false, l
 ## Al mostrarlo
 
 - **Atribución:** usa `meta.redes.<red>.atribucion`.
-- **Metro:** `complemento: true`. Se mide con el widget del Consorcio, sin licencia publicada para tiempo real. Muéstralo aparte y no como dato abierto.
+- **Metro:** se mide con el widget del Consorcio. Cita la fuente y la fecha de extracción (`meta.datos_desde` y `meta.datos_hasta`), no alteres su sentido y no sugieras que el Consorcio patrocina el proyecto.
 - **Honestidad:** muestra `meta.advertencias` cerca del resultado. Si `nivel` no es `linea`, di que es una estimación general de la red.
 - **Licencia:** este JSON deriva de datos de la EMT, así que se publica con ODbL.

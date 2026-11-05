@@ -129,6 +129,9 @@
    },
    "lector": [
     "cargar.crtm"
+   ],
+   "advertencias": [
+    "condiciones del aviso legal del Consorcio: no alterar el sentido, citar la fuente e indicar la fecha de extracción; no es un dataset del portal"
    ]
   },
   {
@@ -176,8 +179,11 @@
    "ruta": "datos/avisos/",
    "desde": "2026-11-04",
    "avisos_publicados_desde": "2026-10-11",
-   "cadencia_s": 300,
-   "origen": "RSS público de alteraciones del servicio de la EMT, http://feeds.emtmadrid.es:8082/",
+   "cadencia_s": {
+    "emt": 300,
+    "consorcio": 900
+   },
+   "origen": "RSS público de la EMT (http://feeds.emtmadrid.es:8082/) y web de avisos del Consorcio (https://www.crtm.es/comunicacion/actualidad-del-servicio/avisos/)",
    "esquema": {
     "aviso": {
      "estado": "nuevo|cambio",
@@ -198,17 +204,42 @@
      "novedades": "cuántas",
      "sin_cambios": "1 si no cambió",
      "err": "si falla"
+    },
+    "estado_red": {
+     "redes": "semáforo por red al cambiar"
+    },
+    "aviso_crtm": {
+     "red": "metro|metro_ligero|cercanias|emt|interurbanos",
+     "estado": "nuevo|cambio",
+     "id": "fecha y título",
+     "fecha": "AAAA-MM-DD",
+     "titulo": "texto",
+     "texto": "texto",
+     "nivel": "color",
+     "enlace": "más información"
+    },
+    "baja_crtm": {
+     "red": "red",
+     "id": "aviso ya no publicado"
+    },
+    "poll_crtm": {
+     "novedades": "cuántas",
+     "err": "si falla"
     }
    },
    "lector": [
-    "cargar.avisos"
+    "cargar.avisos",
+    "cargar.avisos_crtm",
+    "cargar.estado_red"
    ],
    "advertencias": [
     "el RSS solo conserva unas semanas",
     "pub puede ser posterior a desde",
     "un aviso no afecta necesariamente a todas las paradas de la línea",
-    "las obras pueden durar meses"
-   ]
+    "las obras pueden durar meses",
+    "Consorcio: falta ver si recoge incidencias del momento y qué significa cada color"
+   ],
+   "desde_consorcio": "2026-11-05"
   },
   {
    "id": "meteo",

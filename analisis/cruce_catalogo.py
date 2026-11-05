@@ -3,7 +3,7 @@
   EMT    intervalo real frente al programado (GTFS del portal) y frente al intervalo oficial de hora punta (1919185),
          velocidad frente a la oficial (1919184) y horas de espera de más según la demanda oficial (902003).
   Renfe  acierto de los anuncios por estación frente a sus viajeros (1923861).
-El Metro no entra: se mide con el widget del Consorcio, que no tiene una licencia publicada para tiempo real.
+El Metro no entra: se mide con el widget del Consorcio, que no es un dataset del portal.
 
 Paso real de un autobús: la última lectura de cada visita, si anunciaba hasta 4 o hasta 10 min con posición fiable
 (distancia no negativa y positionTypeBus distinto de 3). Se dan las dos cifras como rango. Solo cuenta un intervalo si la parada se consultó con datos al menos cada

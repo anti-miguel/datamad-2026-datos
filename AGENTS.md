@@ -9,7 +9,7 @@ Este paquete reúne los datos y el código de un proyecto de DATAMAD 2026 (datat
 3. `cargar.py`: usa sus funciones en vez de reimplementar el parseo.
    - `cargar.dias(fuente)`
    - `cargar.filas(fuente, dia)`
-   - `cargar.emt`, `cargar.crtm`, `cargar.renfe_posiciones`, `cargar.renfe_retrasos`, `cargar.trafico`, `cargar.avisos`: estas devuelven DataFrames de pandas.
+   - `cargar.emt`, `cargar.crtm`, `cargar.renfe_posiciones`, `cargar.renfe_retrasos`, `cargar.trafico`, `cargar.avisos`, `cargar.avisos_crtm`, `cargar.estado_red`: estas devuelven DataFrames de pandas.
    - `cargar.puntos_medida()`
 
 Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de `analisis/` cuentan con ello.
@@ -34,7 +34,7 @@ Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de 
   - El `docker-compose.yml` de la EMT lleva marcadores `ESCRIBE_AQUI_...`; quien lo despliegue pone sus propias claves en la NAS.
   - No pidas ni escribas claves en ficheros del repositorio.
 - `datos/redes/` solo contiene agregados. No intentes reconstruir mensajes ni usuarios, y no lo uses en la entrega: no tiene licencia.
-- La medición de Metro e interurbanos sale del widget del Consorcio, sin licencia publicada para tiempo real. Preséntala como complemento, no como dato abierto. Las licencias están al final del README.
+- La medición de Metro e interurbanos sale del widget del Consorcio. Su aviso legal permite reutilizarla citando la fuente y la fecha de extracción, sin alterar su sentido. No la presentes como dataset del portal. Las licencias están al final del README.
 - No modifiques `datos/`: es la copia de referencia. Escribe los resultados nuevos en `analisis/resultados/` o en una carpeta tuya.
 - La NAS añade los días cerrados cada noche: haz `git pull` antes de analizar. `catalogo.json` y la tabla de fiabilidad se calcularon con datos hasta el 03/11/2026 y no se actualizan solos.
 - El proyecto aún no tiene nombre. No le pongas uno en los materiales que generes.

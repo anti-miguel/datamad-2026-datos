@@ -1,5 +1,5 @@
-# Grabador de los avisos de alteraciones del servicio de la EMT (RSS público): desvíos, obras, manifestaciones, eventos.
-# Consulta cada 5 min y solo descarga el RSS si ha cambiado. Datos en data/ (un .jsonl.gz por día). No necesita credenciales.
+# Grabador de los avisos de alteraciones del servicio: RSS público de la EMT y web de avisos del Consorcio.
+# Consulta el RSS cada 5 min, solo lo descarga si ha cambiado, y la web del Consorcio cada 15 min. Datos en data/ (un .jsonl.gz por día). No necesita credenciales.
 services:
   avisos-logger:
     image: python:3.12-alpine
@@ -8,12 +8,14 @@ services:
     environment:
       TZ: "CET-1CEST,M3.5.0,M10.5.0/3"   # hora de Madrid sin depender de tzdata
       CICLO_S: "300"
+      CICLO_CRTM_S: "900"
     volumes:
       - ./data:/data
     entrypoint: ["python", "-u", "-c"]
     command:
       - |
-        """Graba cada 5 min los avisos de alteraciones del servicio de la EMT (RSS público). El RSS solo conserva unas semanas.
+        """Graba los avisos de alteraciones del servicio: el RSS público de la EMT cada 5 min (solo conserva unas semanas) y la web
+        del Consorcio cada 15 min (avisos por red y semáforo del estado de cada red).
 
         Salida: /data/AAAA-MM-DD.jsonl.gz, una línea por novedad, en el día en que se ve:
           {"t": epoch, "k": "aviso", "estado": "nuevo"|"cambio", "guid", "titulo", "texto", "enlace", "pub", "fin_pub",
@@ -21,7 +23,13 @@ services:
           pub, fin_pub, desde y hasta son epoch UTC. lineas va tal cual en el RSS, a veces con ceros delante ("002").
           {"t": epoch, "k": "baja", "guid"}: el aviso ya no está en el RSS.
           {"t": epoch, "k": "poll", "n": avisos en el RSS, "novedades": cuántas}: si no ha cambiado, "sin_cambios": 1. Si falla, "err".
-        Guarda en /data/estado.json la huella de cada aviso, para no repetirlos al reiniciar.
+        Del Consorcio, solo los cambios:
+          {"t": epoch, "k": "estado_red", "redes": {"Metro": "Amarillo", ...}}: el semáforo de cada red.
+          {"t": epoch, "k": "aviso_crtm", "red", "estado": "nuevo"|"cambio", "id", "fecha", "titulo", "texto", "nivel", "enlace"}
+          {"t": epoch, "k": "baja_crtm", "red", "id"}: el aviso ya no está publicado.
+          {"t": epoch, "k": "poll_crtm", "novedades": cuántas}: con "err" si falla alguna página.
+        Condiciones del Consorcio (crtm.es/aviso-legal): no alterar la información, citar la fuente e indicar la fecha de extracción.
+        Guarda en /data/estado.json y /data/estado_crtm.json la huella de cada aviso, para no repetirlos al reiniciar.
         Solo biblioteca estándar.
         """
         import gzip, hashlib, html, json, os, re, time, urllib.error, urllib.request
@@ -31,9 +39,14 @@ services:
 
         DATA = os.environ.get("DATA_DIR", "/data")
         CICLO = int(os.environ.get("CICLO_S", "300"))
+        CICLO_CRTM = int(os.environ.get("CICLO_CRTM_S", "900"))
         URL = os.environ.get("URL_RSS", "http://feeds.emtmadrid.es:8082/")
-        UA = {"User-Agent": "avisos-logger (DATAMAD 2026, investigación; 1 consulta/5 min)"}
+        UA = {"User-Agent": "avisos-logger (DATAMAD 2026, investigación; consultas cada 5 y 15 min)"}
         ESTADO = os.path.join(DATA, "estado.json")
+        ESTADO_CRTM = os.path.join(DATA, "estado_crtm.json")
+        CRTM_BASE = os.environ.get("URL_CRTM", "https://www.crtm.es/comunicacion/actualidad-del-servicio/avisos")
+        CRTM_PAGINAS = {"metro": "/avisos-metro", "metro_ligero": "/avisos-metro-ligero", "cercanias": "/avisos-cercanias",
+                        "emt": "/avisos-emt", "interurbanos": "/avisos-interurbanos"}
 
 
         def escribir(fila):
@@ -76,19 +89,19 @@ services:
             return hashlib.sha256(json.dumps(aviso, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
 
 
-        def cargar_estado():
+        def cargar_estado(ruta=ESTADO):
             try:
-                with open(ESTADO, encoding="utf-8") as f:
+                with open(ruta, encoding="utf-8") as f:
                     return json.load(f)
             except (OSError, ValueError):
                 return {}
 
 
-        def guardar_estado(estado):
-            tmp = ESTADO + ".tmp"
+        def guardar_estado(estado, ruta=ESTADO):
+            tmp = ruta + ".tmp"
             with open(tmp, "w", encoding="utf-8") as f:
                 json.dump(estado, f)
-            os.replace(tmp, ESTADO)
+            os.replace(tmp, ruta)
 
 
         def pasada(estado, validadores):
@@ -128,13 +141,86 @@ services:
             return nuevo
 
 
+        def texto_html(h):
+            return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", h))).strip()
+
+
+        def leer_crtm(pagina):
+            """(estado de cada red, avisos) de una página de avisos del Consorcio, sin lo que tiene comentado."""
+            p = re.sub(r"<!--.*?-->", "", re.sub(r"<script.*?</script>|<style.*?</style>", "", pagina, flags=re.S | re.I), flags=re.S)
+            i = p.find("Estado del sistema de transporte")
+            if i < 0:
+                raise ValueError("página sin estado del sistema")
+            fin = p.find("<ul", i)
+            estado = dict(re.findall(r"Estado_([A-Za-z]+)_([A-Za-z]+)\.png", p[i:fin if fin > 0 else i + 6000]))
+            avisos = {}
+            trozos = list(re.finditer(r'<h3 id="([^"]+)"[^>]*>(.*?)</h3>', p, flags=re.S))
+            for n, m in enumerate(trozos):
+                ident = html.unescape(m.group(1)).strip()
+                hasta = trozos[n + 1].start() if n + 1 < len(trozos) else len(p)
+                cuerpo = p[m.end():hasta]
+                corte = re.search(r"Vol?ver(?:\s|&nbsp;|<[^>]+>)+a(?:\s|&nbsp;|<[^>]+>)+Avisos", cuerpo)
+                cuerpo = cuerpo[:corte.start()] if corte else cuerpo
+                # el icono del aviso va justo antes de su título
+                nivel = re.findall(r"Estado_[A-Za-z]+_([A-Za-z]+)\.png", p[max(0, m.start() - 400):m.start()])
+                fecha = re.match(r"(\d\d)_(\d\d)_(\d{4})", ident)
+                enlaces = [a for a, txt in re.findall(r'<a\b[^>]*?href="\s*([^"#\s][^"]*?)\s*"[^>]*>(.*?)</a>', cuerpo, flags=re.S) if "inf" in txt.lower()]
+                texto = re.sub(r"^Avisos (Metro Ligero|Metro|Cercan[ií]as|EMT|Interurbanos)\s+", "", texto_html(cuerpo))
+                avisos[ident] = {"id": ident, "fecha": f"{fecha[3]}-{fecha[2]}-{fecha[1]}" if fecha else None, "titulo": texto_html(m.group(2)),
+                                 "texto": re.sub(r"\s*Más\s*inf\s*ormación\s*\.*\s*$", "", texto).strip(),
+                                 "nivel": nivel[-1] if nivel else None, "enlace": html.unescape(enlaces[-1]) if enlaces else None}
+            return estado, avisos
+
+
+        def pasada_crtm(estado):
+            """Una consulta de las páginas de avisos. Una página que falla no da de baja sus avisos."""
+            t = int(time.time())
+            vistos, redes, errores, novedades = dict(estado.get("avisos", {})), {}, [], 0
+            for red, ruta in CRTM_PAGINAS.items():
+                try:
+                    with urllib.request.urlopen(urllib.request.Request(CRTM_BASE + ruta + "/", headers=UA), timeout=30) as r:
+                        est, avisos = leer_crtm(r.read().decode("utf-8", "replace"))
+                except Exception as ex:
+                    errores.append(f"{red}: {ex!r}"[:200])
+                    continue
+                redes = redes or est  # todas las páginas traen el mismo semáforo
+                prefijo = red + "|"
+                for ident, aviso in avisos.items():
+                    clave, h = prefijo + ident, huella(aviso)
+                    if vistos.get(clave) != h:
+                        escribir({"t": t, "k": "aviso_crtm", "red": red, "estado": "cambio" if clave in vistos else "nuevo", **aviso})
+                        vistos[clave] = h
+                        novedades += 1
+                for clave in [c for c in vistos if c.startswith(prefijo) and c[len(prefijo):] not in avisos]:
+                    escribir({"t": t, "k": "baja_crtm", "red": red, "id": clave[len(prefijo):]})
+                    del vistos[clave]
+                    novedades += 1
+            if redes and redes != estado.get("redes"):
+                escribir({"t": t, "k": "estado_red", "redes": redes})
+                novedades += 1
+            fila = {"t": t, "k": "poll_crtm", "novedades": novedades}
+            if errores:
+                fila["err"] = errores
+            escribir(fila)
+            nuevo = {"avisos": vistos, "redes": redes or estado.get("redes", {})}
+            guardar_estado(nuevo, ESTADO_CRTM)
+            return nuevo
+
+
         def main():
-            print(f"avisos-logger: {URL} cada {CICLO} s en {DATA}", flush=True)
+            print(f"avisos-logger: {URL} cada {CICLO} s y {CRTM_BASE} cada {CICLO_CRTM} s en {DATA}", flush=True)
             os.makedirs(DATA, exist_ok=True)
             estado, validadores = cargar_estado(), {}
+            estado_crtm, ultimo_crtm = cargar_estado(ESTADO_CRTM), 0
             while True:
                 inicio = time.time()
                 estado = pasada(estado, validadores)
+                if inicio - ultimo_crtm >= CICLO_CRTM:
+                    ultimo_crtm = inicio
+                    try:
+                        estado_crtm = pasada_crtm(estado_crtm)
+                    except Exception as ex:  # que un fallo aquí no pare el RSS de la EMT
+                        escribir({"t": int(inicio), "k": "poll_crtm", "err": [repr(ex)[:300]]})
                 time.sleep(max(1, CICLO - (time.time() - inicio)))
 
 

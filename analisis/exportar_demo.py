@@ -22,12 +22,12 @@ META = {
                "mediana": "retraso mediano, en minutos", "p10": "retraso, percentil 10", "p90": "retraso, percentil 90"},
     "redes": {
         "emt": {"nombre": "EMT Madrid", "medida": "posición y estimación del autobús", "licencia": "ODbL",
-                "atribucion": "Powered by EMT de Madrid", "complemento": False},
+                "atribucion": "Powered by EMT de Madrid", "dataset_del_portal": False},
         "renfe": {"nombre": "Cercanías Renfe", "medida": "GPS del tren", "licencia": "CC BY 4.0",
-                  "atribucion": "Fuente: Renfe", "complemento": False},
+                  "atribucion": "Fuente: Renfe", "dataset_del_portal": False},
         "metro": {"nombre": "Metro de Madrid", "medida": "el tren desaparece del panel; puede dar aciertos de más",
-                  "licencia": "sin licencia publicada para tiempo real", "atribucion": "Fuente: Consorcio Regional de Transportes de Madrid",
-                  "complemento": True},
+                  "licencia": "aviso legal del Consorcio: reutilización citando la fuente y la fecha de extracción", "atribucion": "Fuente: Consorcio Regional de Transportes de Madrid",
+                  "indicar_fecha_extraccion": True, "dataset_del_portal": False},
     },
     "sin_dato": ["interurbanos: su panel no da una llegada real", "Metro a 25 min o más", "anuncios de 40 min o más"],
     "advertencias": [
@@ -45,6 +45,7 @@ META = {
         "EMT Madrid, tiempo real": "https://datos.emtmadrid.es/dataset/tiempo-real-para-autobuses-de-emt",
         "Renfe, horarios de viaje": "https://data.renfe.com/dataset/horarios-viaje-cercanias",
         "Renfe, ubicación de los vehículos": "https://data.renfe.com/dataset/ubicacion-vehiculos",
+        "Consorcio Regional de Transportes de Madrid": "https://www.crtm.es/aviso-legal",
     },
 }
 

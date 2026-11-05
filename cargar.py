@@ -8,6 +8,8 @@
   df = cargar.renfe_posiciones("2026-10-15")
   df = cargar.trafico("2026-10-15")         # una fila por punto de medida y lectura (5 min)
   df = cargar.avisos()                      # avisos de la EMT, en su última versión conocida
+  df = cargar.avisos_crtm()                 # avisos del Consorcio, en su última versión conocida
+  df = cargar.estado_red()                  # cambios del semáforo del Consorcio
 
 Las horas se devuelven en hora de Madrid (columna "hora"); "t" es el epoch UTC de la consulta.
 pandas solo hace falta para las funciones que devuelven DataFrame.
@@ -91,3 +93,21 @@ def avisos():
     for c in ("desde", "hasta"):
         df[c] = pd.to_datetime(df[c], unit="s", utc=True).dt.tz_convert("Europe/Madrid")
     return df
+
+
+def avisos_crtm():
+    """Última versión de cada aviso del Consorcio."""
+    import pandas as pd
+    ultimos = {}
+    for dia in dias("avisos"):
+        for r in filas("avisos", dia):
+            if r.get("k") == "aviso_crtm":
+                ultimos[(r["red"], r["id"])] = r
+    return pd.DataFrame(ultimos.values())
+
+
+def estado_red():
+    """Una fila por cambio del semáforo del Consorcio, con una columna por red."""
+    import pandas as pd
+    out = [{"t": r["t"], **r["redes"]} for dia in dias("avisos") for r in filas("avisos", dia) if r.get("k") == "estado_red"]
+    return _hora(pd.DataFrame(out)) if out else pd.DataFrame()

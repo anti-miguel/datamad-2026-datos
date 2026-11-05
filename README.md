@@ -22,7 +22,7 @@ datos-transporte/
 │   ├── emt/                   EMT, "llega en X" de 28 paradas cada ~3 min  04/10 → 03/11   124 MB
 │   ├── crtm/                  Metro e interurbanos (widget del Consorcio)   02/10 → 03/11   169 MB
 │   ├── trafico/               4.100 puntos de medida + incidencias           14/10 → 03/11   160 MB
-│   ├── avisos/                alteraciones de servicio de la EMT (RSS)       desde 04/11
+│   ├── avisos/                alteraciones de servicio: EMT y Consorcio      desde 04/11
 │   ├── catalogo_cm/           copia de datasets del portal de la Comunidad (CC BY)
 │   ├── meteo/                 lluvia horaria (Open-Meteo)
 │   ├── redes/                 menciones públicas a los operadores en X (solo agregados)
@@ -196,7 +196,7 @@ Esa tarde el Consorcio también falló: casi solo errores de 17:20 a 18:30 y de 
 
 **Ojo:** las incidencias del Ayuntamiento no han cambiado desde el 14/10 (hay una sola fila `incid`). Puede que ese servicio no se actualice.
 
-### 5. Avisos de la EMT (`datos/avisos/`)
+### 5. Avisos de la EMT y del Consorcio (`datos/avisos/`)
 
 - **Origen:** RSS público de alteraciones del servicio, `http://feeds.emtmadrid.es:8082/`: desvíos, obras, manifestaciones, eventos.
 - **Cadencia:** se consulta cada 5 min, y solo se descarga si ha cambiado.
@@ -207,8 +207,14 @@ Esa tarde el Consorcio también falló: casi solo errores de 17:20 a 18:30 y de 
 | `aviso` | `estado` (`nuevo` o `cambio`), `guid`, `titulo`, `texto`, `enlace` (PDF), `pub`, `fin_pub`, `desde`, `hasta`, `causa`, `efecto`, `lineas` |
 | `baja` | `guid` de un aviso que ya no está en el RSS |
 | `poll` | control de cada consulta: `n`, `novedades`, `sin_cambios` o `err` |
+| `estado_red` | semáforo del Consorcio al cambiar: `redes`, por ejemplo `{"Metro": "Amarillo"}` |
+| `aviso_crtm` | aviso del Consorcio: `red`, `estado`, `id`, `fecha`, `titulo`, `texto`, `nivel`, `enlace` |
+| `baja_crtm` | aviso del Consorcio que ya no está publicado: `red`, `id` |
+| `poll_crtm` | control de la consulta al Consorcio: `novedades` o `err` |
 
-`pub`, `fin_pub`, `desde` y `hasta` son epoch UTC. `cargar.avisos()` devuelve la última versión de cada aviso.
+`pub`, `fin_pub`, `desde` y `hasta` son epoch UTC. `cargar.avisos()` y `cargar.avisos_crtm()` devuelven la última versión de cada aviso; `cargar.estado_red()`, los cambios del semáforo.
+
+**Consorcio:** se consulta [su web](https://www.crtm.es/comunicacion/actualidad-del-servicio/avisos/) cada 15 min, para Metro, Metro Ligero, Cercanías, EMT e interurbanos. Empezamos a grabarla el 05/11. Ese día solo traía cortes y desvíos programados: falta ver si recoge incidencias del momento y qué significa cada color del semáforo.
 
 **Ojo:**
 - `lineas` viene como en el RSS, a veces con ceros delante (`002`). Hay que normalizarlas para cruzarlas con la EMT.
@@ -348,7 +354,7 @@ Cada carpeta contiene `logger.py` y `docker-compose.yml`. El compose lleva el mi
 | emt | ~3 min por parada | `openapi.emtmadrid.es`. Necesita cuenta de MobilityLabs (variables `EMT_*`) |
 | crtm | ~1 min por parada | `crtm.es/widgets/api/GetStopsTimes.php` (+ GTFS cada 24 h) |
 | trafico | 5 min | `informo.madrid.es` (pm.xml, incidencias) + `nap.dgt.es` (DATEX II) |
-| avisos | 5 min | `feeds.emtmadrid.es:8082` (RSS de alteraciones de la EMT) |
+| avisos | 5 y 15 min | `feeds.emtmadrid.es:8082` (RSS de la EMT) y `crtm.es/comunicacion/actualidad-del-servicio/avisos/` |
 
 `grabadores/sync/` es el proyecto que sube los datos a este repo. Usa una clave SSH que se genera en la NAS y no sale de ella, con permiso de escritura solo en este repo. Ve las carpetas `data/` de los grabadores en modo lectura. No sube `puntos/` del tráfico.
 
@@ -363,7 +369,7 @@ Cada carpeta contiene `logger.py` y `docker-compose.yml`. El compose lleva el mi
 
 ## Licencias y uso
 
-Revisado el 05/11/2026. En la formación de DATAMAD se dijo que un dataset sin licencia no puntúa en esa parte; falta confirmarlo por escrito.
+Revisado el 05/11/2026. En la formación de DATAMAD se dijo que un dataset sin licencia no puntúa en esa parte; falta confirmarlo por escrito. Lo que no puntúe se puede seguir usando en la app si sus condiciones lo permiten.
 
 | Fuente | Licencia publicada | Qué exige |
 |---|---|---|
@@ -375,9 +381,11 @@ Revisado el 05/11/2026. En la formación de DATAMAD se dijo que un dataset sin l
 | Open-Meteo | CC BY 4.0 | Citar; la API gratuita es solo para uso no comercial |
 | Tráfico del Ayuntamiento | Licencia de su portal | Texto sin revisar |
 | DGT (NAP) | Depende de cada dataset | Sin revisar |
-| **Widget del Consorcio (Metro e interurbanos medidos)** | **No hemos encontrado ninguna** | La licencia del Consorcio solo cubre datos estáticos |
+| Widget y avisos del Consorcio (Metro e interurbanos medidos) | [Aviso legal del Consorcio](https://www.crtm.es/aviso-legal): permite reutilizar los contenidos y datos de su web. No es una licencia tipo CC; falta confirmar si puntúa | No alterar la información ni su sentido, citar la fuente, indicar la fecha de extracción y no sugerir que el Consorcio patrocina el proyecto |
+| Web, notas de prensa y app de Metro de Madrid | Ninguna: su [aviso legal](https://www.metromadrid.es/es/aviso-legal) exige autorización escrita | No usar sin permiso |
+| Noticias de apps de terceros | Ninguna: servidores privados | No usar |
 | Agregados de X (`datos/redes/`) | Ninguna | No usar en la entrega |
 
-**Para la entrega:** los resultados principales salen de la EMT, Renfe y el portal de la Comunidad. La medición de Metro va como complemento: se dice de dónde sale, se cita al Consorcio y no se presenta como dato abierto con licencia.
+**Para la entrega:** los resultados que dependen del criterio de datos abiertos salen de la EMT, Renfe y el portal de la Comunidad. El Metro y los avisos del Consorcio forman parte del producto: se dice de dónde salen, con cita y fecha de extracción, y no se presentan como dataset del portal.
 
 Para la entrega de DATAMAD hay que declarar como trabajo previo lo que ya teníamos, y las bases lo permiten.
