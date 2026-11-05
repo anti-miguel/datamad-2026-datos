@@ -1,0 +1,50 @@
+Fuentes del portal: 1919185 (Creative Commons Attribution); 1919184 (Creative Commons Attribution); 902003 (Creative Commons Attribution); 1923861 (Creative Commons Attribution)
+EMT. Oficial: 8.6 min de intervalo medio en hora punta (2024). GTFS del portal, media de sus ventanas de punta (todas las líneas): 10.8 min.
+
+Última lectura hasta 4 min: 388353 intervalos, 64 líneas, 26 paradas, días 2026-10-05 a 2026-11-04; sin horario: 4.3%
+  punta: programado 9.7, real media 10.3, mediana 9.1; espera real 7.74 frente a 4.87; EWT 2.86 min; pasos vistos/esperados 0.84; más del doble de lo programado 11%
+  dia: programado 10.6, real media 11.0, mediana 9.9; espera real 8.1 frente a 5.28; EWT 2.82 min; pasos vistos/esperados 0.85; más del doble de lo programado 10%
+
+Última lectura hasta 10 min: 410337 intervalos, 64 líneas, 26 paradas, días 2026-10-05 a 2026-11-04; sin horario: 4.4%
+  punta: programado 9.8, real media 9.8, mediana 8.9; espera real 7.19 frente a 4.88; EWT 2.31 min; pasos vistos/esperados 0.89; más del doble de lo programado 8%
+  dia: programado 10.6, real media 10.4, mediana 9.5; espera real 7.52 frente a 5.28; EWT 2.24 min; pasos vistos/esperados 0.89; más del doble de lo programado 8%
+
+Punta, 63 líneas con 100 intervalos o más. EWT mediana 2.47 min; pasos vistos/esperados, mediana 0.86
+  Líneas con 90% de pasos vistos o más: 17; su EWT mediana 1.55 min
+  Mayor EWT:
+            n  prog_min  real_media_min  ewt_min  pasos_vistos_frente_a_esperados
+linea                                                                            
+135     307.0      11.7            20.4     6.62                             0.57
+203     330.0      15.6            19.4     6.60                             0.80
+174     522.0      10.2            13.1     4.02                             0.77
+15     1383.0      13.8            17.2     3.94                             0.78
+5       442.0      12.0            15.0     3.92                             0.79
+66      464.0      11.2            14.5     3.75                             0.77
+173     585.0       8.7            11.7     3.66                             0.74
+175     487.0      10.9            13.9     3.48                             0.78
+
+Impacto, orden de magnitud. Demanda oficial EMT: 454.6 M viajes (2023). Extrapola paradas céntricas y laborables a toda la red: no es una medición.
+  Lectura hasta 4 min, mediana de líneas: EWT 2.93 min -> 22.2 M horas al año
+  Lectura hasta 4 min, líneas con 90% de pasos vistos: EWT 2.03 min -> 15.4 M horas al año
+  Lectura hasta 10 min, mediana de líneas: EWT 2.27 min -> 17.2 M horas al año
+  Lectura hasta 10 min, líneas con 90% de pasos vistos: EWT 1.78 min -> 13.5 M horas al año
+
+Velocidad, laborables de 7 a 21 h, según la distancia a paradas céntricas: 10.6 km/h. Oficial: 13.0 km/h (2024, media diaria anual de toda la red). No son directamente comparables.
+
+Renfe. Viajeros por estación de 2024: 21 estaciones con dato en el portal, 18 cruzadas con las nuestras de 500 llegadas o más.
+  Del portal sin cruzar: ['ALUCHE', 'PARLA', 'VALLECAS']
+  Correlación de rangos entre viajeros y acierto: -0.37
+  Acierto ponderado por viajeros: 64.6%; sin ponderar: 67.8%
+  Más viajeros expuestos a un anuncio que no se cumple:
+                                  M_viajeros  acierto  llegadas
+nombre                                                         
+MADRID ATOCHA CERCANIAS                 89.2       67     24472
+MADRID NUEVOS MINISTERIOS               35.6       40     21392
+MADRID CHAMARTIN CLARA CAMPOAMOR        27.0       48      8275
+SOL                                     24.9       78      6127
+FUENLABRADA                              9.3       45      2964
+MOSTOLES                                 8.1       45      4992
+ALCALA DE HENARES                        7.2       54      1889
+MADRID VILLAVERDE ALTO                  14.1       77      3812
+MADRID PRINCIPE PIO                      8.4       63      3617
+GETAFE CENTRO                           10.1       70       836

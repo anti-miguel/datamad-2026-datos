@@ -33,7 +33,8 @@ Trabaja con la raíz `datos-transporte/` como directorio actual. Los scripts de 
 - No hay credenciales en el paquete, y no hay que añadirlas.
   - El `docker-compose.yml` de la EMT lleva marcadores `ESCRIBE_AQUI_...`; quien lo despliegue pone sus propias claves en la NAS.
   - No pidas ni escribas claves en ficheros del repositorio.
-- `datos/redes/` solo contiene agregados. No intentes reconstruir mensajes ni usuarios.
+- `datos/redes/` solo contiene agregados. No intentes reconstruir mensajes ni usuarios, y no lo uses en la entrega: no tiene licencia.
+- La medición de Metro e interurbanos sale del widget del Consorcio, sin licencia publicada para tiempo real. Preséntala como complemento, no como dato abierto. Las licencias están al final del README.
 - No modifiques `datos/`: es la copia de referencia. Escribe los resultados nuevos en `analisis/resultados/` o en una carpeta tuya.
 - La NAS añade los días cerrados cada noche: haz `git pull` antes de analizar. `catalogo.json` y la tabla de fiabilidad se calcularon con datos hasta el 03/11/2026 y no se actualizan solos.
 - El proyecto aún no tiene nombre. No le pongas uno en los materiales que generes.

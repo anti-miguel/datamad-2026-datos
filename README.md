@@ -23,6 +23,7 @@ datos-transporte/
 │   ├── crtm/                  Metro e interurbanos (widget del Consorcio)   02/10 → 03/11   169 MB
 │   ├── trafico/               4.100 puntos de medida + incidencias           14/10 → 03/11   160 MB
 │   ├── avisos/                alteraciones de servicio de la EMT (RSS)       desde 04/11
+│   ├── catalogo_cm/           copia de datasets del portal de la Comunidad (CC BY)
 │   ├── meteo/                 lluvia horaria (Open-Meteo)
 │   ├── redes/                 menciones públicas a los operadores en X (solo agregados)
 │   ├── externos/              histórico de Cercanías de toda España (rodalies-observatorio, CC BY 4.0)
@@ -216,6 +217,7 @@ Esa tarde el Consorcio también falló: casi solo errores de 17:20 a 18:30 y de 
 
 ### 6. Otras fuentes
 
+- **`catalogo_cm/`:** copia de cuatro datasets del portal de la Comunidad: intervalo medio en hora punta (1919185), velocidad comercial (1919184), billetes por modo (902003) y viajeros de Cercanías por estación (1923861). `fuentes.json` guarda la ficha, la licencia y la fecha de cada uno.
 - **`meteo/`:** precipitación horaria de Open-Meteo para un punto de Madrid. Hay dos descargas:
   - del 23/09 al 13/10, con `precipitation` y `rain`;
   - desde el 14/09, solo `precipitation`.
@@ -264,6 +266,14 @@ Los números exactos y el método están en `analisis/resultados/`.
 - **L12:** huecos anómalos entre trenes el 24–28% del tiempo (27% el 19/10).
 - **L6:** huecos anómalos el 17–22% del tiempo.
 - **L3, L5 y L7:** regulares.
+
+**Comparado con el portal de la Comunidad** (`cruce_catalogo.txt`, script `cruce_catalogo.py`):
+- **EMT en hora punta:** el intervalo real (9,8–10,3 min) casi coincide con el programado (9,7–9,8 min), pero la espera media es de 7,2–7,7 min frente a los 4,9 que correspondería. Los buses cumplen la frecuencia de media, y su irregularidad añade 2,3–2,9 min de espera.
+- **Rango:** depende de si una visita cuenta como paso con una última lectura de hasta 4 o de hasta 10 min. Son 26 paradas céntricas, en laborables del 05/10 al 04/11, y supone viajeros que llegan al azar.
+- **Pasos esperados:** se ven el 84–89%. No podemos distinguir un bus retirado de un paso no detectado.
+- **Impacto:** con la demanda oficial (454,6 M de viajes en 2023), unos 13–22 M de horas de espera de más al año si valiera para toda la red. Es una extrapolación, no una medición.
+- **Intervalo oficial (8,6 min en punta, 2024):** es de toda la red y no es comparable con esta muestra de líneas.
+- **Renfe por estación:** el acierto ponderado por viajeros es del 64,6% (67,8% sin ponderar), en 18 estaciones. Nuevos Ministerios (40%) y Chamartín (48%) salen bajas, pero falta descartar un efecto de medir en túnel: no uses esas dos cifras todavía.
 
 **Lluvia** (`resultados_lluvia.txt`):
 - Con lluvia en la punta de 16–19 h, los autobuses de la EMT van un 5–10% más lentos, y el 104 un 16% el día de lluvia.
@@ -320,6 +330,7 @@ Los scripts se ejecutan desde la raíz `datos-transporte/`. Las rutas ya apuntan
 | `analisis_lluvia.py` | velocidad de la EMT con y sin lluvia | `python analisis/analisis_lluvia.py` |
 | `analisis_margen.py` | margen necesario en Cercanías con el histórico de rodalies | `python analisis/analisis_margen.py` |
 | `simular_plan.py` | ¿habría llegado a tiempo? (Móstoles → Nuevos Ministerios antes de las 9:00) | `python analisis/simular_plan.py` |
+| `cruce_catalogo.py` | lo medido frente a datos del portal de la Comunidad. Necesita pandas, pyarrow y la caché de `tabla_fiabilidad.py` | `python analisis/cruce_catalogo.py <carpeta de caché>` |
 | `tabla_fiabilidad.py` | tabla de fiabilidad y su validación (ver arriba) | `python analisis/tabla_fiabilidad.py <carpeta temporal> --rehacer` |
 | `descargar_pdf_consorcio.py` | descarga de los PDF de horarios. No hace falta volver a ejecutarlo | — |
 
@@ -350,11 +361,21 @@ Cada carpeta contiene `logger.py` y `docker-compose.yml`. El compose lleva el mi
 
 ## Licencias y uso
 
-- **Renfe (GTFS y GTFS-RT):** CC BY 4.0.
-- **Rodalies-observatorio:** CC BY 4.0.
-- **Datos del Ayuntamiento y de la Comunidad:** licencia de datos abiertos de cada portal, con atribución.
-- **DGT (NAP):** datos abiertos.
-- **EMT MobilityLabs y widget del Consorcio:** uso según sus condiciones, siempre con consultas moderadas (lo que hacen los grabadores).
-- **Open-Meteo:** CC BY 4.0.
+Revisado el 05/11/2026. En la formación de DATAMAD se dijo que un dataset sin licencia no puntúa en esa parte; falta confirmarlo por escrito.
+
+| Fuente | Licencia publicada | Qué exige |
+|---|---|---|
+| Portal de la Comunidad (`datos/catalogo_cm/`) | CC BY | Citar la fuente |
+| GTFS del Consorcio en el portal | Licencia de datos abiertos del Consorcio | Citar, mostrar "Powered by CRTM" con enlace y no dañar la imagen del Consorcio ni del transporte público |
+| Renfe (GTFS y GTFS-RT) | CC BY 4.0 | Citar la fuente |
+| EMT: llegadas y avisos | ODbL, más las condiciones de MobilityLabs | Citar, compartir igual lo derivado de sus datos, mostrar "Powered by EMT de Madrid" y no dañar su imagen |
+| Rodalies-observatorio | CC BY 4.0 | Citar la fuente |
+| Open-Meteo | CC BY 4.0 | Citar; la API gratuita es solo para uso no comercial |
+| Tráfico del Ayuntamiento | Licencia de su portal | Texto sin revisar |
+| DGT (NAP) | Depende de cada dataset | Sin revisar |
+| **Widget del Consorcio (Metro e interurbanos medidos)** | **No hemos encontrado ninguna** | La licencia del Consorcio solo cubre datos estáticos |
+| Agregados de X (`datos/redes/`) | Ninguna | No usar en la entrega |
+
+**Para la entrega:** los resultados principales salen de la EMT, Renfe y el portal de la Comunidad. La medición de Metro va como complemento: se dice de dónde sale, se cita al Consorcio y no se presenta como dato abierto con licencia.
 
 Para la entrega de DATAMAD hay que declarar como trabajo previo lo que ya teníamos, y las bases lo permiten.
