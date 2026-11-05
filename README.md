@@ -30,6 +30,7 @@ datos-transporte/
 │   └── horarios_oficiales/    GTFS de Renfe y del Consorcio + 1.180 horarios impresos en PDF
 ├── grabadores/                código de los 5 grabadores que corren en la NAS (Docker)
 ├── analisis/                  scripts de análisis y sus resultados en texto
+├── demo/                      tabla de fiabilidad en JSON y su consulta, para la web
 └── documentos/                propuesta, sprint 1, prototipo HTML
 ```
 
@@ -331,6 +332,7 @@ Los scripts se ejecutan desde la raíz `datos-transporte/`. Las rutas ya apuntan
 | `analisis_margen.py` | margen necesario en Cercanías con el histórico de rodalies | `python analisis/analisis_margen.py` |
 | `simular_plan.py` | ¿habría llegado a tiempo? (Móstoles → Nuevos Ministerios antes de las 9:00) | `python analisis/simular_plan.py` |
 | `cruce_catalogo.py` | lo medido frente a datos del portal de la Comunidad. Necesita pandas, pyarrow y la caché de `tabla_fiabilidad.py` | `python analisis/cruce_catalogo.py <carpeta de caché>` |
+| `exportar_demo.py` | pasa la tabla de fiabilidad a `demo/fiabilidad.json` | `python analisis/exportar_demo.py` |
 | `tabla_fiabilidad.py` | tabla de fiabilidad y su validación (ver arriba) | `python analisis/tabla_fiabilidad.py <carpeta temporal> --rehacer` |
 | `descargar_pdf_consorcio.py` | descarga de los PDF de horarios. No hace falta volver a ejecutarlo | — |
 
