@@ -219,7 +219,7 @@ Esa tarde el Consorcio también falló: casi solo errores de 17:20 a 18:30 y de 
 **Ojo:**
 - `lineas` viene como en el RSS, a veces con ceros delante (`002`). Hay que normalizarlas para cruzarlas con la EMT.
 - `desde` y `hasta` son aproximados, y un aviso afecta a una parte de la línea, no necesariamente a todas sus paradas.
-- `pub` puede ser posterior a `desde`: no todos los avisos llegan antes del problema. No sabemos si esa fecha cambia al editarlos.
+- `pub` no es fiable: el RSS la adelanta una hora en muchos avisos cada vez que se reescribe. Para saber cuándo apareció un aviso, usa la primera `t`, que solo es exacta desde el 04/11 para los avisos nuevos.
 - Las obras pueden durar meses: filtra por duración si buscas sucesos puntuales.
 
 ### 6. Otras fuentes

@@ -5,6 +5,7 @@ Salida: /data/AAAA-MM-DD.jsonl.gz, una línea por novedad, en el día en que se 
   {"t": epoch, "k": "aviso", "estado": "nuevo"|"cambio", "guid", "titulo", "texto", "enlace", "pub", "fin_pub",
    "desde", "hasta", "causa", "efecto", "lineas": [...]}
   pub, fin_pub, desde y hasta son epoch UTC. lineas va tal cual en el RSS, a veces con ceros delante ("002").
+  pub no es fiable: el RSS lo adelanta al reescribirse. Para saber cuándo apareció un aviso, usa su primera t.
   {"t": epoch, "k": "baja", "guid"}: el aviso ya no está en el RSS.
   {"t": epoch, "k": "poll", "n": avisos en el RSS, "novedades": cuántas}: si no ha cambiado, "sin_cambios": 1. Si falla, "err".
 Del Consorcio, solo los cambios:
@@ -112,7 +113,7 @@ def pasada(estado, validadores):
         return estado
     nuevo, novedades = {}, 0
     for guid, aviso in avisos.items():
-        h = nuevo[guid] = huella(aviso)
+        h = nuevo[guid] = huella({k: v for k, v in aviso.items() if k != "pub"})  # el RSS adelanta pub al reescribirse
         if estado.get(guid) != h:
             escribir({"t": t, "k": "aviso", "estado": "cambio" if guid in estado else "nuevo", **aviso})
             novedades += 1

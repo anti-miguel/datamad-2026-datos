@@ -234,7 +234,7 @@
    ],
    "advertencias": [
     "el RSS solo conserva unas semanas",
-    "pub puede ser posterior a desde",
+    "pub no es fiable: el RSS la adelanta al reescribirse; usa la primera t de cada aviso",
     "un aviso no afecta necesariamente a todas las paradas de la línea",
     "las obras pueden durar meses",
     "Consorcio: falta ver si recoge incidencias del momento y qué significa cada color"
