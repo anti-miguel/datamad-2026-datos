@@ -114,8 +114,17 @@
    "s": "4_286",
    "nombre": "ESTADIO METROPOLITANO",
    "motivo": "diaria",
-   "consultas": 483,
-   "llegadas": 1395
+   "consultas": 1023,
+   "llegadas": 2973
+  },
+  {
+   "fecha": "2026-11-06",
+   "m": "ligero",
+   "s": "10_27",
+   "nombre": "CIUDAD DEL CINE",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
