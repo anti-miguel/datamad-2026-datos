@@ -125,6 +125,15 @@
    "motivo": "diaria",
    "consultas": 1007,
    "llegadas": 2949
+  },
+  {
+   "fecha": "2026-11-15",
+   "m": "interurbanos",
+   "s": "8_08325",
+   "nombre": "AV.ARAGÓN-EXTREMADURA",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
