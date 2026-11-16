@@ -141,8 +141,17 @@
    "s": "6_3097",
    "nombre": "Ruidera - Lagartera",
    "motivo": "diaria",
-   "consultas": 745,
-   "llegadas": 812
+   "consultas": 892,
+   "llegadas": 965
+  },
+  {
+   "fecha": "2026-11-17",
+   "m": "metro",
+   "s": "4_71",
+   "nombre": "MAR DE CRISTAL",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
