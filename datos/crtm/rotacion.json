@@ -132,8 +132,17 @@
    "s": "8_08325",
    "nombre": "AV.ARAGÓN-EXTREMADURA",
    "motivo": "diaria",
-   "consultas": 920,
-   "llegadas": 11277
+   "consultas": 926,
+   "llegadas": 11319
+  },
+  {
+   "fecha": "2026-11-16",
+   "m": "emt",
+   "s": "6_3097",
+   "nombre": "Ruidera - Lagartera",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
