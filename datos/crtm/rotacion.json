@@ -150,6 +150,15 @@
    "s": "4_71",
    "nombre": "MAR DE CRISTAL",
    "motivo": "diaria",
+   "consultas": 979,
+   "llegadas": 11024
+  },
+  {
+   "fecha": "2026-11-18",
+   "m": "ligero",
+   "s": "10_8",
+   "nombre": "PALAS DE REY",
+   "motivo": "diaria",
    "consultas": 0,
    "llegadas": 0
   }
