@@ -159,6 +159,15 @@
    "s": "10_8",
    "nombre": "PALAS DE REY",
    "motivo": "diaria",
+   "consultas": 976,
+   "llegadas": 375
+  },
+  {
+   "fecha": "2026-11-19",
+   "m": "interurbanos",
+   "s": "8_11159",
+   "nombre": "ERAS-ARCOS",
+   "motivo": "diaria",
    "consultas": 0,
    "llegadas": 0
   }
