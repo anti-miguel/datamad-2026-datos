@@ -168,8 +168,17 @@
    "s": "8_11159",
    "nombre": "ERAS-ARCOS",
    "motivo": "diaria",
-   "consultas": 560,
-   "llegadas": 2725
+   "consultas": 947,
+   "llegadas": 4635
+  },
+  {
+   "fecha": "2026-11-20",
+   "m": "emt",
+   "s": "6_4324",
+   "nombre": "Méndez Álvaro",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
