@@ -177,8 +177,17 @@
    "s": "6_4324",
    "nombre": "Méndez Álvaro",
    "motivo": "diaria",
-   "consultas": 281,
-   "llegadas": 239
+   "consultas": 979,
+   "llegadas": 605
+  },
+  {
+   "fecha": "2026-11-21",
+   "m": "metro",
+   "s": "4_222",
+   "nombre": "PARQUE DE LOS ESTADOS",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
