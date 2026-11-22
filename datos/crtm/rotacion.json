@@ -186,6 +186,15 @@
    "s": "4_222",
    "nombre": "PARQUE DE LOS ESTADOS",
    "motivo": "diaria",
+   "consultas": 1028,
+   "llegadas": 2971
+  },
+  {
+   "fecha": "2026-11-22",
+   "m": "ligero",
+   "s": "10_55",
+   "nombre": "BULEVAR SUR",
+   "motivo": "diaria",
    "consultas": 0,
    "llegadas": 0
   }
