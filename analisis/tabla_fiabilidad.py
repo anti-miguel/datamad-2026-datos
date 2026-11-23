@@ -12,19 +12,23 @@ Se muestrea para que las tres redes pesen parecido (~1 predicción cada 3 min po
 Las observaciones de un mismo vehículo están correlacionadas: el intervalo de confianza se calcula con n_llegadas.
 
 Uso, desde la raíz de datos-transporte:
-  python analisis/tabla_fiabilidad.py <carpeta temporal para la caché> [--rehacer]
-Salida: analisis/resultados/fiabilidad.csv, fiabilidad_interurbanos_estabilidad.csv, fiabilidad_validacion.txt
+  python analisis/tabla_fiabilidad.py <carpeta temporal para la caché> [--corte AAAA-MM-DD] [--rehacer]
+Salida: analisis/resultados/{fiabilidad,fiabilidad_interurbanos_estabilidad,fiabilidad_validacion}_AAAA-MM-DD.*
+El corte predeterminado es ayer en Madrid. La caché se invalida si cambian las entradas o el corte.
 """
-import collections as C, csv, glob, gzip, io, json, math, os, re, sys, time, zipfile
+import argparse, collections as C, csv, glob, gzip, io, json, math, os, re, sys, time, zipfile
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import cargar as lectores
 
 RES = "analisis/resultados"
 HOR = "datos/horarios_oficiales"
 BINS = [0, 3, 6, 10, 15, 25, 40]
 ETQ = ["0-3", "3-6", "6-10", "10-15", "15-25", "25-40"]
 MIN_LLEGADAS = 30
+CORTE = (pd.Timestamp.now(tz="Europe/Madrid") - pd.Timedelta(days=1)).date().isoformat()
 
 
 def franja(h):
@@ -32,13 +36,11 @@ def franja(h):
 
 
 def dias(fuente):
-    return sorted(glob.glob(f"datos/{fuente}/*.jsonl.gz"))
+    return [p for p in sorted(glob.glob(f"datos/{fuente}/*.jsonl.gz")) if os.path.basename(p)[:10] <= CORTE]
 
 
 def filas(f):
-    with gzip.open(f, "rt", encoding="utf-8") as g:
-        for l in g:
-            yield json.loads(l)
+    yield from lectores.filas(os.path.basename(os.path.dirname(f)), os.path.basename(f)[:10])
 
 
 def cabeceras_emt():
@@ -153,8 +155,11 @@ def epoch_madrid(dt):
 
 def extraer_renfe():
     todos = []
-    por_dia = {}
     trips = set()
+    for f in dias("renfe"):
+        trips.update(r["trip"] for r in filas(f) if r.get("k") == "vp" and r.get("ts"))
+    sched = horario_renfe(trips)
+    print(f"renfe: horario de {len(sched)} de {len(trips)} trenes", flush=True)
     for f in dias("renfe"):
         dia = os.path.basename(f)[:10]
         vp, tu = C.defaultdict(list), []
@@ -165,12 +170,7 @@ def extraer_renfe():
                 for stop, delay, rel in r["stops"]:
                     if delay is not None and abs(delay) < 3 * 3600 and rel != "SKIPPED":
                         tu.append((r["trip"], stop, r["t"], delay))
-        por_dia[dia] = (vp, tu)
-        trips |= set(vp)
         print(f"renfe {dia}: {len(vp)} trenes, {len(tu)} predicciones", flush=True)
-    sched = horario_renfe(trips)
-    print(f"renfe: horario de {len(sched)} de {len(trips)} trenes", flush=True)
-    for dia, (vp, tu) in por_dia.items():
         llegadas = {}
         for trip, seq in vp.items():
             seq = sorted(set(seq))
@@ -199,16 +199,21 @@ COLS = ["red", "dia", "parada", "linea", "tipo", "t", "antel", "retraso", "llega
 
 def cargar(cache, rehacer):
     p = os.path.join(cache, "predicciones.parquet")
+    entradas = {f: [os.path.getsize(f), os.stat(f).st_mtime_ns]
+                for fuente in ("emt", "crtm", "renfe") for f in dias(fuente)}
+    entradas.update({f: [os.path.getsize(f), os.stat(f).st_mtime_ns] for f in glob.glob(f"{HOR}/*.zip")})
     if os.path.exists(p) and not rehacer:
-        d = pd.read_parquet(p)
         with open(p + ".json") as f:
-            return d, json.load(f)
+            meta = json.load(f)
+        if meta.get("entradas") == entradas and meta.get("corte") == CORTE:
+            return pd.read_parquet(p), meta
+        print("La caché no corresponde a las entradas y al corte actuales; se recalcula.", flush=True)
     emt, cierres = extraer_emt()
     filas_ = emt + extraer_metro() + extraer_renfe()
     d = pd.DataFrame(filas_, columns=COLS)
     os.makedirs(cache, exist_ok=True)
     d.to_parquet(p)
-    meta = {"emt_cierres": cierres}
+    meta = {"emt_cierres": cierres, "corte": CORTE, "entradas": entradas}
     with open(p + ".json", "w") as f:
         json.dump(meta, f)
     return d, meta
@@ -353,20 +358,32 @@ def estabilidad_interurbanos():
 
 
 def main():
-    cache = sys.argv[1]
-    d, meta = cargar(cache, "--rehacer" in sys.argv)
+    global CORTE
+    parser = argparse.ArgumentParser(description="Actualiza la tabla sin sobrescribir las salidas históricas.")
+    parser.add_argument("cache")
+    parser.add_argument("--corte", default=CORTE)
+    parser.add_argument("--rehacer", action="store_true")
+    parser.add_argument("--reemplazar", action="store_true", help="Regenera solo las salidas fechadas de este corte; preserva las históricas sin fecha.")
+    args = parser.parse_args()
+    CORTE = pd.Timestamp(args.corte).date().isoformat()
+    if pd.Timestamp(CORTE).date() >= pd.Timestamp.now(tz="Europe/Madrid").date():
+        parser.error("El corte debe ser un día cerrado de Madrid.")
+    nombres = [f"{RES}/{n}_{CORTE}.{ext}" for n, ext in (("fiabilidad", "csv"), ("fiabilidad_interurbanos_estabilidad", "csv"), ("fiabilidad_validacion", "txt"))]
+    if any(os.path.exists(p) for p in nombres) and not args.reemplazar:
+        parser.error("Ya existe una salida de este corte; usa --reemplazar para regenerar solo las salidas fechadas.")
+    d, meta = cargar(args.cache, args.rehacer)
     d = preparar(d)
     t = tabla(d)
-    t.to_csv(f"{RES}/fiabilidad.csv", index=False, encoding="utf-8")
-    estabilidad_interurbanos().to_csv(f"{RES}/fiabilidad_interurbanos_estabilidad.csv", index=False, encoding="utf-8")
+    t.to_csv(nombres[0], index=False, encoding="utf-8")
+    estabilidad_interurbanos().to_csv(nombres[1], index=False, encoding="utf-8")
     o, s = meta["emt_cierres"]
-    cab = [f"Datos: {d.dia.min()} a {d.dia.max()}. Predicciones {len(d)}, llegadas {d.llegada.nunique()}.",
+    cab = [f"Comprobado ejecutando. Corte solicitado: {CORTE}; extracción por día de Madrid.", f"Datos: {d.dia.min()} a {d.dia.max()}. Predicciones {len(d)}, llegadas {d.llegada.nunique()}.",
            "Por red: " + ", ".join(f"{r} {g.llegada.nunique()} llegadas" for r, g in d.groupby("red")),
            f"EMT: {s} de {o + s} visitas ({100 * s / (o + s):.0f}%) no se cierran y no entran: el autobús pasó entre consultas "
            f"o nunca llegó. Si parte son fantasmas, la fiabilidad real de la EMT es menor que la de la tabla.",
            "Validación (Brier: menos es mejor; mejora frente a usar solo red y anuncio)."]
     texto = "\n".join(cab) + "\n" + validar(d) + "\n"
-    with open(f"{RES}/fiabilidad_validacion.txt", "w", encoding="utf-8") as f:
+    with open(nombres[2], "w", encoding="utf-8") as f:
         f.write(texto)
     print(texto)
     print(t[t.nivel == "1_red"][["red", "anuncio_min", "n_llegadas", "p_acierto_2min", "ic95_bajo", "ic95_alto", "p_tarde_mas_2min", "p_antes_mas_2min", "retraso_mediano_min"]].to_string(index=False))

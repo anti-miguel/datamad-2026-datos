@@ -1,0 +1,65 @@
+Comprobado ejecutando. Corte solicitado: 2026-11-22; extracción por día de Madrid.
+Datos: 2026-09-24 a 2026-11-22. Predicciones 11619723, llegadas 2789113.
+Por red: emt 615584 llegadas, metro 1552684 llegadas, renfe 620845 llegadas
+EMT: 339148 de 971573 visitas (35%) no se cierran y no entran: el autobús pasó entre consultas o nunca llegó. Si parte son fantasmas, la fiabilidad real de la EMT es menor que la de la tabla.
+Validación (Brier: menos es mejor; mejora frente a usar solo red y anuncio).
+
+## Días que no ha visto (último 30 % de días de cada red)
+emt: 439646 llegadas de entrenamiento, 175938 de prueba
+  solo por red y anuncio (referencia)    Brier 0.2184  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.2178  mejora  +0.3%
+  + tipo de parada                       Brier 0.2157  mejora  +1.3%
+  + línea                                Brier 0.2056  mejora  +5.8%
+  calibración: dice 32% y pasa 33%; dice 45% y pasa 46%; dice 55% y pasa 55%; dice 65% y pasa 65%; dice 75% y pasa 74%; dice 85% y pasa 85%; dice 92% y pasa 92%
+metro: 1056885 llegadas de entrenamiento, 495799 de prueba
+  solo por red y anuncio (referencia)    Brier 0.1071  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.1070  mejora  +0.1%
+  + tipo de parada                       Brier 0.1070  mejora  +0.1%
+  + línea                                Brier 0.1018  mejora  +4.9%
+  calibración: dice 30% y pasa 34%; dice 47% y pasa 50%; dice 53% y pasa 55%; dice 65% y pasa 66%; dice 76% y pasa 76%; dice 86% y pasa 86%; dice 96% y pasa 95%
+renfe: 452026 llegadas de entrenamiento, 168819 de prueba
+  solo por red y anuncio (referencia)    Brier 0.2261  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.2247  mejora  +0.6%
+  + tipo de parada                       Brier 0.2247  mejora  +0.6%
+  + línea                                Brier 0.2201  mejora  +2.6%
+  calibración: dice 32% y pasa 29%; dice 45% y pasa 41%; dice 56% y pasa 51%; dice 66% y pasa 64%; dice 74% y pasa 71%; dice 84% y pasa 76%
+
+## Paradas que no ha visto (1 de cada 4)
+emt: 451270 llegadas de entrenamiento, 164314 de prueba
+  solo por red y anuncio (referencia)    Brier 0.2217  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.2209  mejora  +0.3%
+  + tipo de parada                       Brier 0.2237  mejora  -0.9%
+  + línea                                Brier 0.2241  mejora  -1.1%
+  calibración: dice 30% y pasa 44%; dice 45% y pasa 47%; dice 55% y pasa 55%; dice 65% y pasa 63%; dice 74% y pasa 66%; dice 85% y pasa 79%; dice 93% y pasa 82%
+metro: 1094842 llegadas de entrenamiento, 457842 de prueba
+  solo por red y anuncio (referencia)    Brier 0.1007  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.1006  mejora  +0.1%
+  + tipo de parada                       Brier 0.1006  mejora  +0.1%
+  + línea                                Brier 0.0976  mejora  +3.1%
+  calibración: dice 34% y pasa 36%; dice 47% y pasa 55%; dice 56% y pasa 52%; dice 65% y pasa 64%; dice 76% y pasa 74%; dice 86% y pasa 84%; dice 96% y pasa 95%
+renfe: 480064 llegadas de entrenamiento, 140781 de prueba
+  solo por red y anuncio (referencia)    Brier 0.2439  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.2407  mejora  +1.3%
+  + tipo de parada                       Brier 0.2407  mejora  +1.3%
+  + línea                                Brier 0.2529  mejora  -3.7%
+  calibración: dice 33% y pasa 43%; dice 44% y pasa 49%; dice 55% y pasa 49%; dice 66% y pasa 59%; dice 74% y pasa 62%; dice 82% y pasa 64%
+
+## Líneas que no ha visto (1 de cada 4)
+emt: 471591 llegadas de entrenamiento, 143993 de prueba
+  solo por red y anuncio (referencia)    Brier 0.2228  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.2224  mejora  +0.2%
+  + tipo de parada                       Brier 0.2202  mejora  +1.1%
+  + línea                                Brier 0.2202  mejora  +1.1%
+  calibración: dice 39% y pasa 43%; dice 45% y pasa 46%; dice 55% y pasa 54%; dice 66% y pasa 63%; dice 74% y pasa 71%; dice 84% y pasa 82%; dice 91% y pasa 91%
+metro: 1269145 llegadas de entrenamiento, 283539 de prueba
+  solo por red y anuncio (referencia)    Brier 0.0907  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.0902  mejora  +0.5%
+  + tipo de parada                       Brier 0.0902  mejora  +0.5%
+  + línea                                Brier 0.0902  mejora  +0.5%
+  calibración: dice 47% y pasa 60%; dice 54% y pasa 72%; dice 76% y pasa 83%; dice 85% y pasa 89%; dice 96% y pasa 97%
+renfe: 275496 llegadas de entrenamiento, 345349 de prueba
+  solo por red y anuncio (referencia)    Brier 0.2299  mejora  +0.0%
+  + franja y tipo de día                 Brier 0.2277  mejora  +0.9%
+  + tipo de parada                       Brier 0.2277  mejora  +0.9%
+  + línea                                Brier 0.2277  mejora  +0.9%
+  calibración: dice 34% y pasa 43%; dice 46% y pasa 46%; dice 54% y pasa 51%; dice 68% y pasa 68%; dice 72% y pasa 73%

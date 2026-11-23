@@ -1,0 +1,53 @@
+Comprobado ejecutando. Corte 2026-11-22; solo copias locales, sin red. Los datos anuales oficiales no son horarios de 2026.
+Fuentes del portal: 1919185 (Creative Commons Attribution); 1919184 (Creative Commons Attribution); 902003 (Creative Commons Attribution); 1923861 (Creative Commons Attribution)
+EMT. Oficial: 8.6 min de intervalo medio en hora punta (2024). GTFS del portal, media de sus ventanas de punta (todas las líneas): 10.8 min.
+
+Última lectura hasta 4 min: 593625 intervalos, 64 líneas, 26 paradas, días 2026-10-05 a 2026-11-20; sin horario: 4.5%
+  punta (n=200478 intervalos): programado 9.7, real media 10.4, mediana 9.2; espera real 8.02 frente a 4.87; EWT 3.15 min; pasos vistos/esperados 0.83; más del doble de lo programado 11%
+  dia (n=581150 intervalos): programado 10.6, real media 11.1, mediana 10.0; espera real 8.25 frente a 5.28; EWT 2.97 min; pasos vistos/esperados 0.84; más del doble de lo programado 11%
+
+Última lectura hasta 10 min: 626649 intervalos, 64 líneas, 26 paradas, días 2026-10-05 a 2026-11-20; sin horario: 4.6%
+  punta (n=211259 intervalos): programado 9.7, real media 9.9, mediana 9.0; espera real 7.46 frente a 4.87; EWT 2.59 min; pasos vistos/esperados 0.87; más del doble de lo programado 9%
+  dia (n=613322 intervalos): programado 10.6, real media 10.6, mediana 9.7; espera real 7.67 frente a 5.28; EWT 2.39 min; pasos vistos/esperados 0.88; más del doble de lo programado 8%
+
+Punta, 63 líneas con 100 intervalos o más. EWT mediana 2.80 min; pasos vistos/esperados, mediana 0.84
+  Líneas con 90% de pasos vistos o más: 12; su EWT mediana 1.84 min
+  Mayor EWT:
+            n  prog_min  real_media_min  ewt_min  pasos_vistos_frente_a_esperados
+linea                                                                            
+135     448.0      11.8            20.7     7.06                             0.56
+203     517.0      15.6            19.6     6.87                             0.79
+66      698.0      11.2            15.2     4.67                             0.73
+5       670.0      12.0            15.3     4.49                             0.78
+174     793.0      10.2            13.4     4.27                             0.76
+173     846.0       8.7            12.1     4.11                             0.71
+15     2040.0      13.8            17.0     3.75                             0.79
+67      747.0      10.8            14.4     3.66                             0.75
+
+Impacto, orden de magnitud. Demanda oficial EMT: 454.6 M viajes (2023). Extrapola paradas céntricas y laborables a toda la red: no es una medición.
+  Lectura hasta 4 min, mediana de líneas: EWT 2.96 min -> 22.4 M horas al año
+  Lectura hasta 4 min, líneas con 90% de pasos vistos: EWT 2.04 min -> 15.5 M horas al año
+  Lectura hasta 10 min, mediana de líneas: EWT 2.44 min -> 18.5 M horas al año
+  Lectura hasta 10 min, líneas con 90% de pasos vistos: EWT 1.86 min -> 14.1 M horas al año
+
+Velocidad, laborables de 7 a 21 h, según la distancia a paradas céntricas: 10.7 km/h. Oficial: 13.0 km/h (2024, media diaria anual de toda la red). No son directamente comparables.
+
+Renfe, periodo de caché: 2026-09-24 a 2026-11-22; 1596371 predicciones antes de filtrar anuncio.
+
+Renfe. Viajeros por estación de 2024: 21 estaciones con dato en el portal, 18 cruzadas con las nuestras de 500 llegadas o más.
+  Del portal sin cruzar: ['ALUCHE', 'PARLA', 'VALLECAS']
+  Correlación de rangos entre viajeros y acierto: -0.32
+  Acierto ponderado por viajeros: 64.8%; sin ponderar: 67.7%
+  Más viajeros expuestos a un anuncio que no se cumple:
+                                  M_viajeros  acierto  llegadas
+nombre                                                         
+MADRID ATOCHA CERCANIAS                 89.2       67     33627
+MADRID NUEVOS MINISTERIOS               35.6       40     29535
+MADRID CHAMARTIN CLARA CAMPOAMOR        27.0       51     12274
+SOL                                     24.9       79      8635
+FUENLABRADA                              9.3       44      4145
+MOSTOLES                                 8.1       43      6959
+ALCALA DE HENARES                        7.2       55      2746
+MADRID VILLAVERDE ALTO                  14.1       77      5279
+MADRID PRINCIPE PIO                      8.4       65      4587
+GETAFE CENTRO                           10.1       71       972

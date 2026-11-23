@@ -11,21 +11,22 @@ Paso real de un autobús: la última lectura de cada visita, si anunciaba hasta 
 menos la que correspondería con buses regulares a la frecuencia programada (h/2). Supone viajeros que llegan al azar.
 
 Uso, desde la raíz de datos-transporte:
-  python analisis/cruce_catalogo.py <carpeta de caché de tabla_fiabilidad.py>
-Salida: analisis/resultados/cruce_catalogo.txt, cruce_catalogo_emt_lineas.csv, cruce_catalogo_renfe_estaciones.csv
+  python analisis/cruce_catalogo.py <carpeta de caché de tabla_fiabilidad.py> [--corte AAAA-MM-DD]
+Salida: analisis/resultados/cruce_catalogo{,_emt_lineas,_renfe_estaciones}_AAAA-MM-DD.*
 Copia de los datos del portal: datos/catalogo_cm/
 """
-import collections as C, csv, glob, gzip, io, json, os, re, sys, unicodedata, urllib.request, zipfile
+import argparse, collections as C, csv, glob, gzip, io, json, os, re, sys, unicodedata, zipfile
 from datetime import datetime, timedelta, timezone
 import numpy as np
 import pandas as pd
 
 sys.path.insert(0, "analisis")
-from tabla_fiabilidad import cabeceras_emt
+from tabla_fiabilidad import cabeceras_emt, CORTE as CORTE_CERRADO
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import cargar
 
 RES = "analisis/resultados"
 CM = "datos/catalogo_cm"
-PORTAL = "https://datos.comunidad.madrid/api/3/action/package_show?id="
 DATASETS = {"1919185": "intervalo_hora_punta", "1919184": "velocidad_comercial", "902003": "billetes_por_modo",
             "1923861": "viajeros_cercanias_estaciones"}
 FESTIVOS = {"2026-10-12", "2026-11-02"}  # laborables sin servicio LA, según calendar_dates del GTFS
@@ -37,6 +38,11 @@ ALIAS_ESTACIONES = {"MADRID ATOCHA C": "MADRID ATOCHA CERCANIAS", "MADRID CHAMAR
 CAMBIO_HORA = datetime(2026, 10, 25, 1, tzinfo=timezone.utc).timestamp()
 FRANJAS = {"punta": ((7.0, 9.5), (17.0, 20.0)), "dia": ((6.0, 23.0),)}
 lineas_txt = []
+CORTE = CORTE_CERRADO
+
+
+def salida(nombre, extension):
+    return f"{RES}/{nombre}_{CORTE}.{extension}"
 
 
 def di(*a):
@@ -60,23 +66,16 @@ def hora_local(t):
 
 
 def catalogo():
-    """Descarga una vez cada CSV del portal y guarda de dónde sale."""
-    os.makedirs(CM, exist_ok=True)
+    """Lee las copias locales y su procedencia; nunca descarga ni modifica datos/."""
     fuentes = os.path.join(CM, "fuentes.json")
     meta = json.load(open(fuentes, encoding="utf-8")) if os.path.exists(fuentes) else {}
     out = {}
     for ident, nombre in DATASETS.items():
         p = os.path.join(CM, nombre + ".csv")
         if not os.path.exists(p):
-            with urllib.request.urlopen(urllib.request.Request(PORTAL + ident, headers={"User-Agent": "datamad"}), timeout=40) as r:
-                d = json.load(r)["result"]
-            rec = next(x for x in d["resources"] if (x.get("format") or "").upper() == "CSV")
-            with urllib.request.urlopen(urllib.request.Request(rec["url"], headers={"User-Agent": "datamad"}), timeout=60) as r:
-                b = r.read()
-            with open(p, "wb") as f:
-                f.write(b)
-            meta[nombre] = {"dataset": ident, "titulo": d["title"], "licencia": d.get("license_title"), "ficha": f"https://datos.comunidad.madrid/dataset/{ident}",
-                            "recurso": rec["url"], "modificado": d.get("metadata_modified"), "descargado": datetime.now().strftime("%Y-%m-%d")}
+            raise FileNotFoundError(f"Falta la copia local {p}; este análisis no permite red.")
+        if nombre not in meta or str(meta[nombre].get("dataset")) != ident:
+            raise ValueError(f"Falta procedencia local verificable de {nombre} ({ident}).")
         b = open(p, "rb").read()
         try:
             s = b.decode("utf-8-sig")
@@ -84,8 +83,6 @@ def catalogo():
             s = b.decode("latin-1")
         out[nombre] = pd.read_csv(io.StringIO(s), sep=";", dtype=str)
         out[nombre].columns = [norma(c).lower() for c in out[nombre].columns]
-    with open(fuentes, "w", encoding="utf-8") as f:
-        json.dump(meta, f, ensure_ascii=False, indent=1)
     return out, meta
 
 
@@ -125,23 +122,22 @@ def pasos_emt(limite_s):
     """Pasos por (parada, línea, destino) y horas con datos por parada, de los laborables."""
     cab = {(linea(l), str(s)) for l, s in cabeceras_emt()}
     pasos, consultas, velocidad = C.defaultdict(list), C.defaultdict(list), C.defaultdict(lambda: [0.0, 0.0])
-    for f in sorted(glob.glob("datos/emt/*.jsonl.gz")):
-        dia = os.path.basename(f)[:10]
+    for dia in cargar.dias("emt"):
+        if dia > CORTE:
+            continue
         if pd.Timestamp(dia).dayofweek >= 5 or dia in FESTIVOS:
             continue
         obs = C.defaultdict(list)
-        with gzip.open(f, "rt", encoding="utf-8") as g:
-            for l in g:
-                r = json.loads(l)
-                if not r.get("a"):
-                    continue
-                reales = False
-                for lin, bus, est, dist, _lo, _la, tipo, dest in r["a"]:
-                    if bus and est is not None and est not in CENT:
-                        reales = True
-                        obs[(str(r["s"]), linea(lin), dest, bus)].append((r["t"], est, dist, str(tipo)))
-                if reales:
-                    consultas[(dia, str(r["s"]))].append(r["t"])
+        for r in cargar.filas("emt", dia):
+            if not r.get("a"):
+                continue
+            reales = False
+            for lin, bus, est, dist, _lo, _la, tipo, dest in r["a"]:
+                if bus and est is not None and est not in CENT:
+                    reales = True
+                    obs[(str(r["s"]), linea(lin), dest, bus)].append((r["t"], est, dist, str(tipo)))
+            if reales:
+                consultas[(dia, str(r["s"]))].append(r["t"])
         for (s, lin, dest, bus), seq in obs.items():
             if (lin, s) in cab:
                 continue
@@ -217,12 +213,12 @@ def bloque_emt(cat):
         for f in FRANJAS:
             x = d[en_franja(d, f)]
             r = resumen(x)
-            di(f"  {f}: programado {r.prog_min}, real media {r.real_media_min}, mediana {r.real_mediana_min}; espera real {r.espera_real_min} frente a {r.espera_prog_min}; "
+            di(f"  {f} (n={int(r.n)} intervalos): programado {r.prog_min}, real media {r.real_media_min}, mediana {r.real_mediana_min}; espera real {r.espera_real_min} frente a {r.espera_prog_min}; "
                f"EWT {r.ewt_min} min; pasos vistos/esperados {r.pasos_vistos_frente_a_esperados}; más del doble de lo programado {r.p_mas_del_doble:.0%}")
     d = res["hasta 10 min"]  # la lectura más generosa da la cifra más prudente
     t = d[en_franja(d, "punta")].groupby("linea")[["h", "prog"]].apply(resumen).dropna()
     t = t[t.n >= 100].sort_values("ewt_min", ascending=False)
-    t.to_csv(f"{RES}/cruce_catalogo_emt_lineas.csv", encoding="utf-8")
+    t.to_csv(salida("cruce_catalogo_emt_lineas", "csv"), encoding="utf-8")
     di(f"\nPunta, {len(t)} líneas con 100 intervalos o más. EWT mediana {t.ewt_min.median():.2f} min; pasos vistos/esperados, mediana {t.pasos_vistos_frente_a_esperados.median():.2f}")
     bien = t[t.pasos_vistos_frente_a_esperados >= 0.9]
     di(f"  Líneas con 90% de pasos vistos o más: {len(bien)}; su EWT mediana {bien.ewt_min.median():.2f} min")
@@ -243,7 +239,8 @@ def bloque_emt(cat):
 def bloque_renfe(cat, cache):
     p = os.path.join(cache, "predicciones.parquet")
     d = pd.read_parquet(p, columns=["red", "dia", "parada", "antel", "retraso", "llegada"])
-    d = d[d.red == "renfe"].copy()
+    d = d[(d.red == "renfe") & (d.dia <= CORTE)].copy()
+    di(f"\nRenfe, periodo de caché: {d.dia.min()} a {d.dia.max()}; {len(d)} predicciones antes de filtrar anuncio.")
     d["an"] = d.antel - d.retraso
     d = d[(d.antel >= 0) & (d.an >= 3) & (d.an < 25)]
     d["ok"] = d.retraso.abs() <= 2
@@ -262,7 +259,7 @@ def bloque_renfe(cat, cache):
     m = a.join(v, how="inner")
     m["viajeros_fallo"] = (m.n * (1 - m.acierto)).round()
     m = m.sort_values("viajeros_fallo", ascending=False)
-    m.round(3).to_csv(f"{RES}/cruce_catalogo_renfe_estaciones.csv", encoding="utf-8")
+    m.round(3).to_csv(salida("cruce_catalogo_renfe_estaciones", "csv"), encoding="utf-8")
     di(f"\nRenfe. Viajeros por estación de {ano}: {len(v)} estaciones con dato en el portal, {len(m)} cruzadas con las nuestras de 500 llegadas o más.")
     di(f"  Del portal sin cruzar: {sorted(set(v.index) - set(m.index))}")
     di(f"  Correlación de rangos entre viajeros y acierto: {m.n.corr(m.acierto, method='spearman'):.2f}")
@@ -274,11 +271,27 @@ def bloque_renfe(cat, cache):
 
 
 def main():
+    global CORTE
+    parser = argparse.ArgumentParser(description="Cruce local del portal con salidas fechadas.")
+    parser.add_argument("cache")
+    parser.add_argument("--corte", default=CORTE)
+    parser.add_argument("--reemplazar", action="store_true", help="Regenera solo las salidas fechadas de este corte.")
+    args = parser.parse_args()
+    CORTE = pd.Timestamp(args.corte).date().isoformat()
+    if pd.Timestamp(CORTE).date() >= pd.Timestamp.now(tz="Europe/Madrid").date():
+        parser.error("El corte debe ser un día cerrado de Madrid.")
+    if any(os.path.exists(salida(n, e)) for n, e in (("cruce_catalogo", "txt"), ("cruce_catalogo_emt_lineas", "csv"), ("cruce_catalogo_renfe_estaciones", "csv"))) and not args.reemplazar:
+        parser.error("Ya existe una salida de este corte; usa --reemplazar para regenerar solo las salidas fechadas.")
+    with open(os.path.join(args.cache, "predicciones.parquet.json"), encoding="utf-8") as f:
+        cache_meta = json.load(f)
+    if cache_meta.get("corte") != CORTE:
+        parser.error("La caché no tiene el corte solicitado; ejecuta tabla_fiabilidad.py primero.")
     cat, meta = catalogo()
+    di(f"Comprobado ejecutando. Corte {CORTE}; solo copias locales, sin red. Los datos anuales oficiales no son horarios de 2026.")
     di("Fuentes del portal:", "; ".join(f"{v['dataset']} ({v['licencia']})" for v in meta.values()))
     bloque_emt(cat)
-    bloque_renfe(cat, sys.argv[1])
-    with open(f"{RES}/cruce_catalogo.txt", "w", encoding="utf-8") as f:
+    bloque_renfe(cat, args.cache)
+    with open(salida("cruce_catalogo", "txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_txt) + "\n")
 
 
