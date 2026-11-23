@@ -1,0 +1,28 @@
+Comprobado ejecutando. Líneas 691; días 2026-10-14 a 2026-11-22 (32 días); 318643 anuncios con llegada aproximada.
+Llegada aproximada: última hora anunciada antes de que el viaje desaparezca del panel (a 3 min o menos). No es una llegada medida por GPS.
+Fuera de muestra (ventanas con días hasta 2026-11-05, comprobadas desde ese día): 81.9% de 101888 anuncios dentro de la ventana p10-p90 (lo esperado es 80%).
+Fuera de la tabla, por ser cabecera (más del 80 % de anuncios con retraso 0): 8_15616 ERAS-URB.LOS COPOS línea 691 sentido 2 (94%), 8_17480 INTERCAMBIADOR DE MONCLOA línea 691 sentido 1 (100%)
+
+Por parada y sentido, laborable, fuera de muestra:
+  8_06516 AV.JUAN CARLOS I-ZOCO sentido 1: 82.1% de 13204
+  8_06516 AV.JUAN CARLOS I-ZOCO sentido 2: 91.0% de 16369
+  8_09186 PºERMITA-GUARDIA CIVIL sentido 1: 81.0% de 13657
+  8_09193 ERAS-OFICINA DE CORREOS sentido 1: 76.2% de 14332
+  8_09208 PºERMITA-GUARDIA CIVIL sentido 2: 76.5% de 15432
+
+Ejemplos, laborable (la app dice X -> suele llegar entre A y B):
+  AV.JUAN CARLOS I-ZOCO (8_06516) hacia ERAS-URB.LOS COPOS, dice 10: entre 10.0 y 21.4 (n=575)
+  AV.JUAN CARLOS I-ZOCO (8_06516) hacia ERAS-URB.LOS COPOS, dice 20: entre 9.1 y 31.5 (n=572)
+  AV.JUAN CARLOS I-ZOCO (8_06516) hacia ERAS-URB.LOS COPOS, dice 30: entre 17.6 y 41.1 (n=551)
+  AV.JUAN CARLOS I-ZOCO (8_06516) hacia INTERCAMBIADOR DE MONCLOA, dice 10: entre 10.0 y 27.8 (n=972)
+  AV.JUAN CARLOS I-ZOCO (8_06516) hacia INTERCAMBIADOR DE MONCLOA, dice 20: entre 20.0 y 38.6 (n=785)
+  AV.JUAN CARLOS I-ZOCO (8_06516) hacia INTERCAMBIADOR DE MONCLOA, dice 30: entre 30.0 y 48.3 (n=695)
+  PºERMITA-GUARDIA CIVIL (8_09186) hacia ERAS-URB.LOS COPOS, dice 10: entre 9.2 y 18.1 (n=614)
+  PºERMITA-GUARDIA CIVIL (8_09186) hacia ERAS-URB.LOS COPOS, dice 20: entre 15.7 y 28.1 (n=652)
+  PºERMITA-GUARDIA CIVIL (8_09186) hacia ERAS-URB.LOS COPOS, dice 30: entre 24.5 y 38.0 (n=644)
+  ERAS-OFICINA DE CORREOS (8_09193) hacia ERAS-URB.LOS COPOS, dice 10: entre 10.0 y 15.6 (n=728)
+  ERAS-OFICINA DE CORREOS (8_09193) hacia ERAS-URB.LOS COPOS, dice 20: entre 19.1 y 26.3 (n=673)
+  ERAS-OFICINA DE CORREOS (8_09193) hacia ERAS-URB.LOS COPOS, dice 30: entre 27.5 y 38.5 (n=676)
+  PºERMITA-GUARDIA CIVIL (8_09208) hacia INTERCAMBIADOR DE MONCLOA, dice 10: entre 10.0 y 18.6 (n=871)
+  PºERMITA-GUARDIA CIVIL (8_09208) hacia INTERCAMBIADOR DE MONCLOA, dice 20: entre 19.5 y 28.8 (n=711)
+  PºERMITA-GUARDIA CIVIL (8_09208) hacia INTERCAMBIADOR DE MONCLOA, dice 30: entre 23.6 y 38.8 (n=695)
