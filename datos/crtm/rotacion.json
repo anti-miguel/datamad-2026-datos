@@ -195,8 +195,17 @@
    "s": "10_55",
    "nombre": "BULEVAR SUR",
    "motivo": "diaria",
-   "consultas": 585,
-   "llegadas": 1117
+   "consultas": 976,
+   "llegadas": 1902
+  },
+  {
+   "fecha": "2026-11-23",
+   "m": "interurbanos",
+   "s": "8_20431",
+   "nombre": "AV.FEDERICA MONTSENY-Pº ESTACIÓN",
+   "motivo": "diaria",
+   "consultas": 0,
+   "llegadas": 0
   }
  ]
 }
