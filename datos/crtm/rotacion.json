@@ -204,8 +204,17 @@
    "s": "8_20431",
    "nombre": "AV.FEDERICA MONTSENY-Pº ESTACIÓN",
    "motivo": "diaria",
-   "consultas": 0,
-   "llegadas": 0
+   "consultas": 996,
+   "llegadas": 1735
+  },
+  {
+   "fecha": "2026-11-24",
+   "m": "emt",
+   "s": "6_2331",
+   "nombre": "Alcalá - Mateo García",
+   "motivo": "diaria",
+   "consultas": 79,
+   "llegadas": 116
   }
  ]
 }
