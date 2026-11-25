@@ -38,11 +38,11 @@ Se ha implementado la ampliación útil que permiten las copias existentes, sin 
 Desde la raíz, con Python 3.13, pandas 2.2.3 y pyarrow 23.0.1:
 
 ```powershell
-python analisis/tabla_fiabilidad.py D:\Temp\datamad_codex_2026-11-05 --corte 2026-11-04 --reemplazar
-python analisis/cruce_catalogo.py D:\Temp\datamad_codex_2026-11-05 --corte 2026-11-04 --reemplazar
+python analisis/tabla_fiabilidad.py <carpeta para la caché> --corte 2026-11-04 --reemplazar
+python analisis/cruce_catalogo.py <carpeta para la caché> --corte 2026-11-04 --reemplazar
 python analisis/contexto_portal.py --corte 2026-11-04
-python analisis/comparar_refresh.py --corte 2026-11-04 --cache D:\Temp\datamad_codex_2026-11-05
-python analisis/sensibilidad_festivo.py D:\Temp\datamad_codex_2026-11-05 --corte 2026-11-04
+python analisis/comparar_refresh.py --corte 2026-11-04 --cache <carpeta para la caché>
+python analisis/sensibilidad_festivo.py <carpeta para la caché> --corte 2026-11-04
 python analisis/auditar_lineas_emt.py --corte 2026-11-04
 python analisis/verificar_refresh.py
 ```

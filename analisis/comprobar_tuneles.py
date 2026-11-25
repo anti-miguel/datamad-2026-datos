@@ -1,8 +1,8 @@
 r"""Comprueba la sensibilidad de la fiabilidad de Renfe a la medición de llegada.
 
 Ejecutar desde la raíz, con la caché de refrescar_resultados/tabla_fiabilidad:
-  python analisis/comprobar_tuneles.py D:\Temp\datamad_codex_2026-11-05
-  python analisis/comprobar_tuneles.py D:\Temp\datamad_codex_2026-11-05 --solo-bruto
+  python analisis/comprobar_tuneles.py <carpeta para la caché>
+  python analisis/comprobar_tuneles.py <carpeta para la caché> --solo-bruto
   python analisis/comprobar_tuneles.py --autoprueba
 
 Lee mediante cargar.filas un día a la vez. Reproduce la primera llegada de
