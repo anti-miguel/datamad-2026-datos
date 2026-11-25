@@ -81,7 +81,7 @@ function TarjetaPrimera({ llegada, red, onInfo }) {
 
       <p className="mt-3 text-[15px] text-[#5F6368]">La app oficial dice {minutos} min</p>
 
-      <p className="mt-1 text-[32px] font-extrabold leading-tight text-[#202124]">
+      <p className="mt-1 text-[32px] font-black tracking-[-0.01em] tabular-nums leading-tight text-[#202124]">
         {lejos ? "Demasiado lejos para estimar" : v ? `Llega entre ${v.desde} y ${v.hasta} min` : "Sin datos suficientes"}
       </p>
 
@@ -123,7 +123,7 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
         <Volver texto="Mis paradas" onClick={onVolver} />
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-[30px] font-bold leading-tight text-[#202124]">{parada.nombre}</h1>
+            <h1 className="titulo text-[32px] leading-tight text-[#202124]">{parada.nombre}</h1>
             <p className="text-[16px] text-[#5F6368]">
               {NOMBRE_RED[parada.red]} · parada {parada.id.split("-")[1]}
             </p>

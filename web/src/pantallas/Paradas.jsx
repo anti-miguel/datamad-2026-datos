@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Linea, Tarjeta } from "../componentes/Comunes.jsx";
 import { IconoLupa, IconoAviso, IconoEstrella } from "../componentes/Iconos.jsx";
 import { NOMBRE_RED, normalizar } from "../lib/util.js";
+import { EscenaBus } from "../componentes/Escena.jsx";
 
 const FILTROS = [
   { id: "todo", texto: "Todo" },
@@ -57,7 +58,10 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
 
   return (
     <div className="space-y-4">
-      <h1 className="pt-2 text-[32px] font-bold text-[#202124]">Mis paradas</h1>
+      <div className="-mt-4">
+        <EscenaBus />
+      </div>
+      <h1 className="titulo text-[34px] text-[#202124]">Mis paradas</h1>
 
       <label className="flex min-h-[48px] items-center gap-2 rounded-2xl border border-[#D5D3CE] bg-white px-4 focus-within:border-principal">
         <IconoLupa className="h-5 w-5 text-[#5F6368]" />

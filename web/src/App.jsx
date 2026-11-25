@@ -159,6 +159,7 @@ export default function App() {
       minutos: primera.minutos,
       v: primera.v,
       icono: iconoDeRed(paradaSeguida.red),
+      red: paradaSeguida.red,
       posicion: posicionVehiculo(primera.minutos),
       siguienteTexto,
       destino,

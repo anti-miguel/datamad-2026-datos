@@ -18,7 +18,7 @@ export default function Info({ meta }) {
 
   return (
     <div className="space-y-4">
-      <h1 className="pt-2 text-[32px] font-bold text-[#202124]">Cómo funciona</h1>
+      <h1 className="titulo pt-2 text-[34px] text-[#202124]">Cómo funciona</h1>
       <p className="text-[17px] text-[#202124]">
         Grabamos lo que anuncian las apps oficiales y lo comparamos con cuándo llega de verdad. Con eso calculamos cuánto
         fiarse de cada anuncio.

@@ -34,7 +34,7 @@ export default function LineaInfo({ parada, linea, llegada, meta, contexto, rare
       <Volver texto={parada.nombre} onClick={onVolver} />
       <div className="flex items-center gap-3">
         <Linea linea={linea} red={parada.red} grande />
-        <h1 className="text-[26px] font-bold leading-tight text-[#202124]">Lo que conviene saber</h1>
+        <h1 className="titulo text-[28px] leading-tight text-[#202124]">Lo que conviene saber</h1>
       </div>
 
       <Tarjeta className="divide-y divide-[#E4E2DD]">

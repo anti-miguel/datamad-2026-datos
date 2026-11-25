@@ -1,9 +1,10 @@
-// Franja de seguimiento (sección 1.6 del manual): un vehículo que avanza por una línea
-// según lo que le falta, encima de la barra inferior.
+// Franja de seguimiento (sección 1.6 del manual): el vehículo dibujado avanza
+// por su carretera o su vía según lo que le falta, encima de la barra inferior.
 import { useEffect, useState } from "react";
-import { IconoVehiculo, IconoFlechaAbajo } from "./Iconos.jsx";
+import { IconoFlechaAbajo } from "./Iconos.jsx";
+import { DibujoVehiculo } from "./Vehiculos.jsx";
 
-// Al aparecer, el vehículo sale del principio y avanza hasta su sitio: es el movimiento de la demo.
+// Al aparecer, el vehículo sale del principio y avanza hasta su sitio
 function usePosicionAnimada(destino) {
   const [pos, setPos] = useState(4);
   useEffect(() => {
@@ -13,30 +14,35 @@ function usePosicionAnimada(destino) {
   return pos;
 }
 
-function Vehiculo({ tipo, pos, llegando }) {
+// El vehículo con el morro en la posición que toca. Las ruedas giran mientras avanza.
+function Vehiculo({ tipo, red, pos, llegando }) {
+  const [moviendo, setMoviendo] = useState(true);
+  useEffect(() => {
+    setMoviendo(true);
+    const id = setTimeout(() => setMoviendo(false), 1700);
+    return () => clearTimeout(id);
+  }, [pos]);
+  const ancho = tipo === "tren" ? 80 : 50;
   return (
     <div
-      className="absolute top-1/2 z-10 transition-[left] duration-[1600ms] ease-out motion-reduce:transition-none"
-      style={{ left: `${pos}%`, transform: "translate(-50%, -50%)" }}
+      className={`absolute bottom-[6px] z-10 transition-[left] duration-[1600ms] ease-out motion-reduce:transition-none ${
+        moviendo ? "" : "parado"
+      } ${llegando ? "vehiculo-llegando" : ""}`}
+      style={{ left: `calc(${pos}% - ${ancho - 6}px)`, width: ancho }}
     >
-      <div
-        className={`flex h-[26px] w-[30px] items-center justify-center rounded-md bg-principal text-white shadow-md vehiculo-rueda ${
-          llegando ? "vehiculo-llegando" : ""
-        }`}
-      >
-        <IconoVehiculo tipo={tipo} className="h-[18px] w-[18px]" />
-      </div>
+      <DibujoVehiculo tipo={tipo} red={red} className={`block w-full ${tipo === "tren" ? "" : "vaiven"}`} />
     </div>
   );
 }
 
-// Línea gris con la parte recorrida en color principal
-function Recorrido({ pos, etiqueta, children }) {
+// Carretera (bus) o vía (tren y metro); la parte ya recorrida se marca en color principal
+function Recorrido({ pos, etiqueta, tipo, children }) {
+  const via = tipo === "tren" || tipo === "metro";
   return (
-    <div role="img" aria-label={etiqueta} className="relative mx-[9px] h-[26px]">
-      <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded bg-[#D5D3CE]" />
+    <div role="img" aria-label={etiqueta} className="relative mx-[9px] h-[42px]">
+      <div className={`${via ? "via" : "carretera"} absolute inset-x-0 bottom-0 h-[10px] rounded-sm`} />
       <div
-        className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded bg-principal transition-[width] duration-[1600ms] ease-out motion-reduce:transition-none"
+        className="absolute bottom-[3.5px] left-0 h-[3px] rounded bg-principal transition-[width] duration-[1600ms] ease-out motion-reduce:transition-none"
         style={{ width: `${pos}%` }}
       />
       {children}
@@ -44,9 +50,13 @@ function Recorrido({ pos, etiqueta, children }) {
   );
 }
 
+// Tu parada o tu destino: un poste con su cartel al final del recorrido
 function PuntoFinal() {
   return (
-    <div className="absolute right-0 top-1/2 h-[18px] w-[18px] translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-white bg-[#202124] outline outline-2 outline-[#202124]" />
+    <div className="absolute bottom-[8px] right-0 flex translate-x-1/2 flex-col items-center">
+      <div className="h-[16px] w-[16px] rounded-full border-[3px] border-white bg-[#202124] outline outline-2 outline-[#202124]" />
+      <div className="h-[16px] w-[2px] bg-[#202124]" />
+    </div>
   );
 }
 
@@ -81,7 +91,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
       tabIndex={0}
       onClick={onAbrir}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onAbrir()}
-      className="cursor-pointer border-t border-[#E4E2DD] bg-white px-4 pt-2.5 pb-2"
+      className="cursor-pointer border-t border-[#E4E2DD] bg-white px-4 pt-1.5 pb-2"
     >
       <div className="flex items-center justify-between gap-2">
         <button
@@ -95,32 +105,30 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
           <IconoFlechaAbajo className="ml-1 inline h-4 w-4 align-[-3px]" />
         </button>
         {textoDerecho && (
-          <span className="shrink-0 text-[16px] font-bold text-principal">{textoDerecho}</span>
+          <span className="shrink-0 text-[17px] font-extrabold tabular-nums text-principal">{textoDerecho}</span>
         )}
       </div>
 
       {seg.modo === "destino" && !seg.destino ? (
-        <p className="py-3 text-[14px] text-[#5F6368]">
-          Elige a dónde vas para seguir el viaje hasta tu destino.
-        </p>
+        <p className="py-3 text-[14px] text-[#5F6368]">Elige a dónde vas para seguir el viaje hasta tu destino.</p>
       ) : seg.modo === "parada" ? (
         <>
-          <Recorrido pos={pos} etiqueta={etiqueta}>
+          <Recorrido pos={pos} etiqueta={etiqueta} tipo={seg.icono}>
             <PuntoFinal />
-            <Vehiculo tipo={seg.icono} pos={pos} llegando={seg.minutos <= 1} />
+            <Vehiculo tipo={seg.icono} red={seg.red} pos={pos} llegando={seg.minutos <= 1} />
           </Recorrido>
-          <p className="text-[13px] text-[#5F6368]">{seg.siguienteTexto}</p>
+          <p className="mt-1 text-[13px] text-[#5F6368]">{seg.siguienteTexto}</p>
         </>
       ) : (
         <>
-          <Recorrido pos={pos} etiqueta={etiqueta}>
+          <Recorrido pos={pos} etiqueta={etiqueta} tipo={seg.destino.icono}>
             {seg.destino.paradas.map((p) =>
               p.tipo === "fin" ? (
                 <PuntoFinal key={p.nombre} />
               ) : (
                 <div
                   key={p.nombre}
-                  className={`absolute top-1/2 h-[14px] w-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full ${
+                  className={`absolute bottom-[-1px] h-[12px] w-[12px] -translate-x-1/2 rounded-full ${
                     p.tipo === "inicio" ? "bg-principal" : "border-[3px] border-[#202124] bg-white"
                   }`}
                   style={{ left: `${p.pos}%` }}
@@ -130,7 +138,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
             <Vehiculo tipo={seg.destino.icono} pos={pos} />
           </Recorrido>
           {/* Nombres de las paradas debajo, en 12 px */}
-          <div className="relative mx-[9px] h-[16px] text-[12px] text-[#5F6368]">
+          <div className="relative mx-[9px] mt-0.5 h-[16px] text-[12px] text-[#5F6368]">
             {seg.destino.paradas.map((p) => (
               <span
                 key={p.nombre}

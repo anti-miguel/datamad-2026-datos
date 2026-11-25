@@ -9,7 +9,7 @@
   --color-rojo: #C5221F;
   --color-aviso-oficial: #FFF4D6;
   --color-aviso-simulado: #EDE7F6;
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
@@ -34,26 +34,21 @@ summary {
   outline-offset: 2px;
 }
 
-/* El vehículo de la franja: un ligero vaivén, como si rodara */
 @keyframes rodar {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-}
-.vehiculo-rueda {
-  animation: rodar 0.9s ease-in-out infinite;
+  50% { transform: translateY(-1px); }
 }
 
 /* Cuando está llegando, late para llamar la atención */
 @keyframes latir {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(31, 95, 209, 0.45); }
-  50% { box-shadow: 0 0 0 8px rgba(31, 95, 209, 0); }
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(31, 95, 209, 0)); }
+  50% { filter: drop-shadow(0 0 6px rgba(31, 95, 209, 0.8)); }
 }
 .vehiculo-llegando {
-  animation: rodar 0.9s ease-in-out infinite, latir 1.4s ease-out infinite;
+  animation: latir 1.4s ease-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vehiculo-rueda,
   .vehiculo-llegando {
     animation: none;
   }
@@ -62,4 +57,53 @@ summary {
 /* Leaflet sin el aviso de su marca, conservando la atribución de OpenStreetMap */
 .leaflet-control-attribution {
   font-size: 10px;
+}
+
+/* Títulos: más apretados y con más peso, como los rótulos de las estaciones */
+.titulo {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* Carretera de la franja: asfalto con la línea discontinua */
+.carretera {
+  background:
+    repeating-linear-gradient(90deg, #f6f5f2 0 10px, transparent 10px 20px) center / 100% 1.5px no-repeat,
+    #5f6368;
+}
+
+/* Vía de la franja: traviesas y raíles */
+.via {
+  background:
+    linear-gradient(#5f6368, #5f6368) 0 1px / 100% 1.5px no-repeat,
+    linear-gradient(#5f6368, #5f6368) 0 7px / 100% 1.5px no-repeat,
+    repeating-linear-gradient(90deg, #8a7d70 0 4px, transparent 4px 9px),
+    #c9c3b8;
+}
+
+/* Ruedas que giran mientras el vehículo avanza */
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+.rueda {
+  animation: girar 0.5s linear infinite;
+}
+.parado .rueda {
+  animation-play-state: paused;
+}
+
+/* El autobús se mece un poco, como sobre el asfalto */
+.vaiven {
+  animation: rodar 1s ease-in-out infinite;
+}
+.parado .vaiven {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rueda,
+  .vaiven {
+    animation: none;
+  }
 }

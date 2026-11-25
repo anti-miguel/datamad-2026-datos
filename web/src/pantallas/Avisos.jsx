@@ -50,7 +50,7 @@ export default function Avisos({ avisos }) {
       </div>
 
       <div className="space-y-4 px-4 pt-4">
-        <h1 className="text-[32px] font-bold text-[#202124]">Avisos</h1>
+        <h1 className="titulo text-[34px] text-[#202124]">Avisos</h1>
         {avisos.map((a) => (
           <TarjetaAviso key={a.texto} aviso={a} />
         ))}

@@ -1,5 +1,6 @@
 // Pantalla 3: ¿Cuándo salgo? Convierte la fiabilidad en una hora de salida (caso fijo de demo.json).
 import { Tarjeta } from "../componentes/Comunes.jsx";
+import { EscenaTren } from "../componentes/Escena.jsx";
 
 function FilaDias({ dias }) {
   const aTiempo = dias.filter((d) => d === 1).length;
@@ -24,7 +25,10 @@ export default function CuandoSalgo({ caso }) {
 
   return (
     <div className="space-y-4">
-      <h1 className="pt-2 text-[32px] font-bold text-[#202124]">¿Cuándo salgo?</h1>
+      <div className="-mt-4">
+        <EscenaTren />
+      </div>
+      <h1 className="titulo text-[34px] text-[#202124]">¿Cuándo salgo?</h1>
 
       <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-[17px]">
         <dt className="text-[#5F6368]">Desde</dt>
@@ -39,7 +43,7 @@ export default function CuandoSalgo({ caso }) {
 
       <Tarjeta className="border-2 !border-principal p-4">
         <p className="text-[15px] font-bold text-principal">Te recomendamos</p>
-        <p className="mt-1 text-[32px] font-extrabold leading-tight text-[#202124]">Sal a las {rec.salida}</p>
+        <p className="mt-1 text-[34px] font-black tabular-nums leading-tight text-[#202124]">Sal a las {rec.salida}</p>
         <p className="mt-1 text-[16px] text-[#3C4043]">{rec.trayecto}</p>
         <div className="mt-3 grid grid-cols-2 gap-2">
           <div className="rounded-xl bg-[#F6F5F2] p-3">
