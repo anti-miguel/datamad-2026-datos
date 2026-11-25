@@ -1,0 +1,10 @@
+concepto,ano_base,valor_base,ano_ultimo,valor_ultimo,unidad,cambio_pct,n_anos_validos
+Demanda de billetes de la red de Trasportes Ferroviarios de Madrid (TFM),2019,6.9,2023,7.8,Millones,13.043478260869556,17
+Demanda de billetes de la red de autobuses interurbanos,2019,199.3,2023,225.0,Millones,12.895132965378831,25
+Demanda de billetes de la red de autobuses urbanos,2019,49.4,2023,53.0,Millones,7.287449392712553,25
+Demanda de billetes de la red de autobús (EMT),2019,439.8,2023,454.6,Millones,3.3651659845384208,39
+Demanda de billetes de la red de concesiones de carretera,2019,248.7,2023,278.0,Millones,11.781262565339778,37
+Demanda de billetes de la red de concesiones ferroviarias,2019,25.7,2023,25.0,Millones,-2.7237354085603127,17
+Demanda de billetes de la red de ferrocarril de cercanías,2019,203.0,2023,187.6,Millones,-7.586206896551728,39
+Demanda de billetes de la red de metro,2019,680.2,2023,662.3,Millones,-2.6315789473684292,39
+Demanda de billetes de la red de metro ligero,2019,18.8,2023,17.2,Millones,-8.510638297872353,17
