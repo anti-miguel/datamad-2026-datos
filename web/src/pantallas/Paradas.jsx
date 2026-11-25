@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Linea, Tarjeta } from "../componentes/Comunes.jsx";
 import { IconoLupa, IconoAviso, IconoEstrella } from "../componentes/Iconos.jsx";
 import { NOMBRE_RED, normalizar } from "../lib/util.js";
-import { EscenaBus } from "../componentes/Escena.jsx";
+import { EscenaSegunModo } from "../componentes/Escena.jsx";
 
 const FILTROS = [
   { id: "todo", texto: "Todo" },
@@ -59,7 +59,8 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
   return (
     <div className="space-y-4">
       <div className="-mt-4">
-        <EscenaBus />
+        {/* key: al cambiar de filtro, el vehículo vuelve a entrar */}
+        <EscenaSegunModo key={filtro} modo={filtro} />
       </div>
       <h1 className="titulo text-[34px] text-[#202124]">Mis paradas</h1>
 

@@ -1,7 +1,7 @@
 // Escena de cabecera: el autobús (o el tren) entra, para en la parada
 // y, según bajas por la página, sigue su recorrido hacia la derecha.
 import { useEffect, useRef, useState } from "react";
-import { DibujoBusEMT, DibujoTren, DibujoBici } from "./Vehiculos.jsx";
+import { DibujoBusEMT, DibujoBusInterurbano, DibujoTren, DibujoMetro, DibujoBici } from "./Vehiculos.jsx";
 
 const PARADA = 0.5; // donde se detiene, en fracción del ancho (posición del morro)
 
@@ -57,7 +57,7 @@ function Ciudad() {
   );
 }
 
-function Marquesina({ x }) {
+function Marquesina({ x, color = "#1F5FD1" }) {
   return (
     <g>
       <rect x={x} y="56" width="34" height="3" rx="1" fill="#3C4043" />
@@ -66,13 +66,14 @@ function Marquesina({ x }) {
       <rect x={x + 4} y="60" width="25" height="18" fill="#CFE0F7" opacity="0.7" />
       {/* poste con el cartel de parada */}
       <rect x={x + 40} y="48" width="2" height="38" fill="#5F6368" />
-      <rect x={x + 35} y="44" width="12" height="12" rx="3" fill="#1F5FD1" />
+      <rect x={x + 35} y="44" width="12" height="12" rx="3" fill={color} />
       <path d={`M${x + 38} ${47}h6v5h-6z`} fill="#fff" />
     </g>
   );
 }
 
-export function EscenaBus() {
+// Bus urbano (azul) o interurbano (verde) parando en la marquesina
+export function EscenaBus({ interurbano = false }) {
   const { entrado, avance, moviendo } = useRecorrido();
   // El morro va de fuera (izquierda) a la parada, y con el scroll sale por la derecha
   const morro = !entrado ? -0.05 : PARADA + avance * 0.75;
@@ -83,7 +84,7 @@ export function EscenaBus() {
         <rect x="0" y="86" width="390" height="8" fill="#DAD6CD" />
         <rect x="0" y="94" width="390" height="28" fill="#4A4E54" />
         <line x1="0" y1="108" x2="390" y2="108" stroke="#F6F5F2" strokeWidth="2" strokeDasharray="14 12" />
-        <Marquesina x={205} />
+        <Marquesina x={205} color={interurbano ? "#4FA324" : "#1F5FD1"} />
       </svg>
       {/* estación de bicis de alquiler en la acera, con su tótem */}
       <div className="absolute bottom-[30px] left-[72%] flex items-end gap-[2px]">
@@ -97,7 +98,7 @@ export function EscenaBus() {
         className={`absolute bottom-[19px] w-[150px] transition-[left] ease-out motion-reduce:transition-none ${moviendo ? "" : "parado"}`}
         style={{ left: `calc(${morro * 100}% - 150px)`, transitionDuration: entrado && avance === 0 ? "2000ms" : "250ms" }}
       >
-        <DibujoBusEMT className="w-full vaiven" />
+        {interurbano ? <DibujoBusInterurbano className="w-full vaiven" /> : <DibujoBusEMT className="w-full vaiven" />}
       </div>
     </div>
   );
@@ -139,4 +140,47 @@ export function EscenaTren() {
       </div>
     </div>
   );
+}
+
+// Metro: estación subterránea con pared de azulejo amarillo, techo oscuro y borde de andén
+export function EscenaMetro() {
+  const { entrado, avance, moviendo } = useRecorrido();
+  const morro = !entrado ? -0.05 : 0.9 + avance * 0.5;
+  return (
+    <div className="relative -mx-4 h-[118px] overflow-hidden bg-[#2B2F35]" aria-hidden="true">
+      <svg viewBox="0 0 390 118" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full">
+        {/* bóveda oscura con las luces */}
+        <rect x="0" y="0" width="390" height="30" fill="#33373D" />
+        {[20, 110, 200, 290].map((x) => (
+          <rect key={x} x={x} y="10" width="60" height="3" rx="1.5" fill="#FFF7DC" opacity="0.9" />
+        ))}
+        {/* pared de azulejo amarillo con su franja */}
+        <rect x="0" y="30" width="390" height="56" fill="#F2C230" />
+        {Array.from({ length: 20 }, (_, i) => (
+          <line key={i} x1={i * 20} y1="30" x2={i * 20} y2="86" stroke="#E0B024" strokeWidth="0.8" />
+        ))}
+        <rect x="0" y="40" width="390" height="9" fill="#1D5FB8" />
+        <rect x="150" y="42" width="90" height="5" rx="1" fill="#F6F5F2" />
+        {/* andén con la línea de seguridad amarilla */}
+        <rect x="0" y="86" width="390" height="12" fill="#D9D4CA" />
+        <rect x="0" y="95" width="390" height="3" fill="#F2C94C" />
+        {/* foso y vía */}
+        <rect x="0" y="98" width="390" height="20" fill="#2B2F35" />
+        <rect x="0" y="108" width="390" height="2" fill="#6B7178" />
+      </svg>
+      <div
+        className={`absolute bottom-[6px] w-[180px] transition-[left] ease-out motion-reduce:transition-none ${moviendo ? "" : "parado"}`}
+        style={{ left: `calc(${morro * 100}% - 180px)`, transitionDuration: entrado && avance === 0 ? "2200ms" : "250ms" }}
+      >
+        <DibujoMetro className="w-full" />
+      </div>
+    </div>
+  );
+}
+
+// Escena de la portada según el filtro elegido
+export function EscenaSegunModo({ modo }) {
+  if (modo === "renfe") return <EscenaTren />;
+  if (modo === "metro") return <EscenaMetro />;
+  return <EscenaBus interurbano={modo === "interurbano"} />;
 }
