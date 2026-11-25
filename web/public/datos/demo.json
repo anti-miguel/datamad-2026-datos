@@ -1,6 +1,338 @@
 {
   "paradas": [
     {
+      "id": "emt-4556",
+      "nombre": "San Cipriano - Forges",
+      "red": "emt",
+      "tipo": "intermedia",
+      "lat": 40.40407,
+      "lon": -3.6022,
+      "llegadas": [
+        {
+          "linea": "4",
+          "destino": "Ciudad Lineal",
+          "minutos": 6
+        },
+        {
+          "linea": "106",
+          "destino": "Manuel Becerra",
+          "minutos": 9
+        },
+        {
+          "linea": "4",
+          "destino": "Ciudad Lineal",
+          "minutos": 19
+        },
+        {
+          "linea": "106",
+          "destino": "Manuel Becerra",
+          "minutos": 23
+        }
+      ],
+      "recorridos": {
+        "4": [
+          {
+            "codigo": "1069",
+            "nombre": "San Cipriano",
+            "minutos": 1
+          },
+          {
+            "codigo": "1074",
+            "nombre": "Metro Vicálvaro",
+            "minutos": 3
+          },
+          {
+            "codigo": "4647",
+            "nombre": "Avenida de Daroca - Campus Universitario",
+            "minutos": 4
+          },
+          {
+            "codigo": "4549",
+            "nombre": "Avenida de Daroca - Calahorra",
+            "minutos": 6
+          },
+          {
+            "codigo": "1065",
+            "nombre": "Avenida de Daroca - Casalarreina",
+            "minutos": 6
+          },
+          {
+            "codigo": "1214",
+            "nombre": "Casalarreina - Daroca",
+            "minutos": 7
+          },
+          {
+            "codigo": "1215",
+            "nombre": "Plaza de La Vicalvarada",
+            "minutos": 9
+          },
+          {
+            "codigo": "4613",
+            "nombre": "Avenida de Canillejas - M40",
+            "minutos": 15
+          },
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 16
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 18
+          },
+          {
+            "codigo": "4196",
+            "nombre": "Avenida de Canillejas - Rusia",
+            "minutos": 19
+          },
+          {
+            "codigo": "4192",
+            "nombre": "Arcos de Jalón - Avenida de Canillejas",
+            "minutos": 22
+          },
+          {
+            "codigo": "1207",
+            "nombre": "Arcos de Jalón - Albericia",
+            "minutos": 24
+          },
+          {
+            "codigo": "1205",
+            "nombre": "Arcos de Jalón - Amposta",
+            "minutos": 26
+          }
+        ],
+        "106": [
+          {
+            "codigo": "1069",
+            "nombre": "San Cipriano",
+            "minutos": 1
+          },
+          {
+            "codigo": "1074",
+            "nombre": "Metro Vicálvaro",
+            "minutos": 3
+          },
+          {
+            "codigo": "4647",
+            "nombre": "Avenida de Daroca - Campus Universitario",
+            "minutos": 3
+          },
+          {
+            "codigo": "4549",
+            "nombre": "Avenida de Daroca - Calahorra",
+            "minutos": 5
+          },
+          {
+            "codigo": "5367",
+            "nombre": "Artilleros - Calahorra",
+            "minutos": 7
+          },
+          {
+            "codigo": "4548",
+            "nombre": "Plaza de La Vicalvarada",
+            "minutos": 8
+          },
+          {
+            "codigo": "4613",
+            "nombre": "Avenida de Canillejas - M40",
+            "minutos": 12
+          },
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 14
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 15
+          },
+          {
+            "codigo": "4509",
+            "nombre": "Avenida de Guadalajara - Albericia",
+            "minutos": 16
+          },
+          {
+            "codigo": "4507",
+            "nombre": "Avenida Guadalajara - República Eslovaca",
+            "minutos": 18
+          },
+          {
+            "codigo": "4400",
+            "nombre": "Avenida de Guadalajara - Capri",
+            "minutos": 19
+          },
+          {
+            "codigo": "4655",
+            "nombre": "Alsacia",
+            "minutos": 21
+          },
+          {
+            "codigo": "5324",
+            "nombre": "Nicolás Salmerón - Alsacia",
+            "minutos": 21
+          }
+        ]
+      }
+    },
+    {
+      "id": "emt-4564",
+      "nombre": "Villablanca - Sepiolita",
+      "red": "emt",
+      "tipo": "intermedia",
+      "lat": 40.40574,
+      "lon": -3.5998,
+      "llegadas": [
+        {
+          "linea": "100",
+          "destino": "Moratalaz",
+          "minutos": 4
+        },
+        {
+          "linea": "159",
+          "destino": "Alsacia",
+          "minutos": 14
+        },
+        {
+          "linea": "100",
+          "destino": "Moratalaz",
+          "minutos": 17
+        },
+        {
+          "linea": "159",
+          "destino": "Alsacia",
+          "minutos": 31
+        }
+      ],
+      "recorridos": {
+        "100": [
+          {
+            "codigo": "4562",
+            "nombre": "Villablanca - Polideportivo",
+            "minutos": 2
+          },
+          {
+            "codigo": "4560",
+            "nombre": "Villablanca - Lago Van",
+            "minutos": 3
+          },
+          {
+            "codigo": "3758",
+            "nombre": "Plaza de La Vicalvarada",
+            "minutos": 5
+          },
+          {
+            "codigo": "1213",
+            "nombre": "Artilleros - Calahorra",
+            "minutos": 5
+          },
+          {
+            "codigo": "4547",
+            "nombre": "Artilleros - Campus Universitario",
+            "minutos": 6
+          },
+          {
+            "codigo": "4565",
+            "nombre": "Metro Vicálvaro",
+            "minutos": 7
+          },
+          {
+            "codigo": "4647",
+            "nombre": "Avenida de Daroca - Campus Universitario",
+            "minutos": 8
+          },
+          {
+            "codigo": "4549",
+            "nombre": "Avenida de Daroca - Calahorra",
+            "minutos": 9
+          },
+          {
+            "codigo": "1835",
+            "nombre": "Calahorra - Gallo",
+            "minutos": 10
+          },
+          {
+            "codigo": "1062",
+            "nombre": "Plaza Alosno",
+            "minutos": 11
+          },
+          {
+            "codigo": "1061",
+            "nombre": "Plaza Alosno - Camino Viejo Vicálvaro",
+            "minutos": 11
+          },
+          {
+            "codigo": "4974",
+            "nombre": "García Tapia - M40",
+            "minutos": 14
+          },
+          {
+            "codigo": "4758",
+            "nombre": "García Tapia - Laponia",
+            "minutos": 15
+          },
+          {
+            "codigo": "1059",
+            "nombre": "Fuente Carrantona - García Tapia",
+            "minutos": 17
+          }
+        ],
+        "159": [
+          {
+            "codigo": "4562",
+            "nombre": "Villablanca - Polideportivo",
+            "minutos": 1
+          },
+          {
+            "codigo": "4560",
+            "nombre": "Villablanca - Lago Van",
+            "minutos": 2
+          },
+          {
+            "codigo": "5307",
+            "nombre": "Avenida de Canillejas - Plaza Vicalvarada",
+            "minutos": 4
+          },
+          {
+            "codigo": "4613",
+            "nombre": "Avenida de Canillejas - M40",
+            "minutos": 6
+          },
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 7
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 8
+          },
+          {
+            "codigo": "4509",
+            "nombre": "Avenida de Guadalajara - Albericia",
+            "minutos": 9
+          },
+          {
+            "codigo": "4507",
+            "nombre": "Avenida Guadalajara - República Eslovaca",
+            "minutos": 10
+          },
+          {
+            "codigo": "4400",
+            "nombre": "Avenida de Guadalajara - Capri",
+            "minutos": 11
+          },
+          {
+            "codigo": "4588",
+            "nombre": "Alsacia",
+            "minutos": 13
+          }
+        ]
+      }
+    },
+    {
       "id": "emt-5848",
       "nombre": "Mar de Cristal",
       "red": "emt",
@@ -117,41 +449,53 @@
       "nombre": "A la uni",
       "icono": "uni",
       "ejemplo": false,
-      "desde": "Casa",
-      "hasta": "UDIT · Suanzes",
+      "desde": "Casa (Vicálvaro)",
+      "hasta": "UDIT · C. Alcalá, 506",
       "tramos": [
         {
+          "tipo": "andar",
+          "texto": "Andando a tu parada",
+          "minutos": 4
+        },
+        {
           "tipo": "bus",
-          "titulo": "Hasta Av. de Guadalajara / Suecia",
-          "nota": "Cualquiera de estas cuatro te deja en la misma parada",
+          "titulo": "Hasta Avenida de Canillejas - Suecia (4611)",
+          "nota": "Las cuatro te dejan en la misma parada",
+          "bajada": "Avenida de Canillejas - Suecia",
           "opciones": [
             {
               "red": "emt",
               "linea": "4",
               "tipo": "intermedia",
               "minutos": 6,
-              "viaje": 12
+              "viaje": 18,
+              "desde_parada": "San Cipriano - Forges (4556)"
             },
             {
               "red": "emt",
               "linea": "106",
               "tipo": "intermedia",
               "minutos": 9,
-              "viaje": 10
+              "viaje": 15,
+              "desde_parada": "San Cipriano - Forges (4556)"
             },
             {
               "red": "emt",
               "linea": "159",
               "tipo": "intermedia",
               "minutos": 14,
-              "viaje": 9
+              "viaje": 8,
+              "desde_parada": "Villablanca - Sepiolita (4564)",
+              "andar_extra": 3
             },
             {
               "red": "interurbano",
               "linea": "287",
               "tipo": "intermedia",
               "minutos": 11,
-              "viaje": 10
+              "viaje": 14,
+              "desde_parada": "San Cipriano (4552)",
+              "aproximado": true
             }
           ]
         },
@@ -172,12 +516,13 @@
             "La Elipa"
           ],
           "minutos": 4,
-          "viaje": 9
+          "viaje": 8
         },
         {
           "tipo": "transbordo",
           "texto": "Transbordo en Ventas: de la línea 2 a la 5",
-          "minutos": 4
+          "minutos": 4,
+          "vagon": "cola"
         },
         {
           "tipo": "metro",
@@ -192,9 +537,17 @@
             "Ciudad Lineal"
           ],
           "minutos": 3,
-          "viaje": 10
+          "viaje": 9
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a la UDIT",
+          "minutos": 5
         }
-      ]
+      ],
+      "origen": "casa",
+      "destino": "uni",
+      "llegar_antes": "9:00"
     },
     {
       "id": "practicas",
@@ -243,7 +596,10 @@
             }
           ]
         }
-      ]
+      ],
+      "origen": "casa",
+      "destino": "practicas",
+      "llegar_antes": "9:30"
     },
     {
       "id": "abuela",
@@ -296,6 +652,125 @@
           "tipo": "andar",
           "texto": "Andando a casa de la abuela",
           "minutos": 7
+        }
+      ],
+      "origen": "casa",
+      "destino": "abuela",
+      "llegar_antes": "14:00"
+    }
+  ],
+  "favoritas_iniciales": [
+    "emt-4556"
+  ],
+  "nombres_iniciales": {
+    "emt-4556": "Parada del 4 a la uni"
+  },
+  "lugares": [
+    {
+      "id": "casa",
+      "nombre": "Casa",
+      "detalle": "Vicálvaro"
+    },
+    {
+      "id": "uni",
+      "nombre": "UDIT",
+      "detalle": "C. Alcalá, 506 · Suanzes"
+    },
+    {
+      "id": "practicas",
+      "nombre": "Prácticas",
+      "detalle": "Nuevos Ministerios"
+    },
+    {
+      "id": "abuela",
+      "nombre": "Casa de la abuela",
+      "detalle": "Móstoles"
+    }
+  ],
+  "planificador": [
+    {
+      "id": "plan-uni",
+      "origen": "casa",
+      "destino": "uni",
+      "nombre": "Ruta del planificador",
+      "tramos": [
+        {
+          "tipo": "andar",
+          "texto": "Andando a Metro Vicálvaro",
+          "minutos": 7
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "9",
+          "desde": "Vicálvaro",
+          "hasta": "Sainz de Baranda",
+          "paradas": [
+            "Valdebernardo",
+            "Pavones",
+            "Artilleros",
+            "Vinateros",
+            "Estrella"
+          ],
+          "minutos": 5,
+          "viaje": 12
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Sainz de Baranda: de la 9 a la 6",
+          "minutos": 5
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "6",
+          "desde": "Sainz de Baranda",
+          "hasta": "Manuel Becerra",
+          "paradas": [
+            "O'Donnell"
+          ],
+          "minutos": 4,
+          "viaje": 4
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Manuel Becerra: de la 6 a la 2",
+          "minutos": 5
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "2",
+          "desde": "Manuel Becerra",
+          "hasta": "Ventas",
+          "paradas": [],
+          "minutos": 3,
+          "viaje": 2
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Ventas: de la línea 2 a la 5",
+          "minutos": 4
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "5",
+          "desde": "Ventas",
+          "hasta": "Suanzes",
+          "paradas": [
+            "El Carmen",
+            "Quintana",
+            "Pueblo Nuevo",
+            "Ciudad Lineal"
+          ],
+          "minutos": 3,
+          "viaje": 9
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a la UDIT",
+          "minutos": 5
         }
       ]
     }

@@ -64,8 +64,8 @@ export default function Paradas({ demo, favoritas, nombres = {}, onAbrirParada }
         {/* key: al cambiar de filtro, el vehículo vuelve a entrar */}
         <EscenaSegunModo key={filtro} modo={filtro} />
       </div>
-      <div className="flex items-end justify-between gap-3">
-        <h1 className="titulo text-[34px] text-tinta">Mis paradas</h1>
+      <div className="flex flex-wrap-reverse items-end justify-between gap-x-3 gap-y-1">
+        <h1 className="titulo text-[30px] text-tinta min-[360px]:text-[34px]">Mis paradas</h1>
         <Logo alto={30} className="mb-1 w-[112px] shrink-0" />
       </div>
 

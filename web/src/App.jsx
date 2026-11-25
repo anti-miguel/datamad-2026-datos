@@ -74,6 +74,7 @@ export default function App() {
   const [favoritas, setFavoritas] = useState(leerFavoritas);
   const [nombres, setNombres] = useState(leerNombres);
   const [rutaId, setRutaId] = useState(null);
+  const [bajada, setBajada] = useState(null);
 
   function renombrar(clave, nombre) {
     setNombres((n) => {
@@ -95,7 +96,19 @@ export default function App() {
   useEffect(() => {
     fetch(`${BASE}datos/demo.json`)
       .then((r) => r.json())
-      .then(setDemo)
+      .then((d) => {
+        let guardadas = null;
+        let nombresGuardados = null;
+        try {
+          guardadas = localStorage.getItem("favoritas");
+          nombresGuardados = localStorage.getItem("nombres");
+        } catch {
+          // sin almacenamiento se usan los de la demo
+        }
+        if (guardadas === null && d.favoritas_iniciales) setFavoritas(d.favoritas_iniciales);
+        if (nombresGuardados === null && d.nombres_iniciales) setNombres(d.nombres_iniciales);
+        setDemo(d);
+      })
       .catch(() => setError(true));
   }, []);
 
@@ -191,7 +204,7 @@ export default function App() {
   }, [demo, paradaSeguida, llegadasSeguidas, seg, transcurrido]);
 
   const conFranja = franja && ["paradas", "parada", "salgo"].includes(pantalla);
-  const activo = { parada: "paradas", linea: "paradas", prometido: "paradas", ruta: "rutas" }[pantalla] ?? pantalla;
+  const activo = { parada: "paradas", linea: "paradas", prometido: "paradas", ruta: "rutas", salgo: "rutas" }[pantalla] ?? pantalla;
 
   if (!demo) {
     return (
@@ -228,6 +241,9 @@ export default function App() {
               favorita={favoritas.includes(parada.id)}
               nombre={nombres[parada.id] ?? parada.nombre}
               onRenombrar={(n) => renombrar(parada.id, n)}
+              avisos={demo.avisos_simulados ?? []}
+              bajada={bajada}
+              onBajada={setBajada}
               onFavorita={() => alternarFavorita(parada.id)}
               onVolver={() => setPantalla("paradas")}
               onInfoLinea={(l) => {
@@ -259,7 +275,11 @@ export default function App() {
         {pantalla === "rutas" && (
           <section id="pantalla-rutas">
             <ListaRutas
-              rutas={demo.rutas ?? []}
+              demo={demo}
+              onCasoMedido={() => {
+                setSeg((s) => ({ ...s, destino: true, modo: "destino" }));
+                setPantalla("salgo");
+              }}
               datos={datos}
               contexto={contexto}
               nombres={nombres}
@@ -272,10 +292,12 @@ export default function App() {
           </section>
         )}
 
-        {pantalla === "ruta" && datos && demo.rutas?.find((r) => r.id === rutaId) && (
+        {pantalla === "ruta" && datos && [...(demo.rutas ?? []), ...(demo.planificador ?? [])].find((r) => r.id === rutaId) && (
           <section id="pantalla-ruta">
             <DetalleRuta
-              ruta={demo.rutas.find((r) => r.id === rutaId)}
+              key={rutaId}
+              ruta={[...(demo.rutas ?? []), ...(demo.planificador ?? [])].find((r) => r.id === rutaId)}
+              esPlan={(demo.planificador ?? []).some((r) => r.id === rutaId)}
               datos={datos}
               contexto={contexto}
               nombres={nombres}
@@ -315,6 +337,7 @@ export default function App() {
           <FranjaSeguimiento
             seg={franja}
             onAbrir={() => (paradaSeguida ? abrirParada(paradaSeguida.id) : setPantalla("salgo"))}
+            bajada={bajada}
             onCambiarModo={() =>
               setSeg((s) => {
                 // Sin parada seguida no hay modo «hasta tu parada» al que volver

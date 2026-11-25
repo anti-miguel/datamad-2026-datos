@@ -1,7 +1,7 @@
 // Franja de seguimiento (sección 1.6 del manual): el vehículo dibujado avanza
 // por su carretera o su vía según lo que le falta, encima de la barra inferior.
 import { useEffect, useState } from "react";
-import { IconoFlechaAbajo } from "./Iconos.jsx";
+import { IconoFlechaAbajo, IconoCampana } from "./Iconos.jsx";
 import { DibujoVehiculo } from "./Vehiculos.jsx";
 
 // Al aparecer, el vehículo sale del principio y avanza hasta su sitio
@@ -60,7 +60,7 @@ function PuntoFinal() {
   );
 }
 
-export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
+export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo, bajada }) {
   const destinoPos = seg.modo === "parada" ? seg.posicion : seg.destino ? seg.destino.posicion : 4;
   const pos = usePosicionAnimada(destinoPos);
 
@@ -118,6 +118,11 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
             <Vehiculo tipo={seg.icono} red={seg.red} pos={pos} llegando={seg.minutos <= 1} />
           </Recorrido>
           <p className="mt-1 text-[13px] text-suave">{seg.siguienteTexto}</p>
+          {bajada && bajada.linea === seg.linea && (
+            <p className="mt-1 flex items-center gap-1.5 text-[13px] font-bold text-tinta">
+              <IconoCampana className="h-4 w-4" /> Te avisamos una parada antes de {bajada.nombre}
+            </p>
+          )}
         </>
       ) : (
         <>
