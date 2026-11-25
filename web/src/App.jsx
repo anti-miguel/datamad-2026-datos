@@ -274,6 +274,7 @@ export default function App() {
               nombre={nombres[parada.id] ?? parada.nombre}
               onRenombrar={(n) => renombrar(parada.id, n)}
               avisos={demo.avisos_simulados ?? []}
+              incidencias={demo.incidencias ?? []}
               bajada={bajada}
               onBajada={setBajada}
               onFavorita={() => alternarFavorita(parada.id)}
@@ -330,6 +331,7 @@ export default function App() {
               key={rutaId}
               ruta={[...(demo.rutas ?? []), ...(demo.planificador ?? [])].find((r) => r.id === rutaId)}
               esPlan={(demo.planificador ?? []).some((r) => r.id === rutaId)}
+              demo={demo}
               datos={datos}
               contexto={contexto}
               nombres={nombres}

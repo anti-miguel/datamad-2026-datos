@@ -125,7 +125,7 @@ function SelectorLugar({ etiqueta, valor, lugares, onCambiar }) {
   );
 }
 
-function TarjetaOpcion({ titulo, sello, ruta, calculo, onAbrir, destacada, ahorro }) {
+function TarjetaOpcion({ titulo, sello, ruta, calculo, onAbrir, destacada, ahorro, deExperiencia }) {
   return (
     <button onClick={onAbrir} className="block w-full text-left">
       <Tarjeta sombra={destacada} className={`overflow-hidden ${destacada ? "!bg-amarillo" : ""}`}>
@@ -136,7 +136,7 @@ function TarjetaOpcion({ titulo, sello, ruta, calculo, onAbrir, destacada, ahorr
             </span>
             {ahorro > 0 && (
               <span className="rounded-md border-2 border-[#111] bg-verde px-2 text-[13px] font-bold text-white">
-                TE AHORRAS {ahorro} MIN
+                TE AHORRAS {deExperiencia ? "UNOS " : ""}{ahorro} MIN{deExperiencia ? " · TU EXPERIENCIA" : ""}
               </span>
             )}
           </div>
@@ -165,9 +165,11 @@ export function ListaRutas({ demo, datos, contexto, nombres, onRenombrar, onAbri
 
   const tuya = rutas.find((r) => r.origen === origen && r.destino === destino);
   const plan = planes.find((r) => r.origen === origen && r.destino === destino);
-  const cTuya = tuya && datos ? calcularRuta(datos, tuya, contexto) : null;
-  const cPlan = plan && datos ? calcularRuta(datos, plan, contexto) : null;
-  const ahorro = cTuya?.total && cPlan?.total ? cPlan.total.hasta - cTuya.total.hasta : 0;
+  const cTuya = tuya && datos ? calcularRuta(datos, tuya, contexto, {}, "segura", demo) : null;
+  const cPlan = plan && datos ? calcularRuta(datos, plan, contexto, {}, "segura", demo) : null;
+  // ahorro según tu experiencia (lo apuntas tú en la ruta); si no hay, el que sale de los datos
+  const ahorro = tuya?.ahorro_experiencia ?? (cTuya?.total && cPlan?.total ? cPlan.total.hasta - cTuya.total.hasta : 0);
+  const deExperiencia = tuya?.ahorro_experiencia != null;
 
   return (
     <div className="space-y-4">
@@ -201,6 +203,7 @@ export function ListaRutas({ demo, datos, contexto, nombres, onRenombrar, onAbri
               calculo={cTuya}
               destacada
               ahorro={ahorro}
+              deExperiencia={deExperiencia}
               onAbrir={() => onAbrir(tuya.id)}
             />
           )}
@@ -229,7 +232,7 @@ export function ListaRutas({ demo, datos, contexto, nombres, onRenombrar, onAbri
       <h2 className="titulo pt-2 text-[22px] text-tinta">Mis rutas</h2>
       {rutas.map((ruta) => {
         const Icono = ICONOS[ruta.icono] ?? IconoRutas;
-        const c = datos ? calcularRuta(datos, ruta, contexto) : null;
+        const c = datos ? calcularRuta(datos, ruta, contexto, {}, "segura", demo) : null;
         const nombre = nombres[`ruta-${ruta.id}`] ?? ruta.nombre;
         return (
           <Tarjeta key={ruta.id} className="overflow-hidden">
@@ -349,6 +352,16 @@ function OpcionEspera({ o, elegida, recomendada, onElegir, modo }) {
           {o.desde_parada ? `Desde ${o.desde_parada} · ` : ""}La app dice {o.minutos} min · viaje {o.aproximado ? "≈ " : ""}
           {o.viaje} min{o.andar_extra ? ` · +${o.andar_extra} min andando` : ""}
         </span>
+        {o.incidencias?.enTramo.map((x) => (
+          <span key={x.parada} className="mt-1.5 block rounded-lg border-2 border-[#111] bg-[#FFD9D6] px-2 py-1 text-[13px] font-bold text-[#7A0F0A]">
+            En tu tramo: {x.texto.toLowerCase()} en {x.parada} · +{x.retraso} min
+          </span>
+        ))}
+        {o.incidencias?.despues.map((x) => (
+          <span key={x.parada} className="mt-1.5 block text-[13px] text-suave">
+            Más adelante, en {x.parada}: {x.texto.toLowerCase()}. No te afecta.
+          </span>
+        ))}
         {(o.v || (o.r && o.r.nivel !== "linea")) && (
           <span className="mt-1.5 flex flex-wrap items-center gap-2">
             {o.v && <Etiqueta p={o.r.p} />}
@@ -421,13 +434,13 @@ function AvisoBajada({ activo, onCambiar, parada }) {
   );
 }
 
-export function DetalleRuta({ ruta, datos, contexto, nombres, onRenombrar, onVolver, esPlan = false }) {
+export function DetalleRuta({ ruta, datos, contexto, nombres, onRenombrar, onVolver, esPlan = false, demo = {} }) {
   const [elegidas, setElegidas] = useState({});
   const [modo, setModo] = useState("segura");
   const [llegar, setLlegar] = useState(ruta.llegar_antes ?? "9:00");
   const [vagones, setVagones] = useState(() => leerLocal("vagones", {}));
   const [avisos, setAvisos] = useState({});
-  const calculo = useMemo(() => calcularRuta(datos, ruta, contexto, elegidas, modo), [datos, ruta, contexto, elegidas, modo]);
+  const calculo = useMemo(() => calcularRuta(datos, ruta, contexto, elegidas, modo, demo), [datos, ruta, contexto, elegidas, modo, demo]);
   const nombre = esPlan ? "La que te daría un planificador" : nombres[`ruta-${ruta.id}`] ?? ruta.nombre;
   const salida = horaDeSalida(calculo.total, llegar, modo);
   const ya = salirEn(calculo);

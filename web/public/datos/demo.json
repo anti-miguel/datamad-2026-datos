@@ -1,333 +1,532 @@
 {
   "paradas": [
     {
-      "id": "emt-4556",
-      "nombre": "San Cipriano - Forges",
+      "id": "emt-4613",
+      "nombre": "Avenida de Canillejas - M40",
       "red": "emt",
       "tipo": "intermedia",
-      "lat": 40.40407,
-      "lon": -3.6022,
+      "lat": 40.4169,
+      "lon": -3.61061,
+      "etiqueta": "Bus EMT · parada 4613",
       "llegadas": [
         {
           "linea": "4",
           "destino": "Ciudad Lineal",
-          "minutos": 6
+          "minutos": 4
         },
         {
           "linea": "106",
           "destino": "Manuel Becerra",
-          "minutos": 9
+          "minutos": 7
+        },
+        {
+          "linea": "159",
+          "destino": "Alsacia",
+          "minutos": 11
         },
         {
           "linea": "4",
           "destino": "Ciudad Lineal",
-          "minutos": 19
+          "minutos": 17
         },
         {
           "linea": "106",
           "destino": "Manuel Becerra",
-          "minutos": 23
+          "minutos": 19
+        },
+        {
+          "linea": "159",
+          "destino": "Alsacia",
+          "minutos": 29
         }
       ],
       "recorridos": {
         "4": [
           {
-            "codigo": "1069",
-            "nombre": "San Cipriano",
-            "minutos": 1
-          },
-          {
-            "codigo": "1074",
-            "nombre": "Metro Vicálvaro",
-            "minutos": 3
-          },
-          {
-            "codigo": "4647",
-            "nombre": "Avenida de Daroca - Campus Universitario",
-            "minutos": 4
-          },
-          {
-            "codigo": "4549",
-            "nombre": "Avenida de Daroca - Calahorra",
-            "minutos": 6
-          },
-          {
-            "codigo": "1065",
-            "nombre": "Avenida de Daroca - Casalarreina",
-            "minutos": 6
-          },
-          {
-            "codigo": "1214",
-            "nombre": "Casalarreina - Daroca",
-            "minutos": 7
-          },
-          {
-            "codigo": "1215",
-            "nombre": "Plaza de La Vicalvarada",
-            "minutos": 9
-          },
-          {
-            "codigo": "4613",
-            "nombre": "Avenida de Canillejas - M40",
-            "minutos": 15
-          },
-          {
             "codigo": "1211",
             "nombre": "Avenida de Canillejas - Toscana",
-            "minutos": 16
+            "minutos": 2
           },
           {
             "codigo": "4611",
             "nombre": "Avenida de Canillejas - Suecia",
-            "minutos": 18
+            "minutos": 3
           },
           {
             "codigo": "4196",
             "nombre": "Avenida de Canillejas - Rusia",
-            "minutos": 19
+            "minutos": 4
           },
           {
             "codigo": "4192",
             "nombre": "Arcos de Jalón - Avenida de Canillejas",
-            "minutos": 22
+            "minutos": 6
           },
           {
             "codigo": "1207",
             "nombre": "Arcos de Jalón - Albericia",
-            "minutos": 24
+            "minutos": 8
           },
           {
             "codigo": "1205",
             "nombre": "Arcos de Jalón - Amposta",
-            "minutos": 26
+            "minutos": 10
+          },
+          {
+            "codigo": "1203",
+            "nombre": "Arcos de Jalón - San Román del Valle",
+            "minutos": 11
+          },
+          {
+            "codigo": "1201",
+            "nombre": "Pobladura del Valle - Arcos de Jalón",
+            "minutos": 13
+          },
+          {
+            "codigo": "252",
+            "nombre": "Hermanos García Noblejas - Centro de Salud",
+            "minutos": 15
+          },
+          {
+            "codigo": "248",
+            "nombre": "Hermanos García Noblejas - Gandhi",
+            "minutos": 16
+          },
+          {
+            "codigo": "247",
+            "nombre": "Castillo de Arévalo",
+            "minutos": 17
+          },
+          {
+            "codigo": "245",
+            "nombre": "Metro García Noblejas",
+            "minutos": 18
+          },
+          {
+            "codigo": "243",
+            "nombre": "Ascao - Julián Camarillo",
+            "minutos": 20
+          },
+          {
+            "codigo": "241",
+            "nombre": "Vital Aza - Albasanz",
+            "minutos": 22
           }
         ],
         "106": [
           {
-            "codigo": "1069",
-            "nombre": "San Cipriano",
-            "minutos": 1
-          },
-          {
-            "codigo": "1074",
-            "nombre": "Metro Vicálvaro",
-            "minutos": 3
-          },
-          {
-            "codigo": "4647",
-            "nombre": "Avenida de Daroca - Campus Universitario",
-            "minutos": 3
-          },
-          {
-            "codigo": "4549",
-            "nombre": "Avenida de Daroca - Calahorra",
-            "minutos": 5
-          },
-          {
-            "codigo": "5367",
-            "nombre": "Artilleros - Calahorra",
-            "minutos": 7
-          },
-          {
-            "codigo": "4548",
-            "nombre": "Plaza de La Vicalvarada",
-            "minutos": 8
-          },
-          {
-            "codigo": "4613",
-            "nombre": "Avenida de Canillejas - M40",
-            "minutos": 12
-          },
-          {
             "codigo": "1211",
             "nombre": "Avenida de Canillejas - Toscana",
-            "minutos": 14
+            "minutos": 1
           },
           {
             "codigo": "4611",
             "nombre": "Avenida de Canillejas - Suecia",
-            "minutos": 15
+            "minutos": 3
           },
           {
             "codigo": "4509",
             "nombre": "Avenida de Guadalajara - Albericia",
-            "minutos": 16
+            "minutos": 4
           },
           {
             "codigo": "4507",
             "nombre": "Avenida Guadalajara - República Eslovaca",
-            "minutos": 18
+            "minutos": 5
           },
           {
             "codigo": "4400",
             "nombre": "Avenida de Guadalajara - Capri",
-            "minutos": 19
+            "minutos": 7
           },
           {
             "codigo": "4655",
             "nombre": "Alsacia",
-            "minutos": 21
+            "minutos": 8
           },
           {
             "codigo": "5324",
             "nombre": "Nicolás Salmerón - Alsacia",
-            "minutos": 21
+            "minutos": 9
+          },
+          {
+            "codigo": "256",
+            "nombre": "Nicolás Salmerón - Paredes de Nava",
+            "minutos": 10
+          },
+          {
+            "codigo": "258",
+            "nombre": "Nicolás Salmerón - Matamorosa",
+            "minutos": 11
+          },
+          {
+            "codigo": "260",
+            "nombre": "Nicolás Salmerón - Crematorio",
+            "minutos": 12
+          },
+          {
+            "codigo": "262",
+            "nombre": "Cementerio Civil",
+            "minutos": 13
+          },
+          {
+            "codigo": "1086",
+            "nombre": "Largo Caballero - Avenida Daroca",
+            "minutos": 15
+          },
+          {
+            "codigo": "1085",
+            "nombre": "Avenida de Daroca - Arriaga",
+            "minutos": 16
+          },
+          {
+            "codigo": "1083",
+            "nombre": "Cementerio la Almudena",
+            "minutos": 18
+          }
+        ],
+        "159": [
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 1
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 2
+          },
+          {
+            "codigo": "4509",
+            "nombre": "Avenida de Guadalajara - Albericia",
+            "minutos": 2
+          },
+          {
+            "codigo": "4507",
+            "nombre": "Avenida Guadalajara - República Eslovaca",
+            "minutos": 4
+          },
+          {
+            "codigo": "4400",
+            "nombre": "Avenida de Guadalajara - Capri",
+            "minutos": 5
+          },
+          {
+            "codigo": "4588",
+            "nombre": "Alsacia",
+            "minutos": 6
           }
         ]
       }
     },
     {
-      "id": "emt-4564",
-      "nombre": "Villablanca - Sepiolita",
-      "red": "emt",
-      "tipo": "intermedia",
-      "lat": 40.40574,
-      "lon": -3.5998,
+      "id": "metro-ventas",
+      "nombre": "Ventas",
+      "red": "metro",
+      "tipo": "estacion",
+      "lat": 40.43045,
+      "lon": -3.66327,
+      "etiqueta": "Metro · estación de Ventas",
       "llegadas": [
         {
-          "linea": "100",
-          "destino": "Moratalaz",
-          "minutos": 4
+          "linea": "5",
+          "destino": "Alameda de Osuna",
+          "minutos": 2
         },
         {
-          "linea": "159",
-          "destino": "Alsacia",
-          "minutos": 14
+          "linea": "2",
+          "destino": "Cuatro Caminos",
+          "minutos": 3
         },
         {
-          "linea": "100",
-          "destino": "Moratalaz",
-          "minutos": 17
+          "linea": "5",
+          "destino": "Alameda de Osuna",
+          "minutos": 6
         },
         {
-          "linea": "159",
-          "destino": "Alsacia",
-          "minutos": 31
+          "linea": "2",
+          "destino": "Cuatro Caminos",
+          "minutos": 7
         }
       ],
       "recorridos": {
-        "100": [
+        "2": [
           {
-            "codigo": "4562",
-            "nombre": "Villablanca - Polideportivo",
+            "codigo": "29",
+            "nombre": "Manuel Becerra",
             "minutos": 2
           },
           {
-            "codigo": "4560",
-            "nombre": "Villablanca - Lago Van",
+            "codigo": "30",
+            "nombre": "Goya",
             "minutos": 3
           },
           {
-            "codigo": "3758",
-            "nombre": "Plaza de La Vicalvarada",
-            "minutos": 5
-          },
-          {
-            "codigo": "1213",
-            "nombre": "Artilleros - Calahorra",
-            "minutos": 5
-          },
-          {
-            "codigo": "4547",
-            "nombre": "Artilleros - Campus Universitario",
-            "minutos": 6
-          },
-          {
-            "codigo": "4565",
-            "nombre": "Metro Vicálvaro",
-            "minutos": 7
-          },
-          {
-            "codigo": "4647",
-            "nombre": "Avenida de Daroca - Campus Universitario",
-            "minutos": 8
-          },
-          {
-            "codigo": "4549",
-            "nombre": "Avenida de Daroca - Calahorra",
-            "minutos": 9
-          },
-          {
-            "codigo": "1835",
-            "nombre": "Calahorra - Gallo",
-            "minutos": 10
-          },
-          {
-            "codigo": "1062",
-            "nombre": "Plaza Alosno",
-            "minutos": 11
-          },
-          {
-            "codigo": "1061",
-            "nombre": "Plaza Alosno - Camino Viejo Vicálvaro",
-            "minutos": 11
-          },
-          {
-            "codigo": "4974",
-            "nombre": "García Tapia - M40",
-            "minutos": 14
-          },
-          {
-            "codigo": "4758",
-            "nombre": "García Tapia - Laponia",
-            "minutos": 15
-          },
-          {
-            "codigo": "1059",
-            "nombre": "Fuente Carrantona - García Tapia",
-            "minutos": 17
-          }
-        ],
-        "159": [
-          {
-            "codigo": "4562",
-            "nombre": "Villablanca - Polideportivo",
-            "minutos": 1
-          },
-          {
-            "codigo": "4560",
-            "nombre": "Villablanca - Lago Van",
-            "minutos": 2
-          },
-          {
-            "codigo": "5307",
-            "nombre": "Avenida de Canillejas - Plaza Vicalvarada",
+            "codigo": "31",
+            "nombre": "Principe de Vergara",
             "minutos": 4
           },
           {
-            "codigo": "4613",
-            "nombre": "Avenida de Canillejas - M40",
-            "minutos": 6
+            "codigo": "32",
+            "nombre": "Retiro",
+            "minutos": 5
           },
           {
-            "codigo": "1211",
-            "nombre": "Avenida de Canillejas - Toscana",
+            "codigo": "33",
+            "nombre": "Banco de España",
             "minutos": 7
           },
           {
-            "codigo": "4611",
-            "nombre": "Avenida de Canillejas - Suecia",
+            "codigo": "34",
+            "nombre": "Sevilla",
             "minutos": 8
           },
           {
-            "codigo": "4509",
-            "nombre": "Avenida de Guadalajara - Albericia",
+            "codigo": "35",
+            "nombre": "Sol",
             "minutos": 9
           },
           {
-            "codigo": "4507",
-            "nombre": "Avenida Guadalajara - República Eslovaca",
-            "minutos": 10
-          },
-          {
-            "codigo": "4400",
-            "nombre": "Avenida de Guadalajara - Capri",
+            "codigo": "36",
+            "nombre": "Opera",
             "minutos": 11
           },
           {
-            "codigo": "4588",
-            "nombre": "Alsacia",
+            "codigo": "37",
+            "nombre": "Santo Domingo",
+            "minutos": 12
+          },
+          {
+            "codigo": "38",
+            "nombre": "Noviciado",
             "minutos": 13
+          },
+          {
+            "codigo": "39",
+            "nombre": "San Bernardo",
+            "minutos": 14
+          },
+          {
+            "codigo": "40",
+            "nombre": "Quevedo",
+            "minutos": 15
+          },
+          {
+            "codigo": "41",
+            "nombre": "Canal",
+            "minutos": 17
+          },
+          {
+            "codigo": "42",
+            "nombre": "Cuatro Caminos",
+            "minutos": 18
+          }
+        ],
+        "5": [
+          {
+            "codigo": "80",
+            "nombre": "El Carmen",
+            "minutos": 2
+          },
+          {
+            "codigo": "79",
+            "nombre": "Quintana",
+            "minutos": 4
+          },
+          {
+            "codigo": "78",
+            "nombre": "Pueblo Nuevo",
+            "minutos": 5
+          },
+          {
+            "codigo": "77",
+            "nombre": "Ciudad Lineal",
+            "minutos": 6
+          },
+          {
+            "codigo": "76",
+            "nombre": "Suanzes",
+            "minutos": 9
+          },
+          {
+            "codigo": "75",
+            "nombre": "Torre Arias",
+            "minutos": 11
+          },
+          {
+            "codigo": "74",
+            "nombre": "Canillejas",
+            "minutos": 13
+          },
+          {
+            "codigo": "253",
+            "nombre": "El Capricho",
+            "minutos": 17
+          },
+          {
+            "codigo": "252",
+            "nombre": "Alameda de Osuna",
+            "minutos": 19
+          }
+        ]
+      }
+    },
+    {
+      "id": "inter-09208",
+      "nombre": "Pº Ermita - Guardia Civil",
+      "red": "interurbano",
+      "tipo": "intermedia",
+      "lat": 40.7104,
+      "lon": -3.98623,
+      "codigo": "8_09208",
+      "sentido": "2",
+      "etiqueta": "Interurbano · parada 09208",
+      "llegadas": [
+        {
+          "linea": "691",
+          "destino": "Intercambiador de Moncloa",
+          "minutos": 8
+        },
+        {
+          "linea": "691",
+          "destino": "Intercambiador de Moncloa",
+          "minutos": 22
+        }
+      ],
+      "recorridos": {
+        "691": [
+          {
+            "codigo": "09274",
+            "nombre": "Ctra. M623-Pºsan Sebastián",
+            "minutos": 2
+          },
+          {
+            "codigo": "09210",
+            "nombre": "Ctra. M623-Urb.las Mercedes",
+            "minutos": 2
+          },
+          {
+            "codigo": "11570",
+            "nombre": "Ctra. M623-Urb.Parque Collado",
+            "minutos": 3
+          },
+          {
+            "codigo": "19243",
+            "nombre": "Av. Madrid-Palencia",
+            "minutos": 5
+          },
+          {
+            "codigo": "09300",
+            "nombre": "Av. Buenos Aires-Puerto Rico",
+            "minutos": 5
+          },
+          {
+            "codigo": "09301",
+            "nombre": "Av. Buenos Aires-Urb.los Linos",
+            "minutos": 6
+          },
+          {
+            "codigo": "19870",
+            "nombre": "Ctra. M601-Recinto Ferial",
+            "minutos": 11
+          },
+          {
+            "codigo": "06516",
+            "nombre": "Av. Juan Carlos I-Zoco",
+            "minutos": 12
+          },
+          {
+            "codigo": "06391",
+            "nombre": "Av. Juan Carlos I-Puente los Delfines",
+            "minutos": 13
+          },
+          {
+            "codigo": "06515",
+            "nombre": "Honorio Lozano-Av. Juan Carlos I",
+            "minutos": 13
+          },
+          {
+            "codigo": "11085",
+            "nombre": "Ctra. A6-Urb.la Berzosilla",
+            "minutos": 21
+          },
+          {
+            "codigo": "06094",
+            "nombre": "Ctra. A6-Av. Torrelodones",
+            "minutos": 23
+          },
+          {
+            "codigo": "06096",
+            "nombre": "Huertos-Camino Valladolid",
+            "minutos": 24
+          }
+        ]
+      }
+    },
+    {
+      "id": "renfe-vicalvaro",
+      "nombre": "Vicálvaro",
+      "red": "renfe",
+      "tipo": "estacion",
+      "lat": 40.4023,
+      "lon": -3.6081,
+      "etiqueta": "Cercanías · estación de Vicálvaro",
+      "llegadas": [
+        {
+          "linea": "C2",
+          "destino": "Atocha",
+          "minutos": 6
+        },
+        {
+          "linea": "C7",
+          "destino": "Atocha",
+          "minutos": 12
+        },
+        {
+          "linea": "C2",
+          "destino": "Atocha",
+          "minutos": 21
+        },
+        {
+          "linea": "C7",
+          "destino": "Atocha",
+          "minutos": 27
+        }
+      ],
+      "recorrido_aproximado": true,
+      "recorridos": {
+        "C2": [
+          {
+            "codigo": "vallecas",
+            "nombre": "Vallecas",
+            "minutos": 4
+          },
+          {
+            "codigo": "entrevias",
+            "nombre": "Asamblea de Madrid-Entrevías",
+            "minutos": 7
+          },
+          {
+            "codigo": "atocha",
+            "nombre": "Atocha",
+            "minutos": 11
+          }
+        ],
+        "C7": [
+          {
+            "codigo": "vallecas",
+            "nombre": "Vallecas",
+            "minutos": 4
+          },
+          {
+            "codigo": "entrevias",
+            "nombre": "Asamblea de Madrid-Entrevías",
+            "minutos": 7
+          },
+          {
+            "codigo": "atocha",
+            "nombre": "Atocha",
+            "minutos": 11
           }
         ]
       }
@@ -350,7 +549,8 @@
           "destino": "Ciudad Lineal",
           "minutos": 18
         }
-      ]
+      ],
+      "etiqueta": "Bus EMT · parada 5848"
     }
   ],
   "lineas": {
@@ -455,46 +655,46 @@
         {
           "tipo": "andar",
           "texto": "Andando a tu parada",
-          "minutos": 4
+          "minutos": 3
         },
         {
           "tipo": "bus",
           "titulo": "Hasta Avenida de Canillejas - Suecia (4611)",
           "nota": "Las cuatro te dejan en la misma parada",
+          "parada_origen": "emt-4613",
           "bajada": "Avenida de Canillejas - Suecia",
           "opciones": [
             {
               "red": "emt",
               "linea": "4",
               "tipo": "intermedia",
-              "minutos": 6,
-              "viaje": 18,
-              "desde_parada": "San Cipriano - Forges (4556)"
+              "minutos": 4,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas - M40 (4613)"
             },
             {
               "red": "emt",
               "linea": "106",
               "tipo": "intermedia",
-              "minutos": 9,
-              "viaje": 15,
-              "desde_parada": "San Cipriano - Forges (4556)"
+              "minutos": 7,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas - M40 (4613)"
             },
             {
               "red": "emt",
               "linea": "159",
               "tipo": "intermedia",
-              "minutos": 14,
-              "viaje": 8,
-              "desde_parada": "Villablanca - Sepiolita (4564)",
-              "andar_extra": 3
+              "minutos": 11,
+              "viaje": 2,
+              "desde_parada": "Avenida de Canillejas - M40 (4613)"
             },
             {
               "red": "interurbano",
               "linea": "287",
               "tipo": "intermedia",
-              "minutos": 11,
-              "viaje": 14,
-              "desde_parada": "San Cipriano (4552)",
+              "minutos": 9,
+              "viaje": 3,
+              "desde_parada": "una parada cercana",
               "aproximado": true
             }
           ]
@@ -515,8 +715,8 @@
             "La Almudena",
             "La Elipa"
           ],
-          "minutos": 4,
-          "viaje": 8
+          "minutos": 3,
+          "viaje": 7
         },
         {
           "tipo": "transbordo",
@@ -536,18 +736,19 @@
             "Pueblo Nuevo",
             "Ciudad Lineal"
           ],
-          "minutos": 3,
+          "minutos": 2,
           "viaje": 9
         },
         {
           "tipo": "andar",
           "texto": "Andando a la UDIT",
-          "minutos": 5
+          "minutos": 4
         }
       ],
       "origen": "casa",
       "destino": "uni",
-      "llegar_antes": "9:00"
+      "llegar_antes": "9:00",
+      "ahorro_experiencia": 18
     },
     {
       "id": "practicas",
@@ -660,10 +861,10 @@
     }
   ],
   "favoritas_iniciales": [
-    "emt-4556"
+    "emt-4613"
   ],
   "nombres_iniciales": {
-    "emt-4556": "Parada del 4 a la uni"
+    "emt-4613": "Parada del 4 a la uni"
   },
   "lugares": [
     {
@@ -773,6 +974,36 @@
           "minutos": 5
         }
       ]
+    }
+  ],
+  "incidencias": [
+    {
+      "red": "emt",
+      "linea": "106",
+      "parada": "Avenida de Canillejas - Toscana",
+      "texto": "Accidente: un carril cortado",
+      "retraso": 6
+    },
+    {
+      "red": "emt",
+      "linea": "4",
+      "parada": "Arcos de Jalón - Albericia",
+      "texto": "Desvío por obras",
+      "retraso": 8
+    },
+    {
+      "red": "metro",
+      "linea": "2",
+      "parada": "Sol",
+      "texto": "Circulación lenta por una incidencia técnica",
+      "retraso": 5
+    },
+    {
+      "red": "interurbano",
+      "linea": "691",
+      "parada": "Ctra. M601-Recinto Ferial",
+      "texto": "Retenciones en la carretera",
+      "retraso": 10
     }
   ]
 }

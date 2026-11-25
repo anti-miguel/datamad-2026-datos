@@ -31,7 +31,7 @@ function TarjetaParada({ parada, favorita, nombre, onAbrir }) {
             <h3 className="text-[20px] font-bold text-tinta">{nombre ?? parada.nombre}</h3>
             {nombre && nombre !== parada.nombre && <p className="text-[14px] text-suave">{parada.nombre}</p>}
             <p className="text-[15px] text-suave">
-              {NOMBRE_RED[parada.red]} · parada {numeroDeParada(parada)}
+              {parada.etiqueta ?? `${NOMBRE_RED[parada.red]} · parada ${numeroDeParada(parada)}`}
             </p>
           </div>
           {favorita && <IconoEstrella llena className="h-6 w-6 shrink-0 text-principal" />}
@@ -130,6 +130,14 @@ export default function Paradas({ demo, favoritas, nombres = {}, usuario, onAbri
           {listaFavoritas.length === 0 && (
             <p className="text-[15px] text-suave">Busca tu parada y pulsa la estrella para tenerla aquí.</p>
           )}
+          {porModo.filter((p) => !favoritas.includes(p.id)).length > 0 && (
+            <h2 className="pt-2 text-[16px] font-bold text-tinta-2">Otras paradas y estaciones</h2>
+          )}
+          {porModo
+            .filter((p) => !favoritas.includes(p.id))
+            .map((p) => (
+              <TarjetaParada key={p.id} parada={p} favorita={false} nombre={nombres[p.id]} onAbrir={() => onAbrirParada(p.id)} />
+            ))}
         </section>
       )}
     </div>

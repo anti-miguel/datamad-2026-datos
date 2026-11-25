@@ -2,7 +2,7 @@
 // la opción que conviene según el modo, el total, cuándo salir y cuánto se ahorra.
 import { consultar } from "./consultar.js";
 import { ventana } from "./ventana.js";
-import { aMinutos } from "./util.js";
+import { aMinutos, normalizar } from "./util.js";
 
 // Ventana de espera de una opción (bus, tren o metro) a partir de lo que anuncia la app
 export function esperaDe(datos, opcion, contexto) {
@@ -21,7 +21,7 @@ export function esperaDe(datos, opcion, contexto) {
 
 // Lo que tarda una opción desde que llegas a la parada hasta que te bajas: [lo mejor, lo peor]
 function duracion(o) {
-  const extra = o.andar_extra ?? 0;
+  const extra = (o.andar_extra ?? 0) + (o.retraso ?? 0);
   return [o.v.desde + o.viaje + extra, o.v.hasta + o.viaje + extra];
 }
 
@@ -36,7 +36,7 @@ export function mejorOpcion(opciones, modo = "segura") {
 }
 
 // Calcula todos los tramos y el total. «elegidas» guarda la línea escogida a mano por tramo.
-export function calcularRuta(datos, ruta, contexto, elegidas = {}, modo = "segura") {
+export function calcularRuta(datos, ruta, contexto, elegidas = {}, modo = "segura", demo = {}) {
   let desde = 0;
   let hasta = 0;
   let completo = true;
@@ -50,7 +50,14 @@ export function calcularRuta(datos, ruta, contexto, elegidas = {}, modo = "segur
       return t;
     }
     const lista = t.opciones ?? [{ red: t.red, linea: t.linea, tipo: "estacion", minutos: t.minutos, viaje: t.viaje }];
-    const opciones = lista.map((o) => esperaDe(datos, o, contexto));
+    const opciones = lista.map((o) => {
+      const e = esperaDe(datos, o, contexto);
+      // incidencias entre la parada de subida y la de bajada de este tramo
+      const recorrido = recorridoDesde(demo.paradas, { parada_origen: t.parada_origen, desde: t.desde, red: o.red }, o.linea);
+      if (!recorrido) return e;
+      const inc = incidenciasDelTramo(demo.incidencias, o.red, o.linea, recorrido, t.bajada ?? t.hasta);
+      return { ...e, incidencias: inc, retraso: inc.retraso };
+    });
     const recomendada = mejorOpcion(opciones, modo);
     const elegida = opciones.find((o) => o.linea === elegidas[i]) ?? recomendada;
     if (elegida.v) {
@@ -98,4 +105,28 @@ export function cadenaDeLineas(ruta) {
         ? { transbordo: true }
         : { lineas: (t.opciones ?? [t]).map((o) => ({ linea: o.linea, red: o.red })) },
     );
+}
+
+// ───── Incidencias en tu tramo ─────
+// Se pregunta dónde te bajas para revisar solo el trozo de línea que vas a hacer:
+// una incidencia entre tu parada y la de bajada te afecta (suma su retraso); una más adelante, no.
+const igual = (a, b) => normalizar(a) === normalizar(b);
+
+export function incidenciasDelTramo(incidencias = [], red, linea, recorrido = [], bajada = null) {
+  const fin = bajada ? recorrido.findIndex((p) => igual(p.nombre, bajada)) : recorrido.length - 1;
+  const enTramo = [];
+  const despues = [];
+  for (const inc of incidencias) {
+    if (inc.red !== red || String(inc.linea) !== String(linea)) continue;
+    const i = recorrido.findIndex((p) => igual(p.nombre, inc.parada));
+    if (i < 0) continue;
+    (fin >= 0 && i <= fin ? enTramo : despues).push({ ...inc, posicion: i });
+  }
+  return { enTramo, despues, retraso: enTramo.reduce((s, x) => s + x.retraso, 0), fin };
+}
+
+// Recorrido de una línea desde la parada de subida (por id o por nombre de estación)
+export function recorridoDesde(paradas = [], { parada_origen, desde, red }, linea) {
+  const p = paradas.find((x) => x.id === parada_origen) ?? paradas.find((x) => x.red === red && desde && igual(x.nombre, desde));
+  return p?.recorridos?.[linea] ?? null;
 }
