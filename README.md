@@ -5,7 +5,7 @@ Paquete de trabajo del equipo para DATAMAD 2026. Reúne lo que hemos medido sobr
 - cuándo se cae la información en tiempo real,
 - cómo influyen la lluvia y el tráfico.
 
-De momento el planteamiento es una **app**. Todavía no hay nombre de proyecto. Los nombres de algunos ficheros (`llego...`) son provisionales.
+El planteamiento es una **app** y se llama **yavoy**. Algunos ficheros antiguos (`llego...`) llevan el nombre provisional de antes.
 
 **El repo se actualiza solo.** Cada noche, desde las 4:00, la NAS sube los días ya cerrados de los grabadores: haz `git pull` para tenerlos. Las cifras, la tabla de fiabilidad y `catalogo.json` no se regeneran solas y se calcularon con datos hasta el 03/11. El día en curso nunca está en el repo.
 
