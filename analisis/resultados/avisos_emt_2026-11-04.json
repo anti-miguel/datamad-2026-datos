@@ -1,0 +1,86 @@
+{
+  "corte": "2026-11-04",
+  "python": "E:\\Program Files\\Python313\\python.exe",
+  "version_python": "3.13.2",
+  "avisos_totales": 198,
+  "pares_candidatos": 1252,
+  "primer_dia_avisos": "2026-11-04",
+  "pares_inicio_anterior_observacion": 1248,
+  "seleccion": {
+    "avisos_mayores_24h": 71,
+    "avisos_hasta_24h": 126,
+    "avisos_con_fechas_sin_fichero": 7,
+    "pares_linea_fuera_gtfs": 8,
+    "avisos_fechas_invalidas": 1,
+    "pares_sin_dos_controles_con_datos": 915,
+    "pares_aviso_muestra_insuficiente": 521,
+    "pares_control_muestra_insuficiente": 597
+  },
+  "extraccion": {
+    "visitas_con_cierre": 410538,
+    "visitas_sin_cierre": 218706,
+    "anuncios_elegibles": 2787660
+  },
+  "bootstrap_replicas": 5000,
+  "semilla": 20261105,
+  "principal": {
+    "pares": 299,
+    "avisos": 52,
+    "mediana_diferencia_pp": -6.555588113449668,
+    "ic95_pp": [
+      -9.415063213416486,
+      -3.236966443207212
+    ],
+    "mediana_control_pct": 65.28803545051699,
+    "mediana_aviso_pct": 55.23809523809524,
+    "mediana_placebo_pct": 67.90123456790124,
+    "anuncios_aviso_sumados_por_par": 90168,
+    "anuncios_control_sumados_por_par": 259062,
+    "anuncios_placebo_sumados_por_par": 70496
+  },
+  "comun_aviso": {
+    "pares": 179,
+    "avisos": 35,
+    "mediana_diferencia_pp": -9.180492709904476,
+    "ic95_pp": [
+      -12.714752541156827,
+      -4.542521727117796
+    ],
+    "mediana_control_pct": 65.72327044025157,
+    "mediana_aviso_pct": 53.52112676056338,
+    "mediana_placebo_pct": 67.79661016949152,
+    "anuncios_aviso_sumados_por_par": 48597,
+    "anuncios_control_sumados_por_par": 157926,
+    "anuncios_placebo_sumados_por_par": 70450
+  },
+  "comun_placebo": {
+    "pares": 179,
+    "avisos": 35,
+    "mediana_diferencia_pp": 1.436031331592691,
+    "ic95_pp": [
+      0.008254735442836392,
+      3.4040079982248006
+    ],
+    "mediana_control_pct": 65.72327044025157,
+    "mediana_aviso_pct": 53.52112676056338,
+    "mediana_placebo_pct": 67.79661016949152,
+    "anuncios_aviso_sumados_por_par": 48597,
+    "anuncios_control_sumados_por_par": 157926,
+    "anuncios_placebo_sumados_por_par": 70450
+  },
+  "aviso_menos_placebo": {
+    "pares": 179,
+    "avisos": 35,
+    "mediana_diferencia_pp": -10.013146362839615,
+    "ic95_pp": [
+      -15.671526713834677,
+      -4.333333333333334
+    ],
+    "mediana_control_pct": 65.72327044025157,
+    "mediana_aviso_pct": 53.52112676056338,
+    "mediana_placebo_pct": 67.79661016949152,
+    "anuncios_aviso_sumados_por_par": 48597,
+    "anuncios_control_sumados_por_par": 157926,
+    "anuncios_placebo_sumados_por_par": 70450
+  }
+}

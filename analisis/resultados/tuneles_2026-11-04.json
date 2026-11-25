@@ -1,0 +1,49 @@
+{
+  "corte": "2026-11-04",
+  "dias": 43,
+  "muestra": {
+    "n_predicciones": 640649,
+    "n_llegadas": 250712,
+    "acierto": 0.532920522782366,
+    "ic95_dias_bajo": 0.5192070069307987,
+    "ic95_dias_alto": 0.5474952504130219,
+    "p_tarde_mas_2min": 0.28857923761685417,
+    "p_antes_mas_2min": 0.17850023960077985,
+    "acierto_por_llegada": 0.6667805911321549,
+    "error_mediano_min": 0.5666666666666667,
+    "anuncio_mediano_min": 7.0
+  },
+  "estandarizacion": {
+    "17000": {
+      "horizonte": {
+        "local": 0.48077088559564596,
+        "referencia": 0.6213106698650548,
+        "cobertura_local": 0.9975490196078431,
+        "cobertura_ref": 0.6019620970807087
+      },
+      "linea_horizonte": {
+        "local": 0.4326478910799412,
+        "referencia": 0.6176420929839911,
+        "cobertura_local": 0.9960277214334009,
+        "cobertura_ref": 0.518044200458957
+      }
+    },
+    "18002": {
+      "horizonte": {
+        "local": 0.4275119313241443,
+        "referencia": 0.5513693205984471,
+        "cobertura_local": 1.0,
+        "cobertura_ref": 1.0
+      },
+      "linea_horizonte": {
+        "local": 0.5350542945622297,
+        "referencia": 0.5801839003051221,
+        "cobertura_local": 0.9999364901940859,
+        "cobertura_ref": 0.6024921652687834
+      }
+    }
+  },
+  "validacion_llegadas_cache": "coincidencia con tolerancia absoluta 0,01 s (rtol=0)",
+  "error_maximo_llegadas_s": 0.0,
+  "veredicto": "inferencia: no se identifica causalmente cuánto del error procede de la medición o del servicio"
+}

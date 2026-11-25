@@ -266,7 +266,11 @@ services:
                 if inicio - ultimo_gtfs >= GTFS_CADA:
                     archivar_gtfs()
                     ultimo_gtfs = inicio = time.time()
-                rotar = rotatorias(rot, datetime.now().strftime("%Y-%m-%d"))
+                try:
+                    rotar = rotatorias(rot, datetime.now().strftime("%Y-%m-%d"))
+                except Exception as ex:  # un fallo al rotar no debe parar la grabación de las paradas fijas
+                    print(f"{datetime.now():%H:%M:%S} sin parada rotatoria este ciclo: {type(ex).__name__}: {ex}", flush=True)
+                    rotar = []
                 lista = [(m, s, 0) for m, s, _n in PARADAS] + [(u["m"], u["s"], 1) for u in rotar]
                 # ritmo fijo (una petición cada CICLO/len s) y hasta 4 en curso, porque cada respuesta tarda ~1,5 s
                 paso = CICLO / max(1, len(lista))
