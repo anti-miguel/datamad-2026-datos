@@ -1,7 +1,7 @@
 // Escena de cabecera: el autobús (o el tren) entra, para en la parada
 // y, según bajas por la página, sigue su recorrido hacia la derecha.
 import { useEffect, useRef, useState } from "react";
-import { DibujoBus, DibujoTren } from "./Vehiculos.jsx";
+import { DibujoBusEMT, DibujoTren, DibujoBici } from "./Vehiculos.jsx";
 
 const PARADA = 0.5; // donde se detiene, en fracción del ancho (posición del morro)
 
@@ -85,11 +85,19 @@ export function EscenaBus() {
         <line x1="0" y1="108" x2="390" y2="108" stroke="#F6F5F2" strokeWidth="2" strokeDasharray="14 12" />
         <Marquesina x={205} />
       </svg>
+      {/* estación de bicis de alquiler en la acera, con su tótem */}
+      <div className="absolute bottom-[30px] left-[72%] flex items-end gap-[2px]">
+        <div className="mb-[2px] mr-1 h-[30px] w-[7px] rounded-t-[3px] bg-[#1D63B8]">
+          <div className="mx-auto mt-[4px] h-[6px] w-[4px] rounded-[1px] bg-[#CFE0F7]" />
+        </div>
+        <DibujoBici className="w-[38px]" />
+        <DibujoBici className="w-[38px]" />
+      </div>
       <div
-        className={`absolute bottom-[20px] w-[118px] transition-[left] ease-out motion-reduce:transition-none ${moviendo ? "" : "parado"}`}
-        style={{ left: `calc(${morro * 100}% - 118px)`, transitionDuration: entrado && avance === 0 ? "2000ms" : "250ms" }}
+        className={`absolute bottom-[19px] w-[150px] transition-[left] ease-out motion-reduce:transition-none ${moviendo ? "" : "parado"}`}
+        style={{ left: `calc(${morro * 100}% - 150px)`, transitionDuration: entrado && avance === 0 ? "2000ms" : "250ms" }}
       >
-        <DibujoBus className="w-full vaiven" />
+        <DibujoBusEMT className="w-full vaiven" />
       </div>
     </div>
   );
@@ -124,8 +132,8 @@ export function EscenaTren() {
         <rect x="0" y="101" width="390" height="2" fill="#5F6368" />
       </svg>
       <div
-        className={`absolute bottom-[12px] w-[210px] transition-[left] ease-out motion-reduce:transition-none ${moviendo ? "" : "parado"}`}
-        style={{ left: `calc(${morro * 100}% - 210px)`, transitionDuration: entrado && avance === 0 ? "2400ms" : "250ms" }}
+        className={`absolute bottom-[11px] w-[250px] transition-[left] ease-out motion-reduce:transition-none ${moviendo ? "" : "parado"}`}
+        style={{ left: `calc(${morro * 100}% - 250px)`, transitionDuration: entrado && avance === 0 ? "2400ms" : "250ms" }}
       >
         <DibujoTren className="w-full" />
       </div>

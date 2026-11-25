@@ -22,7 +22,7 @@ function Vehiculo({ tipo, red, pos, llegando }) {
     const id = setTimeout(() => setMoviendo(false), 1700);
     return () => clearTimeout(id);
   }, [pos]);
-  const ancho = tipo === "tren" ? 80 : 50;
+  const ancho = tipo === "tren" ? 104 : tipo === "metro" ? 64 : 62;
   return (
     <div
       className={`absolute bottom-[6px] z-10 transition-[left] duration-[1600ms] ease-out motion-reduce:transition-none ${
