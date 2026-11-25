@@ -56,12 +56,14 @@ export default function Info({ meta, sesion, onSalir }) {
       </Tarjeta>
 
       <Tarjeta className="p-4">
-        <h2 className="text-[17px] font-bold text-tinta">Límites</h2>
-        <ul className="mt-2 list-disc space-y-2 pl-5 text-[15px] text-tinta-2">
-          {meta.advertencias.map((a) => (
-            <li key={a}>{a}</li>
-          ))}
-        </ul>
+        <details>
+          <summary className="min-h-[36px] cursor-pointer text-[17px] font-bold text-tinta">Límites de los datos</summary>
+          <ul className="mt-2 list-disc space-y-2 pl-5 text-[15px] text-tinta-2">
+            {meta.advertencias.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
+        </details>
       </Tarjeta>
 
       {/* PENDIENTE: el manual pide el repositorio de la app cuando sea público; mientras, el de datos, que ya lo es */}

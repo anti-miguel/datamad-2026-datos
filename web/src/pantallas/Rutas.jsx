@@ -284,10 +284,7 @@ export function ListaRutas({ demo, datos, contexto, nombres, onRenombrar, onAbri
         </Tarjeta>
       </button>
 
-      <p className="text-[14px] text-suave">
-        Las esperas salen de los datos medidos. Los tiempos de viaje del bus salen del horario oficial; los de metro, andando y
-        transbordo son aproximados. La ruta del planificador es un ejemplo.
-      </p>
+      <p className="text-[13px] text-suave">Esperas medidas · viajes en metro y andando, aproximados</p>
     </div>
   );
 }
@@ -380,13 +377,36 @@ function AvisoBajada({ activo, onCambiar, parada }) {
     <button
       onClick={onCambiar}
       aria-pressed={activo}
-      className={`boton-pegatina mt-2 flex min-h-[44px] w-full items-center gap-2 rounded-xl px-3 text-left text-[14px] font-bold ${
-        activo ? "bg-verde text-white" : "bg-tarjeta text-tinta"
+      className={`flex min-h-[44px] w-full items-center gap-2 text-left text-[14px] font-bold ${
+        activo ? "boton-pegatina mt-2 rounded-xl bg-verde px-3 text-white" : "text-tinta-2"
       }`}
     >
-      <IconoCampana className="h-5 w-5" />
-      {activo ? `Te avisamos una parada antes de ${parada}` : `Avisarme antes de bajar en ${parada}`}
+      <IconoCampana className="h-5 w-5 shrink-0" />
+      {activo ? `Te avisamos una parada antes de ${parada}` : `Avisarme antes de bajar`}
     </button>
+  );
+}
+
+// En un tramo con varias líneas solo se enseña la elegida; las demás, al tocar «Ver otras»
+function Opciones({ t, modo, onElegir }) {
+  const [todas, setTodas] = useState(false);
+  const otras = t.opciones.filter((o) => o.linea !== t.elegida.linea);
+  const visibles = todas ? t.opciones : t.opciones.filter((o) => o.linea === t.elegida.linea);
+  return (
+    <>
+      {visibles.map((o) => (
+        <OpcionEspera key={o.linea} o={o} elegida={t.elegida} recomendada={t.recomendada} modo={modo} onElegir={() => onElegir(o.linea)} />
+      ))}
+      {otras.length > 0 && (
+        <button
+          onClick={() => setTodas((x) => !x)}
+          aria-expanded={todas}
+          className="min-h-[40px] text-[14px] font-bold text-principal underline underline-offset-2"
+        >
+          {todas ? "Ver solo la elegida" : `Ver ${otras.length === 1 ? "la otra línea" : `las otras ${otras.length} líneas`} (${otras.map((o) => o.linea).join(", ")})`}
+        </button>
+      )}
+    </>
   );
 }
 
@@ -517,16 +537,7 @@ export function DetalleRuta({ ruta, datos, contexto, nombres, onRenombrar, onVol
                       {t.nota && <p className="text-[14px] text-suave">{t.nota}</p>}
                     </>
                   )}
-                  {t.opciones.map((o) => (
-                    <OpcionEspera
-                      key={o.linea}
-                      o={o}
-                      elegida={t.elegida}
-                      recomendada={t.recomendada}
-                      modo={modo}
-                      onElegir={() => setElegidas((e) => ({ ...e, [i]: o.linea }))}
-                    />
-                  ))}
+                  <Opciones t={t} modo={modo} onElegir={(l) => setElegidas((e) => ({ ...e, [i]: l }))} />
                   {metro && t.paradas.length > 0 && (
                     <details className="text-[14px] text-tinta-2">
                       <summary className="min-h-[36px] py-1.5">{t.paradas.length} paradas entre medias</summary>
@@ -552,9 +563,8 @@ export function DetalleRuta({ ruta, datos, contexto, nombres, onRenombrar, onVol
         <Hito texto={ruta.hasta ?? "Llegada"} sub="Llegada" final />
       </Tarjeta>
 
-      <p className="text-[14px] text-suave">
-        {ruta.ejemplo || esPlan ? "Ruta de ejemplo. " : ""}Las esperas salen de los datos medidos; los minutos que dice la app son
-        de demostración. El aviso al bajar es una simulación.
+      <p className="text-[13px] text-suave">
+        {ruta.ejemplo || esPlan ? "Ruta de ejemplo · " : ""}esperas medidas, minutos de la app de demostración
       </p>
     </div>
   );

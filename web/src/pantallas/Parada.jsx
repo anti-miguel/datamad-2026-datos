@@ -102,6 +102,8 @@ function TarjetaLinea({ linea, llegadas, red, primera, recorrido, avisosLinea, b
   const [destinoSel, setDestinoSel] = useState(bajada?.linea === linea ? bajada.codigo : "");
   const parada = recorrido?.find((p) => p.codigo === destinoSel);
   const avisando = bajada?.linea === linea && bajada.codigo === destinoSel;
+  // Plegado por defecto para no cargar la pantalla; abierto si ya se eligió una parada
+  const [abierto, setAbierto] = useState(Boolean(destinoSel));
 
   // Posible incidencia sacada de los datos: a esta hora y con lo que anuncia, acierta menos de la mitad de las veces
   const flojo = a.r && a.v && a.r.p < 0.5 ? casillas(a.r).aTiempo : null;
@@ -163,9 +165,18 @@ function TarjetaLinea({ linea, llegadas, red, primera, recorrido, avisosLinea, b
 
       {/* ¿dónde te bajas? Se pregunta para revisar las incidencias de tu tramo, no de toda la línea */}
       {recorrido && (
-        <div className="border-t-[2.5px] border-[#111] px-4 py-3">
-          <p className="text-[14px] font-bold uppercase text-suave">¿Dónde te bajas?</p>
-          <p className="mb-2 text-[13px] text-suave">Así revisamos si hay algo en tu tramo, aunque el resto de la línea vaya bien.</p>
+        <div className="border-t-[2.5px] border-[#111]">
+          <button
+            onClick={() => setAbierto((x) => !x)}
+            aria-expanded={abierto}
+            className="flex min-h-[48px] w-full items-center justify-between px-4 text-left text-[15px] font-bold text-tinta"
+          >
+            {parada && !abierto ? `Te bajas en ${parada.nombre}` : "¿Dónde te bajas?"}
+            <span aria-hidden="true" className={`transition-transform ${abierto ? "rotate-180" : ""}`}>▾</span>
+          </button>
+          {abierto && (
+          <div className="px-4 pb-3">
+          <p className="mb-2 text-[13px] text-suave">Revisamos solo tu tramo.</p>
           <Combo
             id={`bajada-${linea}`}
             valor={destinoSel}
@@ -240,6 +251,8 @@ function TarjetaLinea({ linea, llegadas, red, primera, recorrido, avisosLinea, b
               </>
             );
           })()}
+          </div>
+          )}
         </div>
       )}
     </Tarjeta>
@@ -326,9 +339,8 @@ export default function Parada({
               aproximado={parada.recorrido_aproximado}
             />
           ))}
-          <p className="text-[15px] text-suave">
-            {tipoDia}, {horaTexto(contexto.hora)}. Los minutos que dice la app son de demostración; las ventanas, de los datos
-            medidos. Más datos en la i de cada línea.
+          <p className="text-[13px] text-suave">
+            {tipoDia}, {horaTexto(contexto.hora)} · minutos de la app de demostración, ventanas medidas
           </p>
         </>
       )}
