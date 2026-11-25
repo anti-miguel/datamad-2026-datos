@@ -116,3 +116,87 @@ export function IconoFlechaAbajo({ className = "w-4 h-4" }) {
     </svg>
   );
 }
+
+export function IconoRutas({ className = "w-6 h-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <circle cx="6" cy="18" r="2.5" />
+      <circle cx="18" cy="6" r="2.5" />
+      <path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" />
+    </svg>
+  );
+}
+
+export function IconoAndar({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <circle cx="13" cy="4.5" r="1.8" />
+      <path d="M10 21l2-6 3 3v3M12 15l-1-5 4-1 2 3h2M11 10l-3 2v3" />
+    </svg>
+  );
+}
+
+export function IconoTransbordo({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M4 8h13l-3-3M20 16H7l3 3" />
+    </svg>
+  );
+}
+
+export function IconoLapiz({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M4 20h4L19 9l-4-4L4 16z" />
+      <path d="M13 7l4 4" />
+    </svg>
+  );
+}
+
+export function IconoUni({ className = "w-6 h-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M2 9l10-5 10 5-10 5z" />
+      <path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6" />
+    </svg>
+  );
+}
+
+export function IconoTrabajo({ className = "w-6 h-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18" />
+    </svg>
+  );
+}
+
+export function IconoCasa({ className = "w-6 h-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M3 11l9-7 9 7" />
+      <path d="M5 10v10h14V10M10 20v-5h4v5" />
+    </svg>
+  );
+}
+
+export function IconoGente({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <circle cx="9" cy="8" r="3" />
+      <circle cx="17" cy="9" r="2.4" />
+      <path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 14.5c3 0 6 2 6 5.5" />
+    </svg>
+  );
+}
+
+export function IconoCoche({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M4 16v-4l2-5h12l2 5v4z" />
+      <path d="M4 12h16" />
+      <circle cx="7.5" cy="16.5" r="1.8" />
+      <circle cx="16.5" cy="16.5" r="1.8" />
+    </svg>
+  );
+}

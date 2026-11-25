@@ -1,36 +1,86 @@
-// Pantalla 5: Avisos (simulación). Siguiente fase al estilo de avisos de viajeros, marcada como simulación.
+// Pantalla 5: Avisos (simulación). Siguiente fase: avisos de viajeros, dejando claro que es una simulación.
 // Los botones solo cambian el contador en pantalla: no se guarda nada.
 import { useState } from "react";
 import { Linea, Tarjeta } from "../componentes/Comunes.jsx";
+import { IconoGente, IconoCoche, IconoReloj, IconoAviso } from "../componentes/Iconos.jsx";
 
-const OPCIONES = ["Retraso", "Bus lleno", "No ha pasado", "Desvío", "Parada anulada", "Accesibilidad"];
+// Tipo de aviso según su texto: icono, color y nombre
+function tipoDe(texto) {
+  const t = texto.toLowerCase();
+  if (t.includes("lleno")) return { Icono: IconoGente, color: "#D9C8FF", nombre: "Bus lleno" };
+  if (t.includes("atasco") || t.includes("retraso")) return { Icono: IconoCoche, color: "#FFB547", nombre: "Retraso" };
+  if (t.includes("no ha pasado")) return { Icono: IconoReloj, color: "#FF8A80", nombre: "No ha pasado" };
+  return { Icono: IconoAviso, color: "#FFE15A", nombre: "Aviso" };
+}
 
-// Las líneas de interurbanos (3 cifras que empiezan por 6) en gris, como en el boceto
+const OPCIONES = [
+  { texto: "Retraso", Icono: IconoCoche, color: "#FFB547" },
+  { texto: "Bus lleno", Icono: IconoGente, color: "#D9C8FF" },
+  { texto: "No ha pasado", Icono: IconoReloj, color: "#FF8A80" },
+  { texto: "Desvío", Icono: IconoAviso, color: "#FFE15A" },
+  { texto: "Parada anulada", Icono: IconoAviso, color: "#FFE15A" },
+  { texto: "Accesibilidad", Icono: IconoGente, color: "#B4F0C8" },
+];
+
+// Redes de cada línea para pintar la píldora con su color
 function redDeLinea(linea) {
   return /^6\d\d$/.test(linea) ? "interurbano" : "emt";
 }
 
 function TarjetaAviso({ aviso }) {
   const [confirman, setConfirman] = useState(aviso.confirman);
+  const [voto, setVoto] = useState(null);
+  const { Icono, color, nombre } = tipoDe(aviso.texto);
+
+  function votar(sigue) {
+    if (voto === sigue) return;
+    setConfirman((n) => Math.max(0, n + (sigue ? 1 : -1) + (voto === null ? 0 : sigue ? 1 : -1)));
+    setVoto(sigue);
+  }
+
   return (
-    <Tarjeta className="p-4">
-      <div className="flex items-center gap-3">
-        <Linea linea={aviso.linea} red={redDeLinea(aviso.linea)} />
-        <h2 className="text-[18px] font-bold text-tinta">{aviso.texto}</h2>
+    <Tarjeta className="overflow-hidden">
+      <div className="flex gap-3 p-4">
+        <span
+          className="pegatina flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-xl"
+          style={{ background: color }}
+        >
+          <Icono className="h-7 w-7" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <Linea linea={aviso.linea} red={redDeLinea(aviso.linea)} />
+            <span className="rounded-md border-2 border-[#111] bg-hundido px-1.5 text-[13px] font-bold">{nombre.toUpperCase()}</span>
+          </div>
+          <h2 className="titulo mt-1.5 text-[19px] text-tinta">{aviso.texto}</h2>
+          <p className="mt-1 text-[14px] text-suave">hace {aviso.hace_min} min</p>
+        </div>
       </div>
-      <p className="mt-2 text-[15px] text-suave" aria-live="polite">
-        hace {aviso.hace_min} min · {confirman === 1 ? "1 viajero lo confirma" : `${confirman} viajeros lo confirman`}
-      </p>
-      <div className="mt-3 grid grid-cols-2 gap-2">
+
+      {/* viajeros que lo confirman: un círculo por persona, hasta 6 */}
+      <div className="flex items-center gap-2 px-4 pb-3" aria-live="polite">
+        <span className="flex -space-x-2" aria-hidden="true">
+          {Array.from({ length: Math.min(confirman, 6) }, (_, i) => (
+            <span key={i} className="h-[24px] w-[24px] rounded-full border-2 border-[#111]" style={{ background: ["#B4C3FF", "#FFE15A", "#D9C8FF", "#B4F0C8"][i % 4] }} />
+          ))}
+        </span>
+        <span className="text-[15px] font-bold text-tinta">
+          {confirman === 1 ? "1 viajero lo confirma" : `${confirman} viajeros lo confirman`}
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 border-t-[2.5px] border-[#111]">
         <button
-          onClick={() => setConfirman((n) => n + 1)}
-          className="boton-pegatina min-h-[44px] rounded-xl bg-tarjeta text-[16px]"
+          onClick={() => votar(true)}
+          aria-pressed={voto === true}
+          className={`min-h-[52px] border-r-[2.5px] border-[#111] text-[16px] font-bold ${voto === true ? "bg-amarillo" : "bg-tarjeta"}`}
         >
           Sigue pasando
         </button>
         <button
-          onClick={() => setConfirman((n) => Math.max(0, n - 1))}
-          className="boton-pegatina min-h-[44px] rounded-xl bg-tarjeta text-[16px]"
+          onClick={() => votar(false)}
+          aria-pressed={voto === false}
+          className={`min-h-[52px] text-[16px] font-bold ${voto === false ? "bg-amarillo" : "bg-tarjeta"}`}
         >
           Ya no
         </button>
@@ -50,12 +100,16 @@ export default function Avisos({ avisos }) {
       </div>
 
       <div className="space-y-4 px-4 pt-4">
-        <h1 className="titulo text-[34px] text-tinta">Avisos</h1>
+        <div className="flex items-end justify-between gap-3">
+          <h1 className="titulo text-[34px] text-tinta">Avisos</h1>
+          <span className="pegatina mb-1 rounded-full bg-amarillo px-3 py-1 text-[15px] font-bold">{avisos.length} cerca de ti</span>
+        </div>
+        <p className="text-[16px] text-tinta-2">Lo que cuentan otros viajeros ahora mismo. Confírmalo si lo estás viendo.</p>
         {avisos.map((a) => (
           <TarjetaAviso key={a.texto} aviso={a} />
         ))}
         {gracias && (
-          <p role="status" className="rounded-2xl bg-aviso-simulado p-4 text-[15px] text-[#2A1060]">
+          <p role="status" className="pegatina rounded-2xl bg-aviso-simulado p-4 text-[15px] font-bold text-[#2A1060]">
             Gracias. En la versión real tu aviso se compartiría con otros viajeros.
           </p>
         )}
@@ -63,34 +117,36 @@ export default function Avisos({ avisos }) {
 
       <button
         onClick={() => setAbierto(true)}
-        className="fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-[max(16px,calc(50vw-215px+16px))] z-30 min-h-[52px] rounded-full bg-principal px-6 text-[18px] font-bold text-white boton-pegatina"
+        className="boton-pegatina fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-[max(16px,calc(50vw-215px+16px))] z-30 min-h-[56px] rounded-full bg-principal px-6 text-[18px] font-bold text-white"
       >
         + Avisar
       </button>
 
       {abierto && (
-        <div className="fixed inset-0 z-40 flex items-end justify-center bg-black/30" onClick={() => setAbierto(false)}>
+        <div className="fixed inset-0 z-40 flex items-end justify-center bg-black/40" onClick={() => setAbierto(false)}>
           <div
             role="dialog"
             aria-label="Elige qué quieres avisar"
-            className="w-full max-w-[430px] rounded-t-2xl bg-tarjeta p-4 pb-[calc(16px+env(safe-area-inset-bottom))]"
+            className="w-full max-w-[430px] rounded-t-3xl border-x-[2.5px] border-t-[2.5px] border-[#111] bg-tarjeta p-4 pb-[calc(16px+env(safe-area-inset-bottom))]"
             onClick={(e) => e.stopPropagation()}
           >
-            <ul className="divide-y divide-linea">
-              {OPCIONES.map((o) => (
-                <li key={o}>
-                  <button
-                    className="min-h-[52px] w-full text-left text-[17px] text-tinta"
-                    onClick={() => {
-                      setAbierto(false);
-                      setGracias(true);
-                    }}
-                  >
-                    {o}
-                  </button>
-                </li>
+            <p className="titulo mb-3 text-[20px]">¿Qué está pasando?</p>
+            <div className="grid grid-cols-2 gap-3">
+              {OPCIONES.map(({ texto, Icono, color }) => (
+                <button
+                  key={texto}
+                  className="boton-pegatina flex min-h-[72px] flex-col items-start justify-center gap-1 rounded-xl px-3 text-left text-[16px] font-bold"
+                  style={{ background: color }}
+                  onClick={() => {
+                    setAbierto(false);
+                    setGracias(true);
+                  }}
+                >
+                  <Icono className="h-6 w-6" />
+                  {texto}
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       )}

@@ -4,6 +4,7 @@ import { Linea, Tarjeta } from "../componentes/Comunes.jsx";
 import { IconoLupa, IconoAviso, IconoEstrella } from "../componentes/Iconos.jsx";
 import { NOMBRE_RED, normalizar } from "../lib/util.js";
 import { EscenaSegunModo } from "../componentes/Escena.jsx";
+import { Logo } from "../componentes/Logo.jsx";
 
 const FILTROS = [
   { id: "todo", texto: "Todo" },
@@ -21,13 +22,14 @@ function numeroDeParada(parada) {
   return parada.id.split("-")[1];
 }
 
-function TarjetaParada({ parada, favorita, onAbrir }) {
+function TarjetaParada({ parada, favorita, nombre, onAbrir }) {
   return (
     <button onClick={onAbrir} className="block w-full text-left">
       <Tarjeta className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-[20px] font-bold text-tinta">{parada.nombre}</h3>
+            <h3 className="text-[20px] font-bold text-tinta">{nombre ?? parada.nombre}</h3>
+            {nombre && nombre !== parada.nombre && <p className="text-[14px] text-suave">{parada.nombre}</p>}
             <p className="text-[15px] text-suave">
               {NOMBRE_RED[parada.red]} · parada {numeroDeParada(parada)}
             </p>
@@ -44,7 +46,7 @@ function TarjetaParada({ parada, favorita, onAbrir }) {
   );
 }
 
-export default function Paradas({ demo, favoritas, onAbrirParada }) {
+export default function Paradas({ demo, favoritas, nombres = {}, onAbrirParada }) {
   const [busqueda, setBusqueda] = useState("");
   const [filtro, setFiltro] = useState("todo");
 
@@ -52,7 +54,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
   const buscando = q.length >= 2;
   const porModo = demo.paradas.filter((p) => filtro === "todo" || p.red === filtro);
   const resultados = buscando
-    ? porModo.filter((p) => normalizar(p.nombre).includes(q) || lineasDe(p).some((l) => normalizar(l).includes(q)))
+    ? porModo.filter((p) => normalizar(p.nombre).includes(q) || normalizar(nombres[p.id] ?? "").includes(q) || lineasDe(p).some((l) => normalizar(l).includes(q)))
     : [];
   const listaFavoritas = porModo.filter((p) => favoritas.includes(p.id));
 
@@ -62,7 +64,10 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
         {/* key: al cambiar de filtro, el vehículo vuelve a entrar */}
         <EscenaSegunModo key={filtro} modo={filtro} />
       </div>
-      <h1 className="titulo text-[34px] text-tinta">Mis paradas</h1>
+      <div className="flex items-end justify-between gap-3">
+        <h1 className="titulo text-[34px] text-tinta">Mis paradas</h1>
+        <Logo alto={30} className="mb-1 w-[112px] shrink-0" />
+      </div>
 
       <label className="flex min-h-[48px] items-center gap-2 pegatina rounded-2xl bg-tarjeta px-4 focus-within:shadow-[4px_4px_0_#2335F5]">
         <IconoLupa className="h-5 w-5 text-suave" />
@@ -109,7 +114,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
             <p className="text-[15px] text-suave">No tenemos datos de esa parada todavía.</p>
           ) : (
             resultados.map((p) => (
-              <TarjetaParada key={p.id} parada={p} favorita={favoritas.includes(p.id)} onAbrir={() => onAbrirParada(p.id)} />
+              <TarjetaParada key={p.id} parada={p} favorita={favoritas.includes(p.id)} nombre={nombres[p.id]} onAbrir={() => onAbrirParada(p.id)} />
             ))
           )}
         </section>
@@ -117,7 +122,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
         <section className="space-y-3">
           {listaFavoritas.length > 0 && <h2 className="text-[16px] font-bold text-tinta-2">Favoritas</h2>}
           {listaFavoritas.map((p) => (
-            <TarjetaParada key={p.id} parada={p} favorita onAbrir={() => onAbrirParada(p.id)} />
+            <TarjetaParada key={p.id} parada={p} favorita nombre={nombres[p.id]} onAbrir={() => onAbrirParada(p.id)} />
           ))}
           {listaFavoritas.length === 0 && (
             <p className="text-[15px] text-suave">Busca tu parada y pulsa la estrella para tenerla aquí.</p>

@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { Linea, Etiqueta, Tarjeta, Volver } from "../componentes/Comunes.jsx";
 import { IconoEstrella, IconoInfo } from "../componentes/Iconos.jsx";
 import { NOMBRE_RED, horaTexto } from "../lib/util.js";
+import { NombreEditable } from "./Rutas.jsx";
 
 function Minimapa({ lat, lon }) {
   const caja = useRef(null);
@@ -113,7 +114,7 @@ function FilaSiguiente({ llegada, red }) {
   );
 }
 
-export default function Parada({ parada, llegadas, contexto, favorita, onFavorita, onVolver, onInfoLinea, cargando, error, onReintentar }) {
+export default function Parada({ parada, llegadas, contexto, favorita, nombre, onRenombrar, onFavorita, onVolver, onInfoLinea, cargando, error, onReintentar }) {
   const [primera, ...resto] = llegadas;
   const tipoDia = contexto.finde ? "Fin de semana" : "Laborable";
 
@@ -123,7 +124,13 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
         <Volver texto="Mis paradas" onClick={onVolver} />
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="titulo text-[32px] leading-tight text-tinta">{parada.nombre}</h1>
+            <NombreEditable
+              nombre={nombre ?? parada.nombre}
+              onCambiar={onRenombrar}
+              etiqueta="Cambiar el nombre de esta parada"
+              className="titulo text-[30px] leading-tight text-tinta"
+            />
+            {nombre && nombre !== parada.nombre && <p className="text-[15px] text-suave">{parada.nombre}</p>}
             <p className="text-[16px] text-suave">
               {NOMBRE_RED[parada.red]} · parada {parada.id.split("-")[1]}
             </p>

@@ -10,6 +10,7 @@ import CuandoSalgo from "./pantallas/CuandoSalgo.jsx";
 import Prometido from "./pantallas/Prometido.jsx";
 import Avisos from "./pantallas/Avisos.jsx";
 import Info from "./pantallas/Info.jsx";
+import { ListaRutas, DetalleRuta } from "./pantallas/Rutas.jsx";
 import { posicionVehiculo } from "./lib/ventana.js";
 import { aMinutos, calcularLlegada, contextoActual, iconoDeRed, llegadasVivas } from "./lib/util.js";
 
@@ -30,6 +31,15 @@ function leerFavoritas() {
     return JSON.parse(localStorage.getItem("favoritas")) ?? [];
   } catch {
     return [];
+  }
+}
+
+// Nombres que el usuario pone a sus paradas y rutas: { "emt-5848": "Mi parada de casa", "ruta-uni": "..." }
+function leerNombres() {
+  try {
+    return JSON.parse(localStorage.getItem("nombres")) ?? {};
+  } catch {
+    return {};
   }
 }
 
@@ -62,6 +72,20 @@ export default function App() {
   const [paradaId, setParadaId] = useState(null);
   const [lineaSel, setLineaSel] = useState(null);
   const [favoritas, setFavoritas] = useState(leerFavoritas);
+  const [nombres, setNombres] = useState(leerNombres);
+  const [rutaId, setRutaId] = useState(null);
+
+  function renombrar(clave, nombre) {
+    setNombres((n) => {
+      const nuevos = { ...n, [clave]: nombre };
+      try {
+        localStorage.setItem("nombres", JSON.stringify(nuevos));
+      } catch {
+        // Sin almacenamiento el nombre dura hasta recargar
+      }
+      return nuevos;
+    });
+  }
   // Seguimiento: qué parada se sigue, si ya hay un destino elegido y en qué modo está la franja
   const [seg, setSeg] = useState({ paradaId: null, destino: false, modo: "parada" });
 
@@ -90,7 +114,7 @@ export default function App() {
   // (entre llaves: en navegadores nuevos scrollTo devuelve una promesa y React la tomaría por limpieza)
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pantalla, paradaId]);
+  }, [pantalla, paradaId, rutaId]);
 
   const parada = demo?.paradas.find((p) => p.id === paradaId) ?? null;
   const paradaSeguida = demo?.paradas.find((p) => p.id === seg.paradaId) ?? null;
@@ -167,7 +191,7 @@ export default function App() {
   }, [demo, paradaSeguida, llegadasSeguidas, seg, transcurrido]);
 
   const conFranja = franja && ["paradas", "parada", "salgo"].includes(pantalla);
-  const activo = { parada: "paradas", linea: "paradas", prometido: "paradas" }[pantalla] ?? pantalla;
+  const activo = { parada: "paradas", linea: "paradas", prometido: "paradas", ruta: "rutas" }[pantalla] ?? pantalla;
 
   if (!demo) {
     return (
@@ -192,7 +216,7 @@ export default function App() {
     <div className="mx-auto min-h-dvh max-w-[430px]">
       <main className={`px-4 pt-4 ${conFranja ? "pb-[210px]" : "pb-[100px]"}`}>
         <section id="pantalla-paradas" hidden={pantalla !== "paradas"}>
-          <Paradas demo={demo} favoritas={favoritas} onAbrirParada={abrirParada} />
+          <Paradas demo={demo} favoritas={favoritas} nombres={nombres} onAbrirParada={abrirParada} />
         </section>
 
         {parada && (
@@ -202,6 +226,8 @@ export default function App() {
               llegadas={llegadas}
               contexto={contexto}
               favorita={favoritas.includes(parada.id)}
+              nombre={nombres[parada.id] ?? parada.nombre}
+              onRenombrar={(n) => renombrar(parada.id, n)}
               onFavorita={() => alternarFavorita(parada.id)}
               onVolver={() => setPantalla("paradas")}
               onInfoLinea={(l) => {
@@ -226,6 +252,35 @@ export default function App() {
               rarezas={demo.lineas[lineaSel]?.avisos ?? []}
               onVolver={() => setPantalla("parada")}
               onPrometido={() => setPantalla("prometido")}
+            />
+          </section>
+        )}
+
+        {pantalla === "rutas" && (
+          <section id="pantalla-rutas">
+            <ListaRutas
+              rutas={demo.rutas ?? []}
+              datos={datos}
+              contexto={contexto}
+              nombres={nombres}
+              onRenombrar={renombrar}
+              onAbrir={(id) => {
+                setRutaId(id);
+                setPantalla("ruta");
+              }}
+            />
+          </section>
+        )}
+
+        {pantalla === "ruta" && datos && demo.rutas?.find((r) => r.id === rutaId) && (
+          <section id="pantalla-ruta">
+            <DetalleRuta
+              ruta={demo.rutas.find((r) => r.id === rutaId)}
+              datos={datos}
+              contexto={contexto}
+              nombres={nombres}
+              onRenombrar={renombrar}
+              onVolver={() => setPantalla("rutas")}
             />
           </section>
         )}
