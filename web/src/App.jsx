@@ -180,7 +180,7 @@ export default function App() {
             </button>
           </div>
         ) : (
-          <div className="mt-10 h-[200px] animate-pulse rounded-2xl bg-[#E4E2DD]" />
+          <div className="mt-10 h-[200px] animate-pulse rounded-2xl bg-linea" />
         )}
       </div>
     );

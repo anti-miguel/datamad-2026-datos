@@ -27,8 +27,8 @@ function TarjetaParada({ parada, favorita, onAbrir }) {
       <Tarjeta className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-[20px] font-bold text-[#202124]">{parada.nombre}</h3>
-            <p className="text-[15px] text-[#5F6368]">
+            <h3 className="text-[20px] font-bold text-tinta">{parada.nombre}</h3>
+            <p className="text-[15px] text-suave">
               {NOMBRE_RED[parada.red]} · parada {numeroDeParada(parada)}
             </p>
           </div>
@@ -62,17 +62,17 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
         {/* key: al cambiar de filtro, el vehículo vuelve a entrar */}
         <EscenaSegunModo key={filtro} modo={filtro} />
       </div>
-      <h1 className="titulo text-[34px] text-[#202124]">Mis paradas</h1>
+      <h1 className="titulo text-[34px] text-tinta">Mis paradas</h1>
 
-      <label className="flex min-h-[48px] items-center gap-2 rounded-2xl border border-[#D5D3CE] bg-white px-4 focus-within:border-principal">
-        <IconoLupa className="h-5 w-5 text-[#5F6368]" />
+      <label className="flex min-h-[48px] items-center gap-2 rounded-2xl border border-linea bg-tarjeta px-4 focus-within:border-principal">
+        <IconoLupa className="h-5 w-5 text-suave" />
         <input
           type="search"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           placeholder="Busca parada, línea o estación"
           aria-label="Busca parada, línea o estación"
-          className="h-[46px] w-full bg-transparent text-[16px] outline-none placeholder:text-[#80868B]"
+          className="h-[46px] w-full bg-transparent text-[16px] outline-none placeholder:text-suave"
         />
       </label>
 
@@ -86,7 +86,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
             className={`min-h-[44px] rounded-full border px-4 text-[16px] transition-colors ${
               filtro === f.id
                 ? "border-principal bg-principal font-bold text-white"
-                : "border-[#D5D3CE] bg-white text-[#202124]"
+                : "border-linea bg-tarjeta text-tinta"
             }`}
           >
             {f.texto}
@@ -95,7 +95,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
       </div>
 
       {demo.aviso_oficial && (
-        <div className="flex gap-3 rounded-2xl bg-aviso-oficial p-4 text-[#5C3B00]">
+        <div className="flex gap-3 rounded-2xl bg-aviso-oficial p-4 text-[#FFE3A0]">
           <IconoAviso className="mt-0.5 h-5 w-5 shrink-0" />
           <p className="text-[15px]">
             {typeof demo.aviso_oficial === "string" ? demo.aviso_oficial : demo.aviso_oficial.texto}
@@ -106,7 +106,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
       {buscando ? (
         <section className="space-y-3" aria-live="polite">
           {resultados.length === 0 ? (
-            <p className="text-[15px] text-[#5F6368]">No tenemos datos de esa parada todavía.</p>
+            <p className="text-[15px] text-suave">No tenemos datos de esa parada todavía.</p>
           ) : (
             resultados.map((p) => (
               <TarjetaParada key={p.id} parada={p} favorita={favoritas.includes(p.id)} onAbrir={() => onAbrirParada(p.id)} />
@@ -115,12 +115,12 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
         </section>
       ) : (
         <section className="space-y-3">
-          {listaFavoritas.length > 0 && <h2 className="text-[16px] font-bold text-[#3C4043]">Favoritas</h2>}
+          {listaFavoritas.length > 0 && <h2 className="text-[16px] font-bold text-tinta-2">Favoritas</h2>}
           {listaFavoritas.map((p) => (
             <TarjetaParada key={p.id} parada={p} favorita onAbrir={() => onAbrirParada(p.id)} />
           ))}
           {listaFavoritas.length === 0 && (
-            <p className="text-[15px] text-[#5F6368]">Busca tu parada y pulsa la estrella para tenerla aquí.</p>
+            <p className="text-[15px] text-suave">Busca tu parada y pulsa la estrella para tenerla aquí.</p>
           )}
         </section>
       )}

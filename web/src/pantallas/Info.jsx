@@ -18,17 +18,17 @@ export default function Info({ meta }) {
 
   return (
     <div className="space-y-4">
-      <h1 className="titulo pt-2 text-[34px] text-[#202124]">Cómo funciona</h1>
-      <p className="text-[17px] text-[#202124]">
+      <h1 className="titulo pt-2 text-[34px] text-tinta">Cómo funciona</h1>
+      <p className="text-[17px] text-tinta">
         Grabamos lo que anuncian las apps oficiales y lo comparamos con cuándo llega de verdad. Con eso calculamos cuánto
         fiarse de cada anuncio.
       </p>
-      <p className="text-[16px] text-[#3C4043]">
+      <p className="text-[16px] text-tinta-2">
         Datos del {desde} al {hasta}.
       </p>
 
       <Tarjeta className="p-4">
-        <h2 className="text-[17px] font-bold text-[#202124]">Fuentes</h2>
+        <h2 className="text-[17px] font-bold text-tinta">Fuentes</h2>
         <ul className="mt-1">
           {fuentes.map((x) => (
             <li key={x.texto}>
@@ -38,12 +38,12 @@ export default function Info({ meta }) {
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-[15px] text-[#3C4043]">Los datos derivados se publican con licencia ODbL.</p>
+        <p className="mt-3 text-[15px] text-tinta-2">Los datos derivados se publican con licencia ODbL.</p>
       </Tarjeta>
 
       <Tarjeta className="p-4">
-        <h2 className="text-[17px] font-bold text-[#202124]">Límites</h2>
-        <ul className="mt-2 list-disc space-y-2 pl-5 text-[15px] text-[#3C4043]">
+        <h2 className="text-[17px] font-bold text-tinta">Límites</h2>
+        <ul className="mt-2 list-disc space-y-2 pl-5 text-[15px] text-tinta-2">
           {meta.advertencias.map((a) => (
             <li key={a}>{a}</li>
           ))}

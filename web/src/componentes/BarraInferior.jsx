@@ -10,7 +10,7 @@ const BOTONES = [
 
 export default function BarraInferior({ activo, onIr }) {
   return (
-    <nav className="grid grid-cols-4 border-t border-[#E4E2DD] bg-white pb-[env(safe-area-inset-bottom)]">
+    <nav className="grid grid-cols-4 border-t border-linea bg-tarjeta pb-[env(safe-area-inset-bottom)]">
       {BOTONES.map(({ id, texto, Icono }) => {
         const esActivo = activo === id;
         return (
@@ -19,7 +19,7 @@ export default function BarraInferior({ activo, onIr }) {
             onClick={() => onIr(id)}
             aria-current={esActivo ? "page" : undefined}
             className={`flex min-h-[60px] flex-col items-center justify-center gap-0.5 px-1 text-[14px] leading-tight ${
-              esActivo ? "font-bold text-principal" : "text-[#5F6368]"
+              esActivo ? "font-bold text-principal" : "text-suave"
             }`}
           >
             <Icono />

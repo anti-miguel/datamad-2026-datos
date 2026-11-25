@@ -43,7 +43,7 @@ function Minimapa({ lat, lon }) {
   return (
     <div
       ref={caja}
-      className="h-[160px] overflow-hidden rounded-2xl border border-[#E4E2DD]"
+      className="h-[160px] overflow-hidden rounded-2xl border border-linea"
       role="img"
       aria-label="Mapa de la parada"
     />
@@ -54,9 +54,9 @@ function Minimapa({ lat, lon }) {
 export function ParadaCargando() {
   return (
     <div className="space-y-3 animate-pulse" aria-label="Cargando">
-      <div className="h-[160px] rounded-2xl bg-[#E4E2DD]" />
-      <div className="h-[200px] rounded-2xl bg-[#E4E2DD]" />
-      <div className="h-[64px] rounded-2xl bg-[#E4E2DD]" />
+      <div className="h-[160px] rounded-2xl bg-linea" />
+      <div className="h-[200px] rounded-2xl bg-linea" />
+      <div className="h-[64px] rounded-2xl bg-linea" />
     </div>
   );
 }
@@ -68,20 +68,20 @@ function TarjetaPrimera({ llegada, red, onInfo }) {
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Linea linea={linea} red={red} grande />
-          <span className="text-[18px] text-[#202124]">{destino}</span>
+          <span className="text-[18px] text-tinta">{destino}</span>
         </div>
         <button
           onClick={onInfo}
           aria-label={`Qué conviene saber del ${linea}`}
-          className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-[#E8F0FE] text-principal"
+          className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-[#1C2E4D] text-principal"
         >
           <IconoInfo />
         </button>
       </div>
 
-      <p className="mt-3 text-[15px] text-[#5F6368]">La app oficial dice {minutos} min</p>
+      <p className="mt-3 text-[15px] text-suave">La app oficial dice {minutos} min</p>
 
-      <p className="mt-1 text-[32px] font-black tracking-[-0.01em] tabular-nums leading-tight text-[#202124]">
+      <p className="cifra mt-1 text-[34px] tabular-nums text-tinta">
         {lejos ? "Demasiado lejos para estimar" : v ? `Llega entre ${v.desde} y ${v.hasta} min` : "Sin datos suficientes"}
       </p>
 
@@ -89,10 +89,10 @@ function TarjetaPrimera({ llegada, red, onInfo }) {
         <>
           <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
             <Etiqueta p={r.p} relleno />
-            <span className="text-[16px] text-[#202124]">Si a los {v.hasta} min no ha llegado, algo pasa.</span>
+            <span className="text-[16px] text-tinta">Si a los {v.hasta} min no ha llegado, algo pasa.</span>
           </div>
           {r.nivel !== "linea" && (
-            <p className="mt-2 text-[14px] text-[#5F6368]">Estimación general de la red</p>
+            <p className="mt-2 text-[14px] text-suave">Estimación general de la red</p>
           )}
         </>
       )}
@@ -105,7 +105,7 @@ function FilaSiguiente({ llegada, red }) {
   return (
     <Tarjeta className="flex min-h-[56px] items-center gap-3 px-4 py-3">
       <Linea linea={linea} red={red} />
-      <span className="flex-1 text-[17px] font-bold text-[#202124]">
+      <span className="flex-1 text-[17px] font-bold text-tinta">
         {lejos ? "Demasiado lejos para estimar" : v ? `Entre ${v.desde} y ${v.hasta} min` : "Sin datos suficientes"}
       </span>
       {v && <Etiqueta p={r.p} />}
@@ -123,8 +123,8 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
         <Volver texto="Mis paradas" onClick={onVolver} />
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="titulo text-[32px] leading-tight text-[#202124]">{parada.nombre}</h1>
-            <p className="text-[16px] text-[#5F6368]">
+            <h1 className="titulo text-[32px] leading-tight text-tinta">{parada.nombre}</h1>
+            <p className="text-[16px] text-suave">
               {NOMBRE_RED[parada.red]} · parada {parada.id.split("-")[1]}
             </p>
           </div>
@@ -132,7 +132,7 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
             onClick={onFavorita}
             aria-pressed={favorita}
             aria-label={favorita ? "Quitar de favoritas" : "Añadir a favoritas"}
-            className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-2xl border border-[#E4E2DD] bg-white text-principal"
+            className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-2xl border border-linea bg-tarjeta text-principal"
           >
             <IconoEstrella llena={favorita} />
           </button>
@@ -143,7 +143,7 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
 
       {error ? (
         <Tarjeta className="space-y-3 p-4">
-          <p className="text-[16px] text-[#202124]">No hemos podido cargar los datos. Vuelve a intentarlo.</p>
+          <p className="text-[16px] text-tinta">No hemos podido cargar los datos. Vuelve a intentarlo.</p>
           <button onClick={onReintentar} className="min-h-[44px] rounded-xl bg-principal px-5 font-bold text-white">
             Reintentar
           </button>
@@ -156,7 +156,7 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
           {resto.map((l, i) => (
             <FilaSiguiente key={`${l.linea}-${i}`} llegada={l} red={parada.red} />
           ))}
-          <p className="text-[15px] text-[#5F6368]">
+          <p className="text-[15px] text-suave">
             {tipoDia}, {horaTexto(contexto.hora)}. Más datos en la i de cada línea.
           </p>
         </>

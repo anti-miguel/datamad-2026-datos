@@ -16,21 +16,21 @@ function TarjetaAviso({ aviso }) {
     <Tarjeta className="p-4">
       <div className="flex items-center gap-3">
         <Linea linea={aviso.linea} red={redDeLinea(aviso.linea)} />
-        <h2 className="text-[18px] font-bold text-[#202124]">{aviso.texto}</h2>
+        <h2 className="text-[18px] font-bold text-tinta">{aviso.texto}</h2>
       </div>
-      <p className="mt-2 text-[15px] text-[#5F6368]" aria-live="polite">
+      <p className="mt-2 text-[15px] text-suave" aria-live="polite">
         hace {aviso.hace_min} min · {confirman === 1 ? "1 viajero lo confirma" : `${confirman} viajeros lo confirman`}
       </p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <button
           onClick={() => setConfirman((n) => n + 1)}
-          className="min-h-[44px] rounded-xl border border-[#D5D3CE] bg-white text-[16px] active:bg-[#F6F5F2]"
+          className="min-h-[44px] rounded-xl border border-linea bg-tarjeta text-[16px] active:bg-hundido"
         >
           Sigue pasando
         </button>
         <button
           onClick={() => setConfirman((n) => Math.max(0, n - 1))}
-          className="min-h-[44px] rounded-xl border border-[#D5D3CE] bg-white text-[16px] active:bg-[#F6F5F2]"
+          className="min-h-[44px] rounded-xl border border-linea bg-tarjeta text-[16px] active:bg-hundido"
         >
           Ya no
         </button>
@@ -45,17 +45,17 @@ export default function Avisos({ avisos }) {
 
   return (
     <div className="-mx-4 -mt-4">
-      <div className="sticky top-0 z-20 border-b border-[#D9D0EA] bg-aviso-simulado px-4 py-3 text-[15px] font-bold text-[#3B1F6B]">
+      <div className="sticky top-0 z-20 border-b border-[#3B2F5C] bg-aviso-simulado px-4 py-3 text-[15px] font-bold text-[#D9C9FF]">
         SIMULACIÓN · Así funcionarían los avisos de viajeros
       </div>
 
       <div className="space-y-4 px-4 pt-4">
-        <h1 className="titulo text-[34px] text-[#202124]">Avisos</h1>
+        <h1 className="titulo text-[34px] text-tinta">Avisos</h1>
         {avisos.map((a) => (
           <TarjetaAviso key={a.texto} aviso={a} />
         ))}
         {gracias && (
-          <p role="status" className="rounded-2xl bg-aviso-simulado p-4 text-[15px] text-[#3B1F6B]">
+          <p role="status" className="rounded-2xl bg-aviso-simulado p-4 text-[15px] text-[#D9C9FF]">
             Gracias. En la versión real tu aviso se compartiría con otros viajeros.
           </p>
         )}
@@ -73,14 +73,14 @@ export default function Avisos({ avisos }) {
           <div
             role="dialog"
             aria-label="Elige qué quieres avisar"
-            className="w-full max-w-[430px] rounded-t-2xl bg-white p-4 pb-[calc(16px+env(safe-area-inset-bottom))]"
+            className="w-full max-w-[430px] rounded-t-2xl bg-tarjeta p-4 pb-[calc(16px+env(safe-area-inset-bottom))]"
             onClick={(e) => e.stopPropagation()}
           >
-            <ul className="divide-y divide-[#E4E2DD]">
+            <ul className="divide-y divide-linea">
               {OPCIONES.map((o) => (
                 <li key={o}>
                   <button
-                    className="min-h-[52px] w-full text-left text-[17px] text-[#202124]"
+                    className="min-h-[52px] w-full text-left text-[17px] text-tinta"
                     onClick={() => {
                       setAbierto(false);
                       setGracias(true);

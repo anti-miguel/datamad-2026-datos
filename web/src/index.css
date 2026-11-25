@@ -1,15 +1,26 @@
 @import "tailwindcss";
 
-/* Colores fijos del manual (sección 1.2) */
+/* Tema oscuro, «Madrid de noche». Verde, ámbar y rojo del manual para los rellenos;
+   versiones vivas para el texto sobre fondo oscuro. */
 @theme {
-  --color-principal: #1F5FD1;
-  --color-fondo: #F6F5F2;
+  --color-principal: #3B7BF2;
+  --color-fondo: #0B1220;
+  --color-tarjeta: #151F31;
+  --color-hundido: #0F1828;
+  --color-linea: #26344B;
+  --color-tinta: #F1F4F9;
+  --color-tinta-2: #C6D0DE;
+  --color-suave: #8E9BB0;
+  --color-verde-vivo: #4CD07D;
+  --color-ambar-vivo: #FFB547;
+  --color-rojo-vivo: #FF6B61;
   --color-verde: #1E8E3E;
   --color-ambar: #B26A00;
   --color-rojo: #C5221F;
-  --color-aviso-oficial: #FFF4D6;
-  --color-aviso-simulado: #EDE7F6;
-  --font-sans: "Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-aviso-oficial: #3A2E10;
+  --color-aviso-simulado: #241C3A;
+  --font-display: "Punto", "Bricolage Grotesque", "Overpass", system-ui, sans-serif;
+  --font-sans: "Punto", "Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
@@ -18,7 +29,8 @@ html {
 
 body {
   background: var(--color-fondo);
-  color: #202124;
+  color: var(--color-tinta);
+  color-scheme: dark;
   font-family: var(--font-sans);
   font-size: 16px;
   -webkit-tap-highlight-color: transparent;
@@ -60,26 +72,28 @@ summary {
 }
 
 /* Títulos: más apretados y con más peso, como los rótulos de las estaciones */
-.titulo {
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+.titulo,
+.cifra {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
 /* Carretera de la franja: asfalto con la línea discontinua */
 .carretera {
   background:
     repeating-linear-gradient(90deg, #f6f5f2 0 10px, transparent 10px 20px) center / 100% 1.5px no-repeat,
-    #5f6368;
+    #3a4150;
 }
 
 /* Vía de la franja: traviesas y raíles */
 .via {
   background:
-    linear-gradient(#5f6368, #5f6368) 0 1px / 100% 1.5px no-repeat,
-    linear-gradient(#5f6368, #5f6368) 0 7px / 100% 1.5px no-repeat,
-    repeating-linear-gradient(90deg, #8a7d70 0 4px, transparent 4px 9px),
-    #c9c3b8;
+    linear-gradient(#a7adb5, #a7adb5) 0 1px / 100% 1.5px no-repeat,
+    linear-gradient(#a7adb5, #a7adb5) 0 7px / 100% 1.5px no-repeat,
+    repeating-linear-gradient(90deg, #5a5048 0 4px, transparent 4px 9px),
+    #343a44;
 }
 
 /* Ruedas que giran mientras el vehículo avanza */
@@ -106,4 +120,28 @@ summary {
   .vaiven {
     animation: none;
   }
+}
+
+input {
+  color: inherit;
+}
+/* El buscador marca el foco con el borde de su caja, no con un recuadro propio */
+input:focus-visible {
+  outline: none;
+}
+
+/* El punto medio «·» de Overpass no deja aire a la derecha: se toma de la letra del sistema */
+@font-face {
+  font-family: "Punto";
+  src: local("Helvetica Neue"), local("Segoe UI"), local("Roboto"), local("Arial");
+  unicode-range: U+00B7;
+}
+
+/* Mapa en tonos oscuros, a juego con el tema */
+.leaflet-container {
+  background: #0f1828;
+}
+.leaflet-container img.leaflet-tile {
+  filter: invert(0.94) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.6);
+  mix-blend-mode: normal !important; /* Leaflet pone plus-lighter, que aclara el mapa sobre fondo oscuro */
 }

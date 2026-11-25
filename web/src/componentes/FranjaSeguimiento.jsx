@@ -54,8 +54,8 @@ function Recorrido({ pos, etiqueta, tipo, children }) {
 function PuntoFinal() {
   return (
     <div className="absolute bottom-[8px] right-0 flex translate-x-1/2 flex-col items-center">
-      <div className="h-[16px] w-[16px] rounded-full border-[3px] border-white bg-[#202124] outline outline-2 outline-[#202124]" />
-      <div className="h-[16px] w-[2px] bg-[#202124]" />
+      <div className="h-[16px] w-[16px] rounded-full border-[3px] border-fondo bg-tinta outline outline-2 outline-tinta" />
+      <div className="h-[16px] w-[2px] bg-tinta" />
     </div>
   );
 }
@@ -91,7 +91,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
       tabIndex={0}
       onClick={onAbrir}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onAbrir()}
-      className="cursor-pointer border-t border-[#E4E2DD] bg-white px-4 pt-1.5 pb-2"
+      className="cursor-pointer border-t border-linea bg-tarjeta px-4 pt-1.5 pb-2"
     >
       <div className="flex items-center justify-between gap-2">
         <button
@@ -99,25 +99,25 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
             e.stopPropagation();
             onCambiarModo();
           }}
-          className="min-h-[44px] text-left text-[14px] font-bold text-[#202124] min-[385px]:text-[15px]"
+          className="min-h-[44px] text-left text-[14px] font-bold text-tinta min-[385px]:text-[15px]"
         >
           {textoIzquierdo}
           <IconoFlechaAbajo className="ml-1 inline h-4 w-4 align-[-3px]" />
         </button>
         {textoDerecho && (
-          <span className="shrink-0 text-[17px] font-extrabold tabular-nums text-principal">{textoDerecho}</span>
+          <span className="cifra shrink-0 text-[19px] tabular-nums text-principal">{textoDerecho}</span>
         )}
       </div>
 
       {seg.modo === "destino" && !seg.destino ? (
-        <p className="py-3 text-[14px] text-[#5F6368]">Elige a dónde vas para seguir el viaje hasta tu destino.</p>
+        <p className="py-3 text-[14px] text-suave">Elige a dónde vas para seguir el viaje hasta tu destino.</p>
       ) : seg.modo === "parada" ? (
         <>
           <Recorrido pos={pos} etiqueta={etiqueta} tipo={seg.icono}>
             <PuntoFinal />
             <Vehiculo tipo={seg.icono} red={seg.red} pos={pos} llegando={seg.minutos <= 1} />
           </Recorrido>
-          <p className="mt-1 text-[13px] text-[#5F6368]">{seg.siguienteTexto}</p>
+          <p className="mt-1 text-[13px] text-suave">{seg.siguienteTexto}</p>
         </>
       ) : (
         <>
@@ -129,7 +129,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
                 <div
                   key={p.nombre}
                   className={`absolute bottom-[-1px] h-[12px] w-[12px] -translate-x-1/2 rounded-full ${
-                    p.tipo === "inicio" ? "bg-principal" : "border-[3px] border-[#202124] bg-white"
+                    p.tipo === "inicio" ? "bg-principal" : "border-[3px] border-tinta bg-fondo"
                   }`}
                   style={{ left: `${p.pos}%` }}
                 />
@@ -138,7 +138,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
             <Vehiculo tipo={seg.destino.icono} pos={pos} />
           </Recorrido>
           {/* Nombres de las paradas debajo, en 12 px */}
-          <div className="relative mx-[9px] mt-0.5 h-[16px] text-[12px] text-[#5F6368]">
+          <div className="relative mx-[9px] mt-0.5 h-[16px] text-[12px] text-suave">
             {seg.destino.paradas.map((p) => (
               <span
                 key={p.nombre}
@@ -155,7 +155,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
               </span>
             ))}
           </div>
-          <p className="text-[13px] text-[#5F6368]">{seg.destino.siguienteTexto}</p>
+          <p className="text-[13px] text-suave">{seg.destino.siguienteTexto}</p>
         </>
       )}
     </div>
