@@ -1,0 +1,42 @@
+{
+  "paradas": [
+    {
+      "id": "emt-5848", "nombre": "Mar de Cristal", "red": "emt", "tipo": "cabecera",
+      "lat": 40.46939, "lon": -3.63887,
+      "llegadas": [ { "linea": "104", "destino": "Ciudad Lineal", "minutos": 12 },
+                    { "linea": "104", "destino": "Ciudad Lineal", "minutos": 18 } ]
+    }
+  ],
+  "lineas": {
+    "104": {
+      "avisos": [
+        { "titulo": "A veces aparece un autobús que no estaba en la lista",
+          "texto": "Si la app dice 15 min o más, 4 de cada 10 veces sale otro antes. Mira la parada aunque falte mucho." },
+        { "titulo": "Aquí empieza la línea: «1 min» no es «ya»",
+          "texto": "Si marca 1 min, el autobús suele estar parado o está llegando; ha habido casos en que sale unos 6 min después. Si marca «>>», ya está recogiendo gente." },
+        { "titulo": "Pasa algo menos de lo que promete",
+          "texto": "Programado cada 10 a 12 min; de verdad, cada 13. 1 de cada 8 esperas pasa de 20 min." }
+      ]
+    }
+  },
+  "aviso_oficial": null,
+  "cuando_salgo": {
+    "desde": "Móstoles Central", "hasta": "Nuevos Ministerios", "llegar_antes": "9:00", "dia": "laborable",
+    "recomendada": { "salida": "7:35", "trayecto": "C5 de las 7:47 → Atocha → cualquier tren a Nuevos Ministerios",
+                     "llegada_habitual": "8:39", "peor_dia": "8:56", "dias": [1,1,1,1,1,1,1,1],
+                     "siguiente": { "linea": "C5", "hora": "7:49", "llegada": "8:44" } },
+    "rapida": { "salida": "8:05", "trayecto": "C5 de las 8:17 con transbordo en Atocha",
+                "dias": [0,0,0,0,0,0,0,0,1] }
+  },
+  "prometido_real": [
+    { "titulo": "691 en Zoco, hacia la sierra, de 7:00 a 9:30, laborable",
+      "prometido": "Un autobús cada 20 min", "fuente_prometido": "Portal de datos abiertos de la Comunidad de Madrid (dataset 1919185) y horario oficial",
+      "enlace": "https://datos.comunidad.madrid/dataset/1919185",
+      "medido": "Cada 21 min de mediana, pero el 34 % de las esperas pasa de 30 min" }
+  ],
+  "avisos_simulados": [
+    { "linea": "27", "texto": "Bus lleno, no para", "hace_min": 2, "confirman": 3 },
+    { "linea": "14", "texto": "Atasco en Atocha", "hace_min": 4, "confirman": 2 },
+    { "linea": "691", "texto": "El 691 no ha pasado", "hace_min": 6, "confirman": 1 }
+  ]
+}

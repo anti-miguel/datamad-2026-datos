@@ -1,0 +1,124 @@
+// Pantalla 1: Paradas (inicio). Objetivo: llegar en dos toques a una parada.
+import { useState } from "react";
+import { Linea, Tarjeta } from "../componentes/Comunes.jsx";
+import { IconoLupa, IconoAviso, IconoEstrella } from "../componentes/Iconos.jsx";
+import { NOMBRE_RED, normalizar } from "../lib/util.js";
+
+const FILTROS = [
+  { id: "todo", texto: "Todo" },
+  { id: "emt", texto: "Bus EMT" },
+  { id: "interurbano", texto: "Interurbano" },
+  { id: "metro", texto: "Metro" },
+  { id: "renfe", texto: "Cercanías" },
+];
+
+function lineasDe(parada) {
+  return [...new Set(parada.llegadas.map((l) => l.linea))];
+}
+
+function numeroDeParada(parada) {
+  return parada.id.split("-")[1];
+}
+
+function TarjetaParada({ parada, favorita, onAbrir }) {
+  return (
+    <button onClick={onAbrir} className="block w-full text-left">
+      <Tarjeta className="p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-[20px] font-bold text-[#202124]">{parada.nombre}</h3>
+            <p className="text-[15px] text-[#5F6368]">
+              {NOMBRE_RED[parada.red]} · parada {numeroDeParada(parada)}
+            </p>
+          </div>
+          {favorita && <IconoEstrella llena className="h-6 w-6 shrink-0 text-principal" />}
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {lineasDe(parada).map((l) => (
+            <Linea key={l} linea={l} red={parada.red} />
+          ))}
+        </div>
+      </Tarjeta>
+    </button>
+  );
+}
+
+export default function Paradas({ demo, favoritas, onAbrirParada }) {
+  const [busqueda, setBusqueda] = useState("");
+  const [filtro, setFiltro] = useState("todo");
+
+  const q = normalizar(busqueda);
+  const buscando = q.length >= 2;
+  const porModo = demo.paradas.filter((p) => filtro === "todo" || p.red === filtro);
+  const resultados = buscando
+    ? porModo.filter((p) => normalizar(p.nombre).includes(q) || lineasDe(p).some((l) => normalizar(l).includes(q)))
+    : [];
+  const listaFavoritas = porModo.filter((p) => favoritas.includes(p.id));
+
+  return (
+    <div className="space-y-4">
+      <h1 className="pt-2 text-[32px] font-bold text-[#202124]">Mis paradas</h1>
+
+      <label className="flex min-h-[48px] items-center gap-2 rounded-2xl border border-[#D5D3CE] bg-white px-4 focus-within:border-principal">
+        <IconoLupa className="h-5 w-5 text-[#5F6368]" />
+        <input
+          type="search"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          placeholder="Busca parada, línea o estación"
+          aria-label="Busca parada, línea o estación"
+          className="h-[46px] w-full bg-transparent text-[16px] outline-none placeholder:text-[#80868B]"
+        />
+      </label>
+
+      <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Filtrar por modo">
+        {FILTROS.map((f) => (
+          <button
+            key={f.id}
+            role="radio"
+            aria-checked={filtro === f.id}
+            onClick={() => setFiltro(f.id)}
+            className={`min-h-[44px] rounded-full border px-4 text-[16px] transition-colors ${
+              filtro === f.id
+                ? "border-principal bg-principal font-bold text-white"
+                : "border-[#D5D3CE] bg-white text-[#202124]"
+            }`}
+          >
+            {f.texto}
+          </button>
+        ))}
+      </div>
+
+      {demo.aviso_oficial && (
+        <div className="flex gap-3 rounded-2xl bg-aviso-oficial p-4 text-[#5C3B00]">
+          <IconoAviso className="mt-0.5 h-5 w-5 shrink-0" />
+          <p className="text-[15px]">
+            {typeof demo.aviso_oficial === "string" ? demo.aviso_oficial : demo.aviso_oficial.texto}
+          </p>
+        </div>
+      )}
+
+      {buscando ? (
+        <section className="space-y-3" aria-live="polite">
+          {resultados.length === 0 ? (
+            <p className="text-[15px] text-[#5F6368]">No tenemos datos de esa parada todavía.</p>
+          ) : (
+            resultados.map((p) => (
+              <TarjetaParada key={p.id} parada={p} favorita={favoritas.includes(p.id)} onAbrir={() => onAbrirParada(p.id)} />
+            ))
+          )}
+        </section>
+      ) : (
+        <section className="space-y-3">
+          {listaFavoritas.length > 0 && <h2 className="text-[16px] font-bold text-[#3C4043]">Favoritas</h2>}
+          {listaFavoritas.map((p) => (
+            <TarjetaParada key={p.id} parada={p} favorita onAbrir={() => onAbrirParada(p.id)} />
+          ))}
+          {listaFavoritas.length === 0 && (
+            <p className="text-[15px] text-[#5F6368]">Busca tu parada y pulsa la estrella para tenerla aquí.</p>
+          )}
+        </section>
+      )}
+    </div>
+  );
+}

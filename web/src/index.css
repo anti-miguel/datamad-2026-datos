@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Colores fijos del manual (sección 1.2) */
+@theme {
+  --color-principal: #1F5FD1;
+  --color-fondo: #F6F5F2;
+  --color-verde: #1E8E3E;
+  --color-ambar: #B26A00;
+  --color-rojo: #C5221F;
+  --color-aviso-oficial: #FFF4D6;
+  --color-aviso-simulado: #EDE7F6;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-fondo);
+  color: #202124;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+summary {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-principal);
+  outline-offset: 2px;
+}
+
+/* El vehículo de la franja: un ligero vaivén, como si rodara */
+@keyframes rodar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+.vehiculo-rueda {
+  animation: rodar 0.9s ease-in-out infinite;
+}
+
+/* Cuando está llegando, late para llamar la atención */
+@keyframes latir {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(31, 95, 209, 0.45); }
+  50% { box-shadow: 0 0 0 8px rgba(31, 95, 209, 0); }
+}
+.vehiculo-llegando {
+  animation: rodar 0.9s ease-in-out infinite, latir 1.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vehiculo-rueda,
+  .vehiculo-llegando {
+    animation: none;
+  }
+}
+
+/* Leaflet sin el aviso de su marca, conservando la atribución de OpenStreetMap */
+.leaflet-control-attribution {
+  font-size: 10px;
+}
