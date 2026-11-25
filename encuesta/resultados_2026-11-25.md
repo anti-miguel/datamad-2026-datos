@@ -1,28 +1,28 @@
 # Resultados de la encuesta (2026-11-25)
 
-96 respuestas. Muestra de conveniencia (enlace compartido y encuestas en la calle), no representativa: 72% son menores de 25 años. Generado con `encuesta/resumen_encuesta.py`.
+109 respuestas. Muestra de conveniencia (enlace compartido y encuestas en la calle), no representativa: 74% son menores de 25 años. Generado con `encuesta/resumen_encuesta.py`.
 
 ## Lo principal
 
-- Llegaron tarde por el transporte en el último mes: 79% (3 veces o más: 43%).
-- La app dijo una hora y llegó mucho más tarde: 98% alguna vez (a menudo: 40%).
-- Se fueron de la parada y pasó justo después: 74%.
-- Confianza en la app: media 2.98 de 5.
-- Salen antes por si acaso: 89%; 10 min o más: 50%.
-- Dejaron de coger un transporte por no fiarse: 52%.
-- Ventana frente a minuto exacto: más útil 42%, igual 32%, menos 26%.
-- Avisarían a otros viajeros: 75% sí, 18% depende.
+- Llegaron tarde por el transporte en el último mes: 81% (3 veces o más: 45%).
+- La app dijo una hora y llegó mucho más tarde: 97% alguna vez (a menudo: 42%).
+- Se fueron de la parada y pasó justo después: 76%.
+- Confianza en la app: media 2.97 de 5.
+- Salen antes por si acaso: 89%; 10 min o más: 49%.
+- Dejaron de coger un transporte por no fiarse: 51%.
+- Ventana frente a minuto exacto: más útil 42%, igual 31%, menos 27%.
+- Avisarían a otros viajeros: 72% sí, 20% depende.
 
-Ojo: la pregunta de «mucho más tarde» empuja hacia el sí; el 98% no debe defenderse como medida.
+Ojo: la pregunta de «mucho más tarde» empuja hacia el sí; el 97% no debe defenderse como medida.
 
 ## Transporte que usan (respuesta múltiple; % sobre personas)
 
 | Respuesta | n | % |
 |---|---|---|
-| Metro | 71 | 74% |
-| Bus interurbano | 39 | 41% |
-| Bus de la EMT | 30 | 31% |
-| Cercanías | 24 | 25% |
+| Metro | 76 | 70% |
+| Bus interurbano | 51 | 47% |
+| Bus de la EMT | 33 | 30% |
+| Cercanías | 24 | 22% |
 | Otro | 5 | 5% |
 | Metro Ligero | 2 | 2% |
 
@@ -30,98 +30,98 @@ Ojo: la pregunta de «mucho más tarde» empuja hacia el sí; el 98% no debe def
 
 | Respuesta | n | % |
 |---|---|---|
-| 5 o más | 49 | 51% |
-| 3 o 4 | 19 | 20% |
-| Menos de una vez por semana | 19 | 20% |
-| 1 o 2 | 9 | 9% |
+| 5 o más | 54 | 50% |
+| 3 o 4 | 26 | 24% |
+| Menos de una vez por semana | 20 | 18% |
+| 1 o 2 | 9 | 8% |
 
 ## Mira la app
 
 | Respuesta | n | % |
 |---|---|---|
-| Siempre | 43 | 45% |
-| A veces | 34 | 35% |
-| Nunca | 19 | 20% |
+| Siempre | 53 | 49% |
+| A veces | 37 | 34% |
+| Nunca | 19 | 17% |
 
 ## Llegó tarde en el último mes
 
 | Respuesta | n | % |
 |---|---|---|
-| 3 veces o más | 41 | 43% |
-| 1 o 2 veces | 35 | 36% |
-| Ninguna vez | 20 | 21% |
+| 3 veces o más | 49 | 45% |
+| 1 o 2 veces | 39 | 36% |
+| Ninguna vez | 21 | 19% |
 
 ## La app dijo una hora y llegó mucho más tarde
 
 | Respuesta | n | % |
 |---|---|---|
-| Alguna vez | 56 | 58% |
-| A menudo | 38 | 40% |
-| Nunca | 2 | 2% |
+| Alguna vez | 60 | 55% |
+| A menudo | 46 | 42% |
+| Nunca | 3 | 3% |
 
 ## Se fue y pasó justo después
 
 | Respuesta | n | % |
 |---|---|---|
-| Sí | 71 | 74% |
-| No | 25 | 26% |
+| Sí | 83 | 76% |
+| No | 26 | 24% |
 
 ## Confianza en la app (1 a 5)
 
 | Respuesta | n | % |
 |---|---|---|
-| 3 | 41 | 43% |
-| 2 | 23 | 24% |
-| 4 | 19 | 20% |
-| 5 | 7 | 7% |
+| 3 | 49 | 45% |
+| 2 | 26 | 24% |
+| 4 | 21 | 19% |
+| 5 | 7 | 6% |
 | 1 | 6 | 6% |
 
 ## Sale antes por si acaso
 
 | Respuesta | n | % |
 |---|---|---|
-| Unos 5 minutos | 37 | 39% |
-| Unos 10 minutos | 32 | 33% |
-| 15 minutos o más | 16 | 17% |
-| No | 11 | 11% |
+| Unos 5 minutos | 44 | 40% |
+| Unos 10 minutos | 36 | 33% |
+| 15 minutos o más | 17 | 16% |
+| No | 12 | 11% |
 
 ## Dejó de coger un transporte
 
 | Respuesta | n | % |
 |---|---|---|
-| Sí | 50 | 52% |
-| No | 46 | 48% |
+| Sí | 56 | 51% |
+| No | 53 | 49% |
 
 ## «Entre 19 y 26» frente a «21»
 
 | Respuesta | n | % |
 |---|---|---|
-| Más útil | 40 | 42% |
-| Igual de útil | 31 | 32% |
-| Menos útil | 25 | 26% |
+| Más útil | 46 | 42% |
+| Igual de útil | 34 | 31% |
+| Menos útil | 29 | 27% |
 
 ## Avisaría a otros viajeros
 
 | Respuesta | n | % |
 |---|---|---|
-| Sí | 72 | 75% |
-| Depende | 17 | 18% |
-| No | 7 | 7% |
+| Sí | 79 | 72% |
+| Depende | 22 | 20% |
+| No | 8 | 7% |
 
 ## Edad
 
 | Respuesta | n | % |
 |---|---|---|
-| Menos de 25 | 69 | 72% |
-| 25 a 44 | 16 | 17% |
-| 45 a 64 | 11 | 11% |
+| Menos de 25 | 81 | 74% |
+| 25 a 44 | 17 | 16% |
+| 45 a 64 | 11 | 10% |
 
 ## Ventana según si miran la app
 
 | Mira la app | Igual de útil | Menos útil | Más útil |
 |---|---|---|---|
-| A veces | 8 | 10 | 16 |
+| A veces | 9 | 10 | 18 |
 | Nunca | 7 | 3 | 9 |
-| Siempre | 16 | 12 | 15 |
+| Siempre | 18 | 16 | 19 |
 
 Entre quienes miran siempre la app el reparto es casi igual: conviene enseñar la cifra de la app junto a la ventana, no sustituirla.

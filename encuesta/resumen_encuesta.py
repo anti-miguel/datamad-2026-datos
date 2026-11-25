@@ -43,7 +43,7 @@ def main():
          f"- Dejaron de coger un transporte por no fiarse: {pct(df[c[9]] == 'Sí')}.",
          f"- Ventana frente a minuto exacto: más útil {pct(df[c[11]] == 'Más útil')}, igual {pct(df[c[11]] == 'Igual de útil')}, menos {pct(df[c[11]] == 'Menos útil')}.",
          f"- Avisarían a otros viajeros: {pct(df[c[12]] == 'Sí')} sí, {pct(df[c[12]] == 'Depende')} depende.", "",
-         "Ojo: la pregunta de «mucho más tarde» empuja hacia el sí; el 98% no debe defenderse como medida.", "",
+         f"Ojo: la pregunta de «mucho más tarde» empuja hacia el sí; el {pct(df[c[5]] != 'Nunca')} no debe defenderse como medida.", "",
          "## Transporte que usan (respuesta múltiple; % sobre personas)", "",
          tabla(df[c[1]].str.split(";").explode().str.strip(), n), ""]
     for i, nombre in PREGUNTAS.items():

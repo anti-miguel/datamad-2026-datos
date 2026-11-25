@@ -7,7 +7,7 @@ Para preparar la presentación. Sin nombres: los audios y las transcripciones no
 - 14 conversaciones en tres sitios: Centro Deportivo Alcalá 525 (7), Esencia Studios (6) y Suanzes (1). Unos 18 min de audio.
 - Unas 18 personas: cuatro conversaciones son con dos personas a la vez.
 - No se hizo el mismo cuestionario en todas: cada dato dice sobre cuántas conversaciones se preguntó.
-- Sesgo: preguntas a veces dirigidas («¿usarías nuestra aplicación?») y gente que contesta por cortesía. Sirve para ilustrar, no para medir; los números para medir son los de la encuesta (96 respuestas).
+- Sesgo: preguntas a veces dirigidas («¿usarías nuestra aplicación?») y gente que contesta por cortesía. Sirve para ilustrar, no para medir; los números para medir son los de la encuesta (109 respuestas).
 
 ## Datos
 
