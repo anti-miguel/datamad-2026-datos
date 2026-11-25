@@ -46,7 +46,7 @@ function TarjetaParada({ parada, favorita, nombre, onAbrir }) {
   );
 }
 
-export default function Paradas({ demo, favoritas, nombres = {}, onAbrirParada }) {
+export default function Paradas({ demo, favoritas, nombres = {}, usuario, onAbrirParada }) {
   const [busqueda, setBusqueda] = useState("");
   const [filtro, setFiltro] = useState("todo");
 
@@ -65,7 +65,10 @@ export default function Paradas({ demo, favoritas, nombres = {}, onAbrirParada }
         <EscenaSegunModo key={filtro} modo={filtro} />
       </div>
       <div className="flex flex-wrap-reverse items-end justify-between gap-x-3 gap-y-1">
-        <h1 className="titulo text-[30px] text-tinta min-[360px]:text-[34px]">Mis paradas</h1>
+        <div>
+          {usuario && <p className="text-[16px] font-bold text-tinta-2">Hola, {usuario}</p>}
+          <h1 className="titulo text-[30px] text-tinta min-[360px]:text-[34px]">Mis paradas</h1>
+        </div>
         <Logo alto={30} className="mb-1 w-[112px] shrink-0" />
       </div>
 

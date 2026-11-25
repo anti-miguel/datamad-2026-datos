@@ -11,6 +11,7 @@ import Prometido from "./pantallas/Prometido.jsx";
 import Avisos from "./pantallas/Avisos.jsx";
 import Info from "./pantallas/Info.jsx";
 import { ListaRutas, DetalleRuta } from "./pantallas/Rutas.jsx";
+import Login from "./pantallas/Login.jsx";
 import { posicionVehiculo } from "./lib/ventana.js";
 import { aMinutos, calcularLlegada, contextoActual, iconoDeRed, llegadasVivas } from "./lib/util.js";
 
@@ -35,6 +36,15 @@ function leerFavoritas() {
 }
 
 // Nombres que el usuario pone a sus paradas y rutas: { "emt-5848": "Mi parada de casa", "ruta-uni": "..." }
+// Sesión de la demo: { correo, nombre } o null
+function leerSesion() {
+  try {
+    return JSON.parse(localStorage.getItem("sesion"));
+  } catch {
+    return null;
+  }
+}
+
 function leerNombres() {
   try {
     return JSON.parse(localStorage.getItem("nombres")) ?? {};
@@ -75,6 +85,26 @@ export default function App() {
   const [nombres, setNombres] = useState(leerNombres);
   const [rutaId, setRutaId] = useState(null);
   const [bajada, setBajada] = useState(null);
+  const [sesion, setSesion] = useState(leerSesion);
+
+  function entrar(s) {
+    try {
+      localStorage.setItem("sesion", JSON.stringify(s));
+    } catch {
+      // sin almacenamiento la sesión dura hasta recargar
+    }
+    setSesion(s);
+    setPantalla("paradas");
+  }
+
+  function salir() {
+    try {
+      localStorage.removeItem("sesion");
+    } catch {
+      // nada que borrar
+    }
+    setSesion(null);
+  }
 
   function renombrar(clave, nombre) {
     setNombres((n) => {
@@ -206,6 +236,8 @@ export default function App() {
   const conFranja = franja && ["paradas", "parada", "salgo"].includes(pantalla);
   const activo = { parada: "paradas", linea: "paradas", prometido: "paradas", ruta: "rutas", salgo: "rutas" }[pantalla] ?? pantalla;
 
+  if (!sesion) return <Login onEntrar={entrar} />;
+
   if (!demo) {
     return (
       <div className="mx-auto max-w-[430px] p-4">
@@ -229,7 +261,7 @@ export default function App() {
     <div className="mx-auto min-h-dvh max-w-[430px]">
       <main className={`px-4 pt-4 ${conFranja ? "pb-[210px]" : "pb-[100px]"}`}>
         <section id="pantalla-paradas" hidden={pantalla !== "paradas"}>
-          <Paradas demo={demo} favoritas={favoritas} nombres={nombres} onAbrirParada={abrirParada} />
+          <Paradas demo={demo} favoritas={favoritas} nombres={nombres} usuario={sesion.nombre} onAbrirParada={abrirParada} />
         </section>
 
         {parada && (
@@ -327,7 +359,7 @@ export default function App() {
 
         {pantalla === "info" && datos && (
           <section id="pantalla-info">
-            <Info meta={datos.meta} />
+            <Info meta={datos.meta} sesion={sesion} onSalir={salir} />
           </section>
         )}
       </main>

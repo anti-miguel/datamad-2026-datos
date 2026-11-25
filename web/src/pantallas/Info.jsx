@@ -2,7 +2,7 @@
 import { Tarjeta } from "../componentes/Comunes.jsx";
 import { fecha } from "../lib/util.js";
 
-export default function Info({ meta }) {
+export default function Info({ meta, sesion, onSalir }) {
   const desde = fecha(meta.datos_desde);
   const hasta = fecha(meta.datos_hasta);
   const f = meta.fuentes;
@@ -18,6 +18,20 @@ export default function Info({ meta }) {
 
   return (
     <div className="space-y-4">
+      {sesion && (
+        <Tarjeta className="flex items-center gap-3 p-4">
+          <span className="pegatina flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full bg-amarillo text-[20px] font-bold">
+            {sesion.nombre.charAt(0)}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[17px] font-bold text-tinta">{sesion.nombre}</span>
+            <span className="block truncate text-[14px] text-suave">{sesion.correo}</span>
+          </span>
+          <button onClick={onSalir} className="boton-pegatina min-h-[44px] shrink-0 rounded-xl bg-tarjeta px-3 text-[15px] font-bold">
+            Cerrar sesión
+          </button>
+        </Tarjeta>
+      )}
       <h1 className="titulo pt-2 text-[34px] text-tinta">Cómo funciona</h1>
       <p className="text-[17px] text-tinta">
         Grabamos lo que anuncian las apps oficiales y lo comparamos con cuándo llega de verdad. Con eso calculamos cuánto
