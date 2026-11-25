@@ -1,0 +1,1155 @@
+{
+  "paradas": [
+    {
+      "id": "emt-4613",
+      "nombre": "Avenida de Canillejas - M40",
+      "red": "emt",
+      "tipo": "intermedia",
+      "lat": 40.4169,
+      "lon": -3.61061,
+      "etiqueta": "Bus EMT · parada 4613",
+      "llegadas": [
+        {
+          "linea": "4",
+          "destino": "Ciudad Lineal",
+          "minutos": 4
+        },
+        {
+          "linea": "106",
+          "destino": "Manuel Becerra",
+          "minutos": 7
+        },
+        {
+          "linea": "159",
+          "destino": "Alsacia",
+          "minutos": 11
+        },
+        {
+          "linea": "4",
+          "destino": "Ciudad Lineal",
+          "minutos": 17
+        },
+        {
+          "linea": "106",
+          "destino": "Manuel Becerra",
+          "minutos": 19
+        },
+        {
+          "linea": "159",
+          "destino": "Alsacia",
+          "minutos": 29
+        }
+      ],
+      "recorridos": {
+        "4": [
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 2
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 3
+          },
+          {
+            "codigo": "4196",
+            "nombre": "Avenida de Canillejas - Rusia",
+            "minutos": 4
+          },
+          {
+            "codigo": "4192",
+            "nombre": "Arcos de Jalón - Avenida de Canillejas",
+            "minutos": 6
+          },
+          {
+            "codigo": "1207",
+            "nombre": "Arcos de Jalón - Albericia",
+            "minutos": 8
+          },
+          {
+            "codigo": "1205",
+            "nombre": "Arcos de Jalón - Amposta",
+            "minutos": 10
+          },
+          {
+            "codigo": "1203",
+            "nombre": "Arcos de Jalón - San Román del Valle",
+            "minutos": 11
+          },
+          {
+            "codigo": "1201",
+            "nombre": "Pobladura del Valle - Arcos de Jalón",
+            "minutos": 13
+          },
+          {
+            "codigo": "252",
+            "nombre": "Hermanos García Noblejas - Centro de Salud",
+            "minutos": 15
+          },
+          {
+            "codigo": "248",
+            "nombre": "Hermanos García Noblejas - Gandhi",
+            "minutos": 16
+          },
+          {
+            "codigo": "247",
+            "nombre": "Castillo de Arévalo",
+            "minutos": 17
+          },
+          {
+            "codigo": "245",
+            "nombre": "Metro García Noblejas",
+            "minutos": 18
+          },
+          {
+            "codigo": "243",
+            "nombre": "Ascao - Julián Camarillo",
+            "minutos": 20
+          },
+          {
+            "codigo": "241",
+            "nombre": "Vital Aza - Albasanz",
+            "minutos": 22
+          }
+        ],
+        "106": [
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 1
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 3
+          },
+          {
+            "codigo": "4509",
+            "nombre": "Avenida de Guadalajara - Albericia",
+            "minutos": 4
+          },
+          {
+            "codigo": "4507",
+            "nombre": "Avenida Guadalajara - República Eslovaca",
+            "minutos": 5
+          },
+          {
+            "codigo": "4400",
+            "nombre": "Avenida de Guadalajara - Capri",
+            "minutos": 7
+          },
+          {
+            "codigo": "4655",
+            "nombre": "Alsacia",
+            "minutos": 8
+          },
+          {
+            "codigo": "5324",
+            "nombre": "Nicolás Salmerón - Alsacia",
+            "minutos": 9
+          },
+          {
+            "codigo": "256",
+            "nombre": "Nicolás Salmerón - Paredes de Nava",
+            "minutos": 10
+          },
+          {
+            "codigo": "258",
+            "nombre": "Nicolás Salmerón - Matamorosa",
+            "minutos": 11
+          },
+          {
+            "codigo": "260",
+            "nombre": "Nicolás Salmerón - Crematorio",
+            "minutos": 12
+          },
+          {
+            "codigo": "262",
+            "nombre": "Cementerio Civil",
+            "minutos": 13
+          },
+          {
+            "codigo": "1086",
+            "nombre": "Largo Caballero - Avenida Daroca",
+            "minutos": 15
+          },
+          {
+            "codigo": "1085",
+            "nombre": "Avenida de Daroca - Arriaga",
+            "minutos": 16
+          },
+          {
+            "codigo": "1083",
+            "nombre": "Cementerio la Almudena",
+            "minutos": 18
+          }
+        ],
+        "159": [
+          {
+            "codigo": "1211",
+            "nombre": "Avenida de Canillejas - Toscana",
+            "minutos": 1
+          },
+          {
+            "codigo": "4611",
+            "nombre": "Avenida de Canillejas - Suecia",
+            "minutos": 2
+          },
+          {
+            "codigo": "4509",
+            "nombre": "Avenida de Guadalajara - Albericia",
+            "minutos": 2
+          },
+          {
+            "codigo": "4507",
+            "nombre": "Avenida Guadalajara - República Eslovaca",
+            "minutos": 4
+          },
+          {
+            "codigo": "4400",
+            "nombre": "Avenida de Guadalajara - Capri",
+            "minutos": 5
+          },
+          {
+            "codigo": "4588",
+            "nombre": "Alsacia",
+            "minutos": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "metro-ventas",
+      "nombre": "Ventas",
+      "red": "metro",
+      "tipo": "estacion",
+      "lat": 40.43045,
+      "lon": -3.66327,
+      "etiqueta": "Metro · estación de Ventas",
+      "llegadas": [
+        {
+          "linea": "5",
+          "destino": "Alameda de Osuna",
+          "minutos": 2
+        },
+        {
+          "linea": "2",
+          "destino": "Cuatro Caminos",
+          "minutos": 3
+        },
+        {
+          "linea": "5",
+          "destino": "Alameda de Osuna",
+          "minutos": 6
+        },
+        {
+          "linea": "2",
+          "destino": "Cuatro Caminos",
+          "minutos": 7
+        }
+      ],
+      "recorridos": {
+        "2": [
+          {
+            "codigo": "29",
+            "nombre": "Manuel Becerra",
+            "minutos": 2
+          },
+          {
+            "codigo": "30",
+            "nombre": "Goya",
+            "minutos": 3
+          },
+          {
+            "codigo": "31",
+            "nombre": "Principe de Vergara",
+            "minutos": 4
+          },
+          {
+            "codigo": "32",
+            "nombre": "Retiro",
+            "minutos": 5
+          },
+          {
+            "codigo": "33",
+            "nombre": "Banco de España",
+            "minutos": 7
+          },
+          {
+            "codigo": "34",
+            "nombre": "Sevilla",
+            "minutos": 8
+          },
+          {
+            "codigo": "35",
+            "nombre": "Sol",
+            "minutos": 9
+          },
+          {
+            "codigo": "36",
+            "nombre": "Opera",
+            "minutos": 11
+          },
+          {
+            "codigo": "37",
+            "nombre": "Santo Domingo",
+            "minutos": 12
+          },
+          {
+            "codigo": "38",
+            "nombre": "Noviciado",
+            "minutos": 13
+          },
+          {
+            "codigo": "39",
+            "nombre": "San Bernardo",
+            "minutos": 14
+          },
+          {
+            "codigo": "40",
+            "nombre": "Quevedo",
+            "minutos": 15
+          },
+          {
+            "codigo": "41",
+            "nombre": "Canal",
+            "minutos": 17
+          },
+          {
+            "codigo": "42",
+            "nombre": "Cuatro Caminos",
+            "minutos": 18
+          }
+        ],
+        "5": [
+          {
+            "codigo": "80",
+            "nombre": "El Carmen",
+            "minutos": 2
+          },
+          {
+            "codigo": "79",
+            "nombre": "Quintana",
+            "minutos": 4
+          },
+          {
+            "codigo": "78",
+            "nombre": "Pueblo Nuevo",
+            "minutos": 5
+          },
+          {
+            "codigo": "77",
+            "nombre": "Ciudad Lineal",
+            "minutos": 6
+          },
+          {
+            "codigo": "76",
+            "nombre": "Suanzes",
+            "minutos": 9
+          },
+          {
+            "codigo": "75",
+            "nombre": "Torre Arias",
+            "minutos": 11
+          },
+          {
+            "codigo": "74",
+            "nombre": "Canillejas",
+            "minutos": 13
+          },
+          {
+            "codigo": "253",
+            "nombre": "El Capricho",
+            "minutos": 17
+          },
+          {
+            "codigo": "252",
+            "nombre": "Alameda de Osuna",
+            "minutos": 19
+          }
+        ]
+      }
+    },
+    {
+      "id": "inter-09208",
+      "nombre": "Pº Ermita - Guardia Civil",
+      "red": "interurbano",
+      "tipo": "intermedia",
+      "lat": 40.7104,
+      "lon": -3.98623,
+      "codigo": "8_09208",
+      "sentido": "2",
+      "etiqueta": "Interurbano · parada 09208",
+      "llegadas": [
+        {
+          "linea": "691",
+          "destino": "Intercambiador de Moncloa",
+          "minutos": 8
+        },
+        {
+          "linea": "691",
+          "destino": "Intercambiador de Moncloa",
+          "minutos": 22
+        }
+      ],
+      "recorridos": {
+        "691": [
+          {
+            "codigo": "09274",
+            "nombre": "Ctra. M623-Pºsan Sebastián",
+            "minutos": 2
+          },
+          {
+            "codigo": "09210",
+            "nombre": "Ctra. M623-Urb.las Mercedes",
+            "minutos": 2
+          },
+          {
+            "codigo": "11570",
+            "nombre": "Ctra. M623-Urb.Parque Collado",
+            "minutos": 3
+          },
+          {
+            "codigo": "19243",
+            "nombre": "Av. Madrid-Palencia",
+            "minutos": 5
+          },
+          {
+            "codigo": "09300",
+            "nombre": "Av. Buenos Aires-Puerto Rico",
+            "minutos": 5
+          },
+          {
+            "codigo": "09301",
+            "nombre": "Av. Buenos Aires-Urb.los Linos",
+            "minutos": 6
+          },
+          {
+            "codigo": "19870",
+            "nombre": "Ctra. M601-Recinto Ferial",
+            "minutos": 11
+          },
+          {
+            "codigo": "06516",
+            "nombre": "Av. Juan Carlos I-Zoco",
+            "minutos": 12
+          },
+          {
+            "codigo": "06391",
+            "nombre": "Av. Juan Carlos I-Puente los Delfines",
+            "minutos": 13
+          },
+          {
+            "codigo": "06515",
+            "nombre": "Honorio Lozano-Av. Juan Carlos I",
+            "minutos": 13
+          },
+          {
+            "codigo": "11085",
+            "nombre": "Ctra. A6-Urb.la Berzosilla",
+            "minutos": 21
+          },
+          {
+            "codigo": "06094",
+            "nombre": "Ctra. A6-Av. Torrelodones",
+            "minutos": 23
+          },
+          {
+            "codigo": "06096",
+            "nombre": "Huertos-Camino Valladolid",
+            "minutos": 24
+          }
+        ]
+      }
+    },
+    {
+      "id": "renfe-vicalvaro",
+      "nombre": "Vicálvaro",
+      "red": "renfe",
+      "tipo": "estacion",
+      "lat": 40.4023,
+      "lon": -3.6081,
+      "etiqueta": "Cercanías · estación de Vicálvaro",
+      "llegadas": [
+        {
+          "linea": "C2",
+          "destino": "Atocha",
+          "minutos": 6
+        },
+        {
+          "linea": "C7",
+          "destino": "Atocha",
+          "minutos": 12
+        },
+        {
+          "linea": "C2",
+          "destino": "Atocha",
+          "minutos": 21
+        },
+        {
+          "linea": "C7",
+          "destino": "Atocha",
+          "minutos": 27
+        }
+      ],
+      "recorrido_aproximado": true,
+      "recorridos": {
+        "C2": [
+          {
+            "codigo": "vallecas",
+            "nombre": "Vallecas",
+            "minutos": 4
+          },
+          {
+            "codigo": "entrevias",
+            "nombre": "Asamblea de Madrid-Entrevías",
+            "minutos": 7
+          },
+          {
+            "codigo": "atocha",
+            "nombre": "Atocha",
+            "minutos": 11
+          }
+        ],
+        "C7": [
+          {
+            "codigo": "vallecas",
+            "nombre": "Vallecas",
+            "minutos": 4
+          },
+          {
+            "codigo": "entrevias",
+            "nombre": "Asamblea de Madrid-Entrevías",
+            "minutos": 7
+          },
+          {
+            "codigo": "atocha",
+            "nombre": "Atocha",
+            "minutos": 11
+          }
+        ]
+      }
+    },
+    {
+      "id": "emt-5848",
+      "nombre": "Mar de Cristal",
+      "red": "emt",
+      "tipo": "cabecera",
+      "lat": 40.46939,
+      "lon": -3.63887,
+      "llegadas": [
+        {
+          "linea": "104",
+          "destino": "Ciudad Lineal",
+          "minutos": 12
+        },
+        {
+          "linea": "104",
+          "destino": "Ciudad Lineal",
+          "minutos": 18
+        }
+      ],
+      "etiqueta": "Bus EMT · parada 5848"
+    }
+  ],
+  "lineas": {
+    "104": {
+      "avisos": [
+        {
+          "titulo": "A veces aparece un autobús que no estaba en la lista",
+          "texto": "Si la app dice 15 min o más, 4 de cada 10 veces sale otro antes. Mira la parada aunque falte mucho."
+        },
+        {
+          "titulo": "Aquí empieza la línea: «1 min» no es «ya»",
+          "texto": "Si marca 1 min, el autobús suele estar parado o está llegando; ha habido casos en que sale unos 6 min después. Si marca «>>», ya está recogiendo gente."
+        },
+        {
+          "titulo": "Pasa algo menos de lo que promete",
+          "texto": "Programado cada 10 a 12 min; de verdad, cada 13. 1 de cada 8 esperas pasa de 20 min."
+        }
+      ]
+    }
+  },
+  "aviso_oficial": null,
+  "cuando_salgo": {
+    "desde": "Móstoles Central",
+    "hasta": "Nuevos Ministerios",
+    "llegar_antes": "9:00",
+    "dia": "laborable",
+    "recomendada": {
+      "salida": "7:35",
+      "trayecto": "C5 de las 7:47 → Atocha → cualquier tren a Nuevos Ministerios",
+      "llegada_habitual": "8:39",
+      "peor_dia": "8:56",
+      "dias": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "siguiente": {
+        "linea": "C5",
+        "hora": "7:49",
+        "llegada": "8:44"
+      }
+    },
+    "rapida": {
+      "salida": "8:05",
+      "trayecto": "C5 de las 8:17 con transbordo en Atocha",
+      "dias": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "prometido_real": [
+    {
+      "titulo": "691 en Zoco, hacia la sierra, de 7:00 a 9:30, laborable",
+      "prometido": "Un autobús cada 20 min",
+      "fuente_prometido": "Portal de datos abiertos de la Comunidad de Madrid (dataset 1919185) y horario oficial",
+      "enlace": "https://datos.comunidad.madrid/dataset/1919185",
+      "medido": "Cada 21 min de mediana, pero el 34 % de las esperas pasa de 30 min"
+    }
+  ],
+  "avisos_simulados": [
+    {
+      "linea": "27",
+      "texto": "Bus lleno, no para",
+      "hace_min": 2,
+      "confirman": 3
+    },
+    {
+      "linea": "14",
+      "texto": "Atasco en Atocha",
+      "hace_min": 4,
+      "confirman": 2
+    },
+    {
+      "linea": "691",
+      "texto": "El 691 no ha pasado",
+      "hace_min": 6,
+      "confirman": 1
+    }
+  ],
+  "rutas": [
+    {
+      "id": "uni",
+      "nombre": "A la uni",
+      "icono": "uni",
+      "ejemplo": false,
+      "desde": "Casa (Vicálvaro)",
+      "hasta": "UDIT · C. Alcalá, 506",
+      "tramos": [
+        {
+          "tipo": "andar",
+          "texto": "Andando a tu parada",
+          "minutos": 3
+        },
+        {
+          "tipo": "bus",
+          "titulo": "Hasta Avenida de Canillejas - Suecia (4611)",
+          "nota": "Las cuatro te dejan en la misma parada",
+          "parada_origen": "emt-4613",
+          "bajada": "Avenida de Canillejas - Suecia",
+          "opciones": [
+            {
+              "red": "emt",
+              "linea": "4",
+              "tipo": "intermedia",
+              "minutos": 4,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas - M40 (4613)"
+            },
+            {
+              "red": "emt",
+              "linea": "106",
+              "tipo": "intermedia",
+              "minutos": 7,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas - M40 (4613)"
+            },
+            {
+              "red": "emt",
+              "linea": "159",
+              "tipo": "intermedia",
+              "minutos": 11,
+              "viaje": 2,
+              "desde_parada": "Avenida de Canillejas - M40 (4613)"
+            },
+            {
+              "red": "interurbano",
+              "linea": "287",
+              "tipo": "intermedia",
+              "minutos": 9,
+              "viaje": 3,
+              "desde_parada": "una parada cercana",
+              "aproximado": true
+            }
+          ]
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a Metro Avenida de Guadalajara",
+          "minutos": 3
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "2",
+          "desde": "Avenida de Guadalajara",
+          "hasta": "Ventas",
+          "paradas": [
+            "Alsacia",
+            "La Almudena",
+            "La Elipa"
+          ],
+          "minutos": 3,
+          "viaje": 7,
+          "vagon": {
+            "total": 6,
+            "numeros": [],
+            "motivo": "para hacer el transbordo a la 5 en Ventas"
+          }
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Ventas: de la línea 2 a la 5",
+          "minutos": 4
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "5",
+          "desde": "Ventas",
+          "hasta": "Suanzes",
+          "paradas": [
+            "El Carmen",
+            "Quintana",
+            "Pueblo Nuevo",
+            "Ciudad Lineal"
+          ],
+          "minutos": 2,
+          "viaje": 9,
+          "vagon": {
+            "total": 7,
+            "numeros": [],
+            "motivo": "para salir antes en Suanzes"
+          }
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a la UDIT",
+          "minutos": 4
+        }
+      ],
+      "origen": "casa",
+      "destino": "uni",
+      "llegar_antes": "9:00",
+      "ahorro_experiencia": 18
+    },
+    {
+      "id": "vuelta",
+      "nombre": "De la uni a casa",
+      "icono": "casa",
+      "ejemplo": false,
+      "origen": "uni",
+      "destino": "casa",
+      "desde": "UDIT · C. Alcalá, 506",
+      "hasta": "Casa (Vicálvaro)",
+      "llegar_antes": "15:30",
+      "tramos": [
+        {
+          "tipo": "andar",
+          "texto": "Andando a Metro Suanzes",
+          "minutos": 4
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "5",
+          "desde": "Suanzes",
+          "hasta": "Ventas",
+          "paradas": [
+            "Ciudad Lineal",
+            "Pueblo Nuevo",
+            "Quintana",
+            "El Carmen"
+          ],
+          "minutos": 2,
+          "viaje": 9,
+          "vagon": {
+            "total": 7,
+            "numeros": [
+              6,
+              7
+            ],
+            "motivo": "Sales de frente a la escalera del transbordo a la línea 2"
+          }
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Ventas: de la línea 5 a la 2",
+          "minutos": 3
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "2",
+          "desde": "Ventas",
+          "hasta": "Avenida de Guadalajara",
+          "paradas": [
+            "La Elipa",
+            "La Almudena",
+            "Alsacia"
+          ],
+          "minutos": 3,
+          "viaje": 7,
+          "vagon": {
+            "total": 6,
+            "numeros": [
+              2
+            ],
+            "motivo": "Sales más rápido por la salida de Avenida de Guadalajara"
+          }
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a la parada del bus",
+          "minutos": 3
+        },
+        {
+          "tipo": "bus",
+          "titulo": "Hasta Avenida de Canillejas - M40",
+          "nota": "Cualquiera de las tres, en sentido Vicálvaro",
+          "opciones": [
+            {
+              "red": "emt",
+              "linea": "4",
+              "tipo": "intermedia",
+              "minutos": 5,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas (sentido Vicálvaro)",
+              "aproximado": true
+            },
+            {
+              "red": "emt",
+              "linea": "106",
+              "tipo": "intermedia",
+              "minutos": 8,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas (sentido Vicálvaro)",
+              "aproximado": true
+            },
+            {
+              "red": "emt",
+              "linea": "159",
+              "tipo": "intermedia",
+              "minutos": 12,
+              "viaje": 2,
+              "desde_parada": "Avenida de Canillejas (sentido Vicálvaro)",
+              "aproximado": true
+            }
+          ]
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a casa",
+          "minutos": 3
+        }
+      ]
+    },
+    {
+      "id": "practicas",
+      "nombre": "Al trabajo (prácticas)",
+      "icono": "trabajo",
+      "ejemplo": true,
+      "desde": "Casa",
+      "hasta": "Oficina · Nuevos Ministerios",
+      "tramos": [
+        {
+          "tipo": "andar",
+          "texto": "Andando a Metro Avenida de Guadalajara",
+          "minutos": 6
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "2",
+          "desde": "Avenida de Guadalajara",
+          "hasta": "Banco de España",
+          "paradas": [
+            "Ventas",
+            "Manuel Becerra",
+            "Goya",
+            "Príncipe de Vergara",
+            "Retiro"
+          ],
+          "minutos": 5,
+          "viaje": 16,
+          "vagon": {
+            "total": 6,
+            "numeros": [
+              5
+            ],
+            "motivo": "Sales junto a la escalera hacia Cibeles"
+          }
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo andando a la parada de Cibeles",
+          "minutos": 4
+        },
+        {
+          "tipo": "bus",
+          "titulo": "Por la Castellana hasta Nuevos Ministerios",
+          "opciones": [
+            {
+              "red": "emt",
+              "linea": "27",
+              "tipo": "intermedia",
+              "minutos": 7,
+              "viaje": 14
+            }
+          ]
+        }
+      ],
+      "origen": "casa",
+      "destino": "practicas",
+      "llegar_antes": "9:30"
+    },
+    {
+      "id": "abuela",
+      "nombre": "A casa de la abuela",
+      "icono": "casa",
+      "ejemplo": true,
+      "desde": "Estación de Vicálvaro",
+      "hasta": "Casa de la abuela · Móstoles",
+      "tramos": [
+        {
+          "tipo": "tren",
+          "titulo": "Cercanías hasta Atocha",
+          "nota": "Las dos líneas paran en Vicálvaro y van a Atocha",
+          "opciones": [
+            {
+              "red": "renfe",
+              "linea": "C2",
+              "tipo": "estacion",
+              "minutos": 5,
+              "viaje": 14
+            },
+            {
+              "red": "renfe",
+              "linea": "C7",
+              "tipo": "estacion",
+              "minutos": 12,
+              "viaje": 14
+            }
+          ],
+          "vagon": {
+            "total": 5,
+            "numeros": [
+              1
+            ],
+            "motivo": "En Atocha bajas junto a la escalera al andén de la C5"
+          }
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Atocha: cambia de andén",
+          "minutos": 5
+        },
+        {
+          "tipo": "tren",
+          "titulo": "Cercanías hasta Móstoles",
+          "opciones": [
+            {
+              "red": "renfe",
+              "linea": "C5",
+              "tipo": "estacion",
+              "minutos": 8,
+              "viaje": 30
+            }
+          ],
+          "vagon": {
+            "total": 5,
+            "numeros": [
+              4,
+              5
+            ],
+            "motivo": "En Móstoles sales al lado de la salida principal"
+          }
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a casa de la abuela",
+          "minutos": 7
+        }
+      ],
+      "origen": "casa",
+      "destino": "abuela",
+      "llegar_antes": "14:00"
+    }
+  ],
+  "favoritas_iniciales": [
+    "emt-4613"
+  ],
+  "nombres_iniciales": {
+    "emt-4613": "Parada del 4 a la uni"
+  },
+  "lugares": [
+    {
+      "id": "casa",
+      "nombre": "Casa",
+      "detalle": "Vicálvaro"
+    },
+    {
+      "id": "uni",
+      "nombre": "UDIT",
+      "detalle": "C. Alcalá, 506 · Suanzes"
+    },
+    {
+      "id": "practicas",
+      "nombre": "Prácticas",
+      "detalle": "Nuevos Ministerios"
+    },
+    {
+      "id": "abuela",
+      "nombre": "Casa de la abuela",
+      "detalle": "Móstoles"
+    }
+  ],
+  "planificador": [
+    {
+      "id": "plan-uni",
+      "origen": "casa",
+      "destino": "uni",
+      "nombre": "Ruta del planificador",
+      "tramos": [
+        {
+          "tipo": "andar",
+          "texto": "Andando a Metro Vicálvaro",
+          "minutos": 7
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "9",
+          "desde": "Vicálvaro",
+          "hasta": "Sainz de Baranda",
+          "paradas": [
+            "Valdebernardo",
+            "Pavones",
+            "Artilleros",
+            "Vinateros",
+            "Estrella"
+          ],
+          "minutos": 5,
+          "viaje": 12
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Sainz de Baranda: de la 9 a la 6",
+          "minutos": 5
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "6",
+          "desde": "Sainz de Baranda",
+          "hasta": "Manuel Becerra",
+          "paradas": [
+            "O'Donnell"
+          ],
+          "minutos": 4,
+          "viaje": 4
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Manuel Becerra: de la 6 a la 2",
+          "minutos": 5
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "2",
+          "desde": "Manuel Becerra",
+          "hasta": "Ventas",
+          "paradas": [],
+          "minutos": 3,
+          "viaje": 2
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Ventas: de la línea 2 a la 5",
+          "minutos": 4
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "5",
+          "desde": "Ventas",
+          "hasta": "Suanzes",
+          "paradas": [
+            "El Carmen",
+            "Quintana",
+            "Pueblo Nuevo",
+            "Ciudad Lineal"
+          ],
+          "minutos": 3,
+          "viaje": 9
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a la UDIT",
+          "minutos": 5
+        }
+      ]
+    }
+  ],
+  "incidencias": [
+    {
+      "red": "emt",
+      "linea": "106",
+      "parada": "Avenida de Canillejas - Toscana",
+      "texto": "Accidente: un carril cortado",
+      "retraso": 6
+    },
+    {
+      "red": "emt",
+      "linea": "4",
+      "parada": "Arcos de Jalón - Albericia",
+      "texto": "Desvío por obras",
+      "retraso": 8
+    },
+    {
+      "red": "metro",
+      "linea": "2",
+      "parada": "Sol",
+      "texto": "Circulación lenta por una incidencia técnica",
+      "retraso": 5
+    },
+    {
+      "red": "interurbano",
+      "linea": "691",
+      "parada": "Ctra. M601-Recinto Ferial",
+      "texto": "Retenciones en la carretera",
+      "retraso": 10
+    }
+  ],
+  "abono": {
+    "tipo": "Abono Transporte · Joven",
+    "dias_demo": 2
+  }
+}

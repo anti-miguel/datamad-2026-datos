@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/* Estilo neobrutalista: fondo lavanda con cuadrícula de puntos (como un plano de transporte),
+   tarjetas crema con borde negro y sombra sólida. Verde, ámbar y rojo del manual para los rellenos;
+   versiones oscuras para el texto sobre crema. */
+@theme {
+  --color-principal: #2335F5;
+  --color-fondo: #B4C3FF;
+  --color-tarjeta: #FFFDF6;
+  --color-hundido: #EEF1FF;
+  --color-linea: #111111;
+  --color-tinta: #111111;
+  --color-tinta-2: #2A2A35;
+  --color-suave: #4A4E6A;
+  --color-verde-vivo: #137A35;
+  --color-ambar-vivo: #9A5600;
+  --color-rojo-vivo: #C21F1A;
+  --color-amarillo: #FFE15A;
+  --color-verde: #1E8E3E;
+  --color-ambar: #B26A00;
+  --color-rojo: #C5221F;
+  --color-aviso-oficial: #FFE15A;
+  --color-aviso-simulado: #D9C8FF;
+  --font-display: "Unbounded", system-ui, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-tinta);
+  color-scheme: light;
+  background-image: radial-gradient(rgba(17, 17, 17, 0.13) 1px, transparent 1.2px);
+  background-size: 18px 18px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+summary {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-principal);
+  outline-offset: 2px;
+}
+
+@keyframes rodar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+/* Cuando está llegando, late para llamar la atención */
+@keyframes latir {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(31, 95, 209, 0)); }
+  50% { filter: drop-shadow(0 0 6px rgba(31, 95, 209, 0.8)); }
+}
+.vehiculo-llegando {
+  animation: latir 1.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vehiculo-llegando {
+    animation: none;
+  }
+}
+
+/* Leaflet sin el aviso de su marca, conservando la atribución de OpenStreetMap */
+.leaflet-control-attribution {
+  font-size: 10px;
+}
+
+/* Títulos: más apretados y con más peso, como los rótulos de las estaciones */
+.titulo,
+.cifra {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+/* Tarjetas tipo pegatina: borde negro y sombra sólida desplazada */
+.pegatina {
+  border: 2.5px solid #111;
+  box-shadow: 4px 4px 0 #111;
+}
+.pegatina-grande {
+  border: 2.5px solid #111;
+  box-shadow: 6px 6px 0 #111;
+}
+.boton-pegatina {
+  border: 2px solid #111;
+  box-shadow: 3px 3px 0 #111;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.boton-pegatina:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 #111;
+}
+
+/* Carretera de la franja: asfalto con la línea discontinua */
+.carretera {
+  background:
+    repeating-linear-gradient(90deg, #f6f5f2 0 10px, transparent 10px 20px) center / 100% 1.5px no-repeat,
+    #3a4150;
+}
+
+/* Vía de la franja: traviesas y raíles */
+.via {
+  background:
+    linear-gradient(#a7adb5, #a7adb5) 0 1px / 100% 1.5px no-repeat,
+    linear-gradient(#a7adb5, #a7adb5) 0 7px / 100% 1.5px no-repeat,
+    repeating-linear-gradient(90deg, #5a5048 0 4px, transparent 4px 9px),
+    #343a44;
+}
+
+/* Ruedas que giran mientras el vehículo avanza */
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+.rueda {
+  animation: girar 0.5s linear infinite;
+}
+.parado .rueda {
+  animation-play-state: paused;
+}
+
+/* El autobús se mece un poco, como sobre el asfalto */
+.vaiven {
+  animation: rodar 1s ease-in-out infinite;
+}
+.parado .vaiven {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rueda,
+  .vaiven {
+    animation: none;
+  }
+}
+
+input {
+  color: inherit;
+}
+/* El buscador marca el foco con el borde de su caja, no con un recuadro propio */
+input:focus-visible {
+  outline: none;
+}
+
+
+/* Leaflet aclara las teselas con plus-lighter: se deja normal */
+.leaflet-container img.leaflet-tile {
+  mix-blend-mode: normal !important;
+}

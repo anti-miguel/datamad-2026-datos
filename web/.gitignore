@@ -1,0 +1,5 @@
+node_modules
+dist
+# Se copian de ../demo con copiar-datos.mjs
+public/datos/fiabilidad.json
+src/lib/consultar.js
