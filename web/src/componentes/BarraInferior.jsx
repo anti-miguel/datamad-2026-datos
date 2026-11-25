@@ -10,7 +10,7 @@ const BOTONES = [
 
 export default function BarraInferior({ activo, onIr }) {
   return (
-    <nav className="grid grid-cols-4 border-t border-linea bg-tarjeta pb-[env(safe-area-inset-bottom)]">
+    <nav className="grid grid-cols-4 border-t-[2.5px] border-[#111] bg-tarjeta pb-[env(safe-area-inset-bottom)]">
       {BOTONES.map(({ id, texto, Icono }) => {
         const esActivo = activo === id;
         return (

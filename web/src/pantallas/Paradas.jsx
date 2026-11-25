@@ -64,7 +64,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
       </div>
       <h1 className="titulo text-[34px] text-tinta">Mis paradas</h1>
 
-      <label className="flex min-h-[48px] items-center gap-2 rounded-2xl border border-linea bg-tarjeta px-4 focus-within:border-principal">
+      <label className="flex min-h-[48px] items-center gap-2 pegatina rounded-2xl bg-tarjeta px-4 focus-within:shadow-[4px_4px_0_#2335F5]">
         <IconoLupa className="h-5 w-5 text-suave" />
         <input
           type="search"
@@ -85,8 +85,8 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
             onClick={() => setFiltro(f.id)}
             className={`min-h-[44px] rounded-full border px-4 text-[16px] transition-colors ${
               filtro === f.id
-                ? "border-principal bg-principal font-bold text-white"
-                : "border-linea bg-tarjeta text-tinta"
+                ? "boton-pegatina bg-principal font-bold text-white"
+                : "boton-pegatina bg-tarjeta text-tinta"
             }`}
           >
             {f.texto}
@@ -95,7 +95,7 @@ export default function Paradas({ demo, favoritas, onAbrirParada }) {
       </div>
 
       {demo.aviso_oficial && (
-        <div className="flex gap-3 rounded-2xl bg-aviso-oficial p-4 text-[#FFE3A0]">
+        <div className="flex gap-3 rounded-2xl bg-aviso-oficial pegatina p-4 text-[#111]">
           <IconoAviso className="mt-0.5 h-5 w-5 shrink-0" />
           <p className="text-[15px]">
             {typeof demo.aviso_oficial === "string" ? demo.aviso_oficial : demo.aviso_oficial.texto}

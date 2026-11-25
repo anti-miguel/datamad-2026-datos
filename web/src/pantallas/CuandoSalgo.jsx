@@ -41,16 +41,16 @@ export default function CuandoSalgo({ caso }) {
         </dd>
       </dl>
 
-      <Tarjeta className="border-2 !border-principal p-4">
-        <p className="text-[15px] font-bold text-principal">Te recomendamos</p>
+      <Tarjeta className="p-4 !bg-amarillo">
+        <p className="text-[15px] font-bold uppercase tracking-wide text-[#111]">Te recomendamos</p>
         <p className="cifra mt-1 text-[36px] tabular-nums text-tinta">Sal a las {rec.salida}</p>
         <p className="mt-1 text-[16px] text-tinta-2">{rec.trayecto}</p>
         <div className="mt-3 grid grid-cols-2 gap-2">
-          <div className="rounded-xl bg-hundido p-3">
+          <div className="rounded-xl border-2 border-[#111] bg-tarjeta p-3">
             <p className="text-[14px] text-suave">Llegada habitual</p>
             <p className="text-[20px] font-bold text-tinta">{rec.llegada_habitual}</p>
           </div>
-          <div className="rounded-xl bg-hundido p-3">
+          <div className="rounded-xl border-2 border-[#111] bg-tarjeta p-3">
             <p className="text-[14px] text-suave">Peor día medido</p>
             <p className="text-[20px] font-bold text-tinta">{rec.peor_dia}</p>
           </div>

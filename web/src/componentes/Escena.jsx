@@ -45,10 +45,10 @@ function Ciudad() {
     <g>
       {bloques.map(([x, alto, ancho]) => (
         <g key={x}>
-          <rect x={x} y={86 - alto} width={ancho} height={alto} fill="#1A2538" />
+          <rect x={x} y={86 - alto} width={ancho} height={alto} fill="#FFFDF6" stroke="#111" strokeWidth="1.5" />
           {Array.from({ length: Math.floor(alto / 12) }, (_, fila) =>
             Array.from({ length: Math.floor(ancho / 11) }, (_, col) => (
-              <rect key={`${fila}-${col}`} x={x + 5 + col * 11} y={86 - alto + 6 + fila * 12} width="4" height="5" fill={(x + fila * 7 + col * 3) % 4 === 0 ? "#2A3650" : "#F2C94C"} opacity="0.85" />
+              <rect key={`${fila}-${col}`} x={x + 5 + col * 11} y={86 - alto + 6 + fila * 12} width="4" height="5" fill={(x + fila * 7 + col * 3) % 5 === 0 ? "#FFE15A" : "#B4C3FF"} />
             )),
           )}
         </g>
@@ -63,7 +63,7 @@ function Marquesina({ x, color = "#1F5FD1" }) {
       <rect x={x} y="56" width="34" height="3" rx="1" fill="#8E9BB0" />
       <rect x={x + 2} y="59" width="1.6" height="27" fill="#8E9BB0" />
       <rect x={x + 30} y="59" width="1.6" height="27" fill="#8E9BB0" />
-      <rect x={x + 4} y="60" width="25" height="18" fill="#FFF3C4" opacity="0.35" />
+      <rect x={x + 4} y="60" width="25" height="18" fill="#B4C3FF" opacity="0.6" />
       {/* poste con el cartel de parada */}
       <rect x={x + 40} y="48" width="2" height="38" fill="#8E9BB0" />
       <rect x={x + 35} y="44" width="12" height="12" rx="3" fill={color} />
@@ -78,11 +78,11 @@ export function EscenaBus({ interurbano = false }) {
   // El morro va de fuera (izquierda) a la parada, y con el scroll sale por la derecha
   const morro = !entrado ? -0.05 : PARADA + avance * 0.75;
   return (
-    <div className="relative -mx-4 h-[122px] overflow-hidden" aria-hidden="true">
+    <div className="relative -mx-4 h-[122px] overflow-hidden border-b-[2.5px] border-[#111]" aria-hidden="true">
       <svg viewBox="0 0 390 122" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full">
         <Ciudad />
-        <rect x="0" y="86" width="390" height="8" fill="#2B3446" />
-        <rect x="0" y="94" width="390" height="28" fill="#30363F" />
+        <rect x="0" y="86" width="390" height="8" fill="#FFFDF6" stroke="#111" strokeWidth="1.5" />
+        <rect x="0" y="94" width="390" height="28" fill="#2B2B33" />
         <line x1="0" y1="108" x2="390" y2="108" stroke="#F6F5F2" strokeWidth="2" strokeDasharray="14 12" />
         <Marquesina x={205} color={interurbano ? "#4FA324" : "#1F5FD1"} />
       </svg>
@@ -108,7 +108,7 @@ export function EscenaTren() {
   const { entrado, avance, moviendo } = useRecorrido();
   const morro = !entrado ? -0.05 : 0.86 + avance * 0.5;
   return (
-    <div className="relative -mx-4 h-[110px] overflow-hidden" aria-hidden="true">
+    <div className="relative -mx-4 h-[110px] overflow-hidden border-b-[2.5px] border-[#111]" aria-hidden="true">
       <svg viewBox="0 0 390 110" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full">
         {/* postes de la catenaria */}
         {[30, 150, 270].map((x) => (
@@ -119,13 +119,13 @@ export function EscenaTren() {
         ))}
         <line x1="0" y1="26" x2="390" y2="26" stroke="#9AA0A6" strokeWidth="1" />
         {/* andén con su cartel */}
-        <rect x="250" y="76" width="140" height="12" fill="#3A4252" />
+        <rect x="250" y="76" width="140" height="12" fill="#FFFDF6" stroke="#111" strokeWidth="1.5" />
         <rect x="250" y="76" width="140" height="2.5" fill="#F2C94C" />
         <rect x="330" y="40" width="2" height="36" fill="#5F6368" />
         <rect x="306" y="34" width="50" height="12" rx="2" fill="#05080D" stroke="#3A4252" />
         <rect x="310" y="38" width="42" height="4" rx="1" fill="#FFB300" />
         {/* balasto, traviesas y raíles */}
-        <rect x="0" y="88" width="390" height="22" fill="#3B3833" />
+        <rect x="0" y="88" width="390" height="22" fill="#8A8378" />
         {Array.from({ length: 33 }, (_, i) => (
           <rect key={i} x={i * 12 + 2} y="92" width="6" height="12" rx="1" fill="#5A5048" />
         ))}
@@ -147,7 +147,7 @@ export function EscenaMetro() {
   const { entrado, avance, moviendo } = useRecorrido();
   const morro = !entrado ? -0.05 : 0.9 + avance * 0.5;
   return (
-    <div className="relative -mx-4 h-[118px] overflow-hidden bg-[#2B2F35]" aria-hidden="true">
+    <div className="relative -mx-4 h-[118px] overflow-hidden border-b-[2.5px] border-[#111] bg-[#2B2F35]" aria-hidden="true">
       <svg viewBox="0 0 390 118" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full">
         {/* bóveda oscura con las luces */}
         <rect x="0" y="0" width="390" height="30" fill="#33373D" />

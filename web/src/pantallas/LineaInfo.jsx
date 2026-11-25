@@ -78,7 +78,7 @@ export default function LineaInfo({ parada, linea, llegada, meta, contexto, rare
       </Tarjeta>
 
       {r && (
-        <details className="rounded-2xl border border-linea bg-tarjeta">
+        <details className="pegatina rounded-2xl bg-tarjeta">
           <summary className="min-h-[52px] cursor-pointer px-4 py-3.5 text-[17px] text-tinta">Datos completos</summary>
           <p className="px-4 pb-4 text-[15px] text-tinta-2">
             Acierta a ±2 min el {porcentaje(r.p)} (intervalo del {porcentaje(r.ic[0])} al {porcentaje(r.ic[1])}). Tarde el{" "}

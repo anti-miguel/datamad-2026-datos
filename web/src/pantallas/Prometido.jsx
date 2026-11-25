@@ -16,8 +16,8 @@ export default function Prometido({ casos, onVolver }) {
                 {c.fuente_prometido}
               </a>
             </Tarjeta>
-            <Tarjeta className="border-2 !border-principal p-4">
-              <p className="text-[14px] font-bold uppercase tracking-wide text-principal">Medido por nosotros</p>
+            <Tarjeta className="p-4 !bg-amarillo">
+              <p className="text-[14px] font-bold uppercase tracking-wide text-[#111]">Medido por nosotros</p>
               <p className="mt-1 text-[20px] font-bold text-tinta">{c.medido}</p>
             </Tarjeta>
           </div>

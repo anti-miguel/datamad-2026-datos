@@ -91,7 +91,7 @@ export default function FranjaSeguimiento({ seg, onAbrir, onCambiarModo }) {
       tabIndex={0}
       onClick={onAbrir}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onAbrir()}
-      className="cursor-pointer border-t border-linea bg-tarjeta px-4 pt-1.5 pb-2"
+      className="cursor-pointer border-t-[2.5px] border-[#111] bg-amarillo px-4 pt-1.5 pb-2"
     >
       <div className="flex items-center justify-between gap-2">
         <button

@@ -6,7 +6,7 @@ export function Linea({ linea, red = "emt", grande = false }) {
   const color = red === "emt" ? "bg-principal" : red === "renfe" ? "bg-[#C8102E]" : red === "interurbano" ? "bg-[#3F8F1E]" : "bg-[#3A4558]";
   return (
     <span
-      className={`${color} inline-flex items-center justify-center rounded-lg font-bold text-white ${
+      className={`${color} inline-flex items-center justify-center rounded-lg border-2 border-[#111] font-bold text-white ${
         grande ? "min-w-[52px] px-3 h-[32px] text-[18px]" : "min-w-[44px] px-2.5 h-[26px] text-[16px]"
       }`}
     >
@@ -23,7 +23,7 @@ export function Etiqueta({ p, relleno = false }) {
   const n = nivelFiabilidad(p);
   if (relleno) {
     return (
-      <span className={`${COLOR_FONDO[n.clase]} inline-block rounded-lg px-2.5 py-1 font-bold text-white`}>
+      <span className={`${COLOR_FONDO[n.clase]} inline-block rounded-lg border-2 border-[#111] px-2.5 py-1 font-bold text-white`}>
         {n.texto}
       </span>
     );
@@ -34,9 +34,7 @@ export function Etiqueta({ p, relleno = false }) {
 export function Tarjeta({ children, className = "", sombra = false }) {
   return (
     <div
-      className={`rounded-2xl bg-tarjeta border border-linea ${
-        sombra ? "shadow-[0_6px_24px_rgba(0,0,0,0.45)] border-transparent" : ""
-      } ${className}`}
+      className={`rounded-2xl bg-tarjeta ${sombra ? "pegatina-grande" : "pegatina"} ${className}`}
     >
       {children}
     </div>

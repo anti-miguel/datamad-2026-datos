@@ -255,7 +255,7 @@ export default function App() {
         )}
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-[430px] shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
+      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-[430px]">
         {conFranja && (
           <FranjaSeguimiento
             seg={franja}

@@ -24,13 +24,13 @@ function TarjetaAviso({ aviso }) {
       <div className="mt-3 grid grid-cols-2 gap-2">
         <button
           onClick={() => setConfirman((n) => n + 1)}
-          className="min-h-[44px] rounded-xl border border-linea bg-tarjeta text-[16px] active:bg-hundido"
+          className="boton-pegatina min-h-[44px] rounded-xl bg-tarjeta text-[16px]"
         >
           Sigue pasando
         </button>
         <button
           onClick={() => setConfirman((n) => Math.max(0, n - 1))}
-          className="min-h-[44px] rounded-xl border border-linea bg-tarjeta text-[16px] active:bg-hundido"
+          className="boton-pegatina min-h-[44px] rounded-xl bg-tarjeta text-[16px]"
         >
           Ya no
         </button>
@@ -45,7 +45,7 @@ export default function Avisos({ avisos }) {
 
   return (
     <div className="-mx-4 -mt-4">
-      <div className="sticky top-0 z-20 border-b border-[#3B2F5C] bg-aviso-simulado px-4 py-3 text-[15px] font-bold text-[#D9C9FF]">
+      <div className="sticky top-0 z-20 border-b-[2.5px] border-[#111] bg-aviso-simulado px-4 py-3 text-[15px] font-bold text-[#2A1060]">
         SIMULACIÓN · Así funcionarían los avisos de viajeros
       </div>
 
@@ -55,7 +55,7 @@ export default function Avisos({ avisos }) {
           <TarjetaAviso key={a.texto} aviso={a} />
         ))}
         {gracias && (
-          <p role="status" className="rounded-2xl bg-aviso-simulado p-4 text-[15px] text-[#D9C9FF]">
+          <p role="status" className="rounded-2xl bg-aviso-simulado p-4 text-[15px] text-[#2A1060]">
             Gracias. En la versión real tu aviso se compartiría con otros viajeros.
           </p>
         )}
@@ -63,7 +63,7 @@ export default function Avisos({ avisos }) {
 
       <button
         onClick={() => setAbierto(true)}
-        className="fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-[max(16px,calc(50vw-215px+16px))] z-30 min-h-[52px] rounded-full bg-principal px-6 text-[18px] font-bold text-white shadow-[0_6px_20px_rgba(31,95,209,0.35)]"
+        className="fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-[max(16px,calc(50vw-215px+16px))] z-30 min-h-[52px] rounded-full bg-principal px-6 text-[18px] font-bold text-white boton-pegatina"
       >
         + Avisar
       </button>

@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
-/* Tema oscuro, «Madrid de noche». Verde, ámbar y rojo del manual para los rellenos;
-   versiones vivas para el texto sobre fondo oscuro. */
+/* Estilo neobrutalista: fondo lavanda con cuadrícula de puntos (como un plano de transporte),
+   tarjetas crema con borde negro y sombra sólida. Verde, ámbar y rojo del manual para los rellenos;
+   versiones oscuras para el texto sobre crema. */
 @theme {
-  --color-principal: #3B7BF2;
-  --color-fondo: #0B1220;
-  --color-tarjeta: #151F31;
-  --color-hundido: #0F1828;
-  --color-linea: #26344B;
-  --color-tinta: #F1F4F9;
-  --color-tinta-2: #C6D0DE;
-  --color-suave: #8E9BB0;
-  --color-verde-vivo: #4CD07D;
-  --color-ambar-vivo: #FFB547;
-  --color-rojo-vivo: #FF6B61;
+  --color-principal: #2335F5;
+  --color-fondo: #B4C3FF;
+  --color-tarjeta: #FFFDF6;
+  --color-hundido: #EEF1FF;
+  --color-linea: #111111;
+  --color-tinta: #111111;
+  --color-tinta-2: #2A2A35;
+  --color-suave: #4A4E6A;
+  --color-verde-vivo: #137A35;
+  --color-ambar-vivo: #9A5600;
+  --color-rojo-vivo: #C21F1A;
+  --color-amarillo: #FFE15A;
   --color-verde: #1E8E3E;
   --color-ambar: #B26A00;
   --color-rojo: #C5221F;
-  --color-aviso-oficial: #3A2E10;
-  --color-aviso-simulado: #241C3A;
-  --font-display: "Punto", "Bricolage Grotesque", "Overpass", system-ui, sans-serif;
-  --font-sans: "Punto", "Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-aviso-oficial: #FFE15A;
+  --color-aviso-simulado: #D9C8FF;
+  --font-display: "Unbounded", system-ui, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
@@ -30,7 +32,9 @@ html {
 body {
   background: var(--color-fondo);
   color: var(--color-tinta);
-  color-scheme: dark;
+  color-scheme: light;
+  background-image: radial-gradient(rgba(17, 17, 17, 0.13) 1px, transparent 1.2px);
+  background-size: 18px 18px;
   font-family: var(--font-sans);
   font-size: 16px;
   -webkit-tap-highlight-color: transparent;
@@ -76,8 +80,27 @@ summary {
 .cifra {
   font-family: var(--font-display);
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+/* Tarjetas tipo pegatina: borde negro y sombra sólida desplazada */
+.pegatina {
+  border: 2.5px solid #111;
+  box-shadow: 4px 4px 0 #111;
+}
+.pegatina-grande {
+  border: 2.5px solid #111;
+  box-shadow: 6px 6px 0 #111;
+}
+.boton-pegatina {
+  border: 2px solid #111;
+  box-shadow: 3px 3px 0 #111;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.boton-pegatina:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 #111;
 }
 
 /* Carretera de la franja: asfalto con la línea discontinua */
@@ -130,18 +153,8 @@ input:focus-visible {
   outline: none;
 }
 
-/* El punto medio «·» de Overpass no deja aire a la derecha: se toma de la letra del sistema */
-@font-face {
-  font-family: "Punto";
-  src: local("Helvetica Neue"), local("Segoe UI"), local("Roboto"), local("Arial");
-  unicode-range: U+00B7;
-}
 
-/* Mapa en tonos oscuros, a juego con el tema */
-.leaflet-container {
-  background: #0f1828;
-}
+/* Leaflet aclara las teselas con plus-lighter: se deja normal */
 .leaflet-container img.leaflet-tile {
-  filter: invert(0.94) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.6);
-  mix-blend-mode: normal !important; /* Leaflet pone plus-lighter, que aclara el mapa sobre fondo oscuro */
+  mix-blend-mode: normal !important;
 }

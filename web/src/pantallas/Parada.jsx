@@ -43,7 +43,7 @@ function Minimapa({ lat, lon }) {
   return (
     <div
       ref={caja}
-      className="h-[160px] overflow-hidden rounded-2xl border border-linea"
+      className="pegatina h-[160px] overflow-hidden rounded-2xl"
       role="img"
       aria-label="Mapa de la parada"
     />
@@ -73,7 +73,7 @@ function TarjetaPrimera({ llegada, red, onInfo }) {
         <button
           onClick={onInfo}
           aria-label={`Qué conviene saber del ${linea}`}
-          className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-[#1C2E4D] text-principal"
+          className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full border-2 border-[#111] bg-amarillo text-[#111]"
         >
           <IconoInfo />
         </button>
@@ -132,7 +132,7 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
             onClick={onFavorita}
             aria-pressed={favorita}
             aria-label={favorita ? "Quitar de favoritas" : "Añadir a favoritas"}
-            className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-2xl border border-linea bg-tarjeta text-principal"
+            className="flex h-[48px] w-[48px] shrink-0 items-center justify-center boton-pegatina rounded-2xl bg-amarillo text-[#111]"
           >
             <IconoEstrella llena={favorita} />
           </button>
@@ -144,7 +144,7 @@ export default function Parada({ parada, llegadas, contexto, favorita, onFavorit
       {error ? (
         <Tarjeta className="space-y-3 p-4">
           <p className="text-[16px] text-tinta">No hemos podido cargar los datos. Vuelve a intentarlo.</p>
-          <button onClick={onReintentar} className="min-h-[44px] rounded-xl bg-principal px-5 font-bold text-white">
+          <button onClick={onReintentar} className="boton-pegatina min-h-[44px] rounded-xl bg-principal px-5 font-bold text-white">
             Reintentar
           </button>
         </Tarjeta>
