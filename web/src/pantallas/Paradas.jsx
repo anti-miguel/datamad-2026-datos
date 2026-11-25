@@ -5,6 +5,7 @@ import { IconoLupa, IconoAviso, IconoEstrella } from "../componentes/Iconos.jsx"
 import { NOMBRE_RED, normalizar } from "../lib/util.js";
 import { EscenaSegunModo } from "../componentes/Escena.jsx";
 import { Logo } from "../componentes/Logo.jsx";
+import TarjetaAbono from "../componentes/Abono.jsx";
 
 const FILTROS = [
   { id: "todo", texto: "Todo" },
@@ -46,7 +47,7 @@ function TarjetaParada({ parada, favorita, nombre, onAbrir }) {
   );
 }
 
-export default function Paradas({ demo, favoritas, nombres = {}, usuario, onAbrirParada }) {
+export default function Paradas({ demo, favoritas, nombres = {}, usuario, abono, onCambiarAbono, onAbrirParada }) {
   const [busqueda, setBusqueda] = useState("");
   const [filtro, setFiltro] = useState("todo");
 
@@ -71,6 +72,8 @@ export default function Paradas({ demo, favoritas, nombres = {}, usuario, onAbri
         </div>
         <Logo alto={30} className="mb-1 w-[112px] shrink-0" />
       </div>
+
+      {abono && <TarjetaAbono abono={abono} onCambiar={onCambiarAbono} />}
 
       <label className="flex min-h-[48px] items-center gap-2 pegatina rounded-2xl bg-tarjeta px-4 focus-within:shadow-[4px_4px_0_#2335F5]">
         <IconoLupa className="h-5 w-5 text-suave" />

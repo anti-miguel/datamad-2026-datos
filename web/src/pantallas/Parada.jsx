@@ -10,6 +10,7 @@ import { NOMBRE_RED, horaTexto } from "../lib/util.js";
 import { casillas } from "../lib/ventana.js";
 import { NombreEditable } from "./Rutas.jsx";
 import { incidenciasDelTramo } from "../lib/rutas.js";
+import Combo from "../componentes/Combo.jsx";
 
 function Minimapa({ lat, lon }) {
   const caja = useRef(null);
@@ -163,23 +164,31 @@ function TarjetaLinea({ linea, llegadas, red, primera, recorrido, avisosLinea, b
       {/* ¿dónde te bajas? Se pregunta para revisar las incidencias de tu tramo, no de toda la línea */}
       {recorrido && (
         <div className="border-t-[2.5px] border-[#111] px-4 py-3">
-          <label className="block text-[14px] font-bold uppercase text-suave" htmlFor={`bajada-${linea}`}>
-            ¿Dónde te bajas?
-          </label>
-          <p className="text-[13px] text-suave">Así revisamos si hay algo en tu tramo, aunque el resto de la línea vaya bien.</p>
-          <select
+          <p className="text-[14px] font-bold uppercase text-suave">¿Dónde te bajas?</p>
+          <p className="mb-2 text-[13px] text-suave">Así revisamos si hay algo en tu tramo, aunque el resto de la línea vaya bien.</p>
+          <Combo
             id={`bajada-${linea}`}
-            value={destinoSel}
-            onChange={(e) => setDestinoSel(e.target.value)}
-            className="pegatina mt-2 h-[48px] w-full rounded-xl bg-tarjeta px-3 text-[16px] font-bold"
-          >
-            <option value="">Elige tu parada de bajada</option>
-            {recorrido.map((p, i) => (
-              <option key={p.codigo} value={p.codigo}>
-                {p.nombre} · {i + 1} {i === 0 ? "parada" : "paradas"}
-              </option>
-            ))}
-          </select>
+            valor={destinoSel}
+            onCambiar={setDestinoSel}
+            placeholder="Escribe tu parada (por ejemplo, «s»)"
+            opciones={recorrido.map((p, k) => {
+              const conIncidencia = incidencias.some((x) => x.red === red && String(x.linea) === String(linea) && x.parada === p.nombre);
+              return {
+                valor: p.codigo,
+                texto: p.nombre,
+                detalle: `${k + 1} ${k === 0 ? "parada" : "paradas"} · ${p.minutos} min${conIncidencia ? " · hay una incidencia" : ""}`,
+                marca: (
+                  <span
+                    className={`flex h-[28px] min-w-[28px] shrink-0 items-center justify-center rounded-full border-2 border-[#111] text-[13px] font-bold ${
+                      conIncidencia ? "bg-rojo text-white" : "bg-hundido"
+                    }`}
+                  >
+                    {k + 1}
+                  </span>
+                ),
+              };
+            })}
+          />
           {parada && (() => {
             const inc = incidenciasDelTramo(incidencias, red, linea, recorrido, parada.nombre);
             const afecta = inc.enTramo.length > 0;

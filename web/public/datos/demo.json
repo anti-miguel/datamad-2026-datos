@@ -716,13 +716,17 @@
             "La Elipa"
           ],
           "minutos": 3,
-          "viaje": 7
+          "viaje": 7,
+          "vagon": {
+            "total": 6,
+            "numeros": [],
+            "motivo": "para hacer el transbordo a la 5 en Ventas"
+          }
         },
         {
           "tipo": "transbordo",
           "texto": "Transbordo en Ventas: de la línea 2 a la 5",
-          "minutos": 4,
-          "vagon": "cola"
+          "minutos": 4
         },
         {
           "tipo": "metro",
@@ -737,7 +741,12 @@
             "Ciudad Lineal"
           ],
           "minutos": 2,
-          "viaje": 9
+          "viaje": 9,
+          "vagon": {
+            "total": 7,
+            "numeros": [],
+            "motivo": "para salir antes en Suanzes"
+          }
         },
         {
           "tipo": "andar",
@@ -749,6 +758,117 @@
       "destino": "uni",
       "llegar_antes": "9:00",
       "ahorro_experiencia": 18
+    },
+    {
+      "id": "vuelta",
+      "nombre": "De la uni a casa",
+      "icono": "casa",
+      "ejemplo": false,
+      "origen": "uni",
+      "destino": "casa",
+      "desde": "UDIT · C. Alcalá, 506",
+      "hasta": "Casa (Vicálvaro)",
+      "llegar_antes": "15:30",
+      "tramos": [
+        {
+          "tipo": "andar",
+          "texto": "Andando a Metro Suanzes",
+          "minutos": 4
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "5",
+          "desde": "Suanzes",
+          "hasta": "Ventas",
+          "paradas": [
+            "Ciudad Lineal",
+            "Pueblo Nuevo",
+            "Quintana",
+            "El Carmen"
+          ],
+          "minutos": 2,
+          "viaje": 9,
+          "vagon": {
+            "total": 7,
+            "numeros": [
+              6,
+              7
+            ],
+            "motivo": "Sales de frente a la escalera del transbordo a la línea 2"
+          }
+        },
+        {
+          "tipo": "transbordo",
+          "texto": "Transbordo en Ventas: de la línea 5 a la 2",
+          "minutos": 3
+        },
+        {
+          "tipo": "metro",
+          "red": "metro",
+          "linea": "2",
+          "desde": "Ventas",
+          "hasta": "Avenida de Guadalajara",
+          "paradas": [
+            "La Elipa",
+            "La Almudena",
+            "Alsacia"
+          ],
+          "minutos": 3,
+          "viaje": 7,
+          "vagon": {
+            "total": 6,
+            "numeros": [
+              2
+            ],
+            "motivo": "Sales más rápido por la salida de Avenida de Guadalajara"
+          }
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a la parada del bus",
+          "minutos": 3
+        },
+        {
+          "tipo": "bus",
+          "titulo": "Hasta Avenida de Canillejas - M40",
+          "nota": "Cualquiera de las tres, en sentido Vicálvaro",
+          "opciones": [
+            {
+              "red": "emt",
+              "linea": "4",
+              "tipo": "intermedia",
+              "minutos": 5,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas (sentido Vicálvaro)",
+              "aproximado": true
+            },
+            {
+              "red": "emt",
+              "linea": "106",
+              "tipo": "intermedia",
+              "minutos": 8,
+              "viaje": 3,
+              "desde_parada": "Avenida de Canillejas (sentido Vicálvaro)",
+              "aproximado": true
+            },
+            {
+              "red": "emt",
+              "linea": "159",
+              "tipo": "intermedia",
+              "minutos": 12,
+              "viaje": 2,
+              "desde_parada": "Avenida de Canillejas (sentido Vicálvaro)",
+              "aproximado": true
+            }
+          ]
+        },
+        {
+          "tipo": "andar",
+          "texto": "Andando a casa",
+          "minutos": 3
+        }
+      ]
     },
     {
       "id": "practicas",
@@ -777,7 +897,14 @@
             "Retiro"
           ],
           "minutos": 5,
-          "viaje": 16
+          "viaje": 16,
+          "vagon": {
+            "total": 6,
+            "numeros": [
+              5
+            ],
+            "motivo": "Sales junto a la escalera hacia Cibeles"
+          }
         },
         {
           "tipo": "transbordo",
@@ -829,7 +956,14 @@
               "minutos": 12,
               "viaje": 14
             }
-          ]
+          ],
+          "vagon": {
+            "total": 5,
+            "numeros": [
+              1
+            ],
+            "motivo": "En Atocha bajas junto a la escalera al andén de la C5"
+          }
         },
         {
           "tipo": "transbordo",
@@ -847,7 +981,15 @@
               "minutos": 8,
               "viaje": 30
             }
-          ]
+          ],
+          "vagon": {
+            "total": 5,
+            "numeros": [
+              4,
+              5
+            ],
+            "motivo": "En Móstoles sales al lado de la salida principal"
+          }
         },
         {
           "tipo": "andar",
@@ -1005,5 +1147,9 @@
       "texto": "Retenciones en la carretera",
       "retraso": 10
     }
-  ]
+  ],
+  "abono": {
+    "tipo": "Abono Transporte · Joven",
+    "dias_demo": 2
+  }
 }

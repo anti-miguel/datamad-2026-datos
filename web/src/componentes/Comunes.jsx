@@ -45,9 +45,10 @@ export function Etiqueta({ p, relleno = false }) {
   return <span className={`${COLOR_TEXTO[n.clase]} font-bold`}>{n.texto}</span>;
 }
 
-export function Tarjeta({ children, className = "", sombra = false }) {
+export function Tarjeta({ children, className = "", sombra = false, ...resto }) {
   return (
     <div
+      {...resto}
       className={`rounded-2xl bg-tarjeta ${sombra ? "pegatina-grande" : "pegatina"} ${className}`}
     >
       {children}

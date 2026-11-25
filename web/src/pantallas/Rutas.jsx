@@ -6,6 +6,8 @@ import {
   IconoAndar, IconoTransbordo, IconoLapiz, IconoUni, IconoTrabajo, IconoCasa, IconoRutas, IconoCampana, IconoReloj,
 } from "../componentes/Iconos.jsx";
 import { calcularRuta, cadenaDeLineas, horaDeSalida, salirEn } from "../lib/rutas.js";
+import Combo from "../componentes/Combo.jsx";
+import Vagones from "../componentes/Vagones.jsx";
 
 const ICONOS = { uni: IconoUni, trabajo: IconoTrabajo, casa: IconoCasa };
 
@@ -100,29 +102,22 @@ const nombreLugar = (lugares, id) => lugares.find((l) => l.id === id);
 
 // ───────────────────────── Buscador y lista ─────────────────────────
 
-function SelectorLugar({ etiqueta, valor, lugares, onCambiar }) {
-  const l = nombreLugar(lugares, valor);
-  return (
-    <label className="flex min-h-[56px] items-center gap-3 px-3">
-      <span className="w-[52px] shrink-0 text-[14px] font-bold uppercase text-suave">{etiqueta}</span>
-      <span className="min-w-0 flex-1">
-        <select
-          value={valor}
-          onChange={(e) => onCambiar(e.target.value)}
-          className="w-full appearance-none bg-transparent text-[18px] font-bold text-tinta outline-none"
-          aria-label={etiqueta}
-        >
-          {lugares.map((x) => (
-            <option key={x.id} value={x.id}>
-              {x.nombre}
-            </option>
-          ))}
-        </select>
-        {l && <span className="block text-[13px] text-suave">{l.detalle}</span>}
+// Lugar de origen o destino con buscador («u» → UDIT)
+function SelectorLugar({ etiqueta, valor, lugares, onCambiar, id }) {
+  const opciones = lugares.map((x) => ({
+    valor: x.id,
+    texto: x.nombre,
+    detalle: x.detalle,
+    marca: (
+      <span className="pegatina flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-lg bg-amarillo">
+        {(() => {
+          const I = { casa: IconoCasa, uni: IconoUni, practicas: IconoTrabajo }[x.id] ?? IconoRutas;
+          return <I className="h-4 w-4" />;
+        })()}
       </span>
-      <span aria-hidden="true" className="text-suave">▾</span>
-    </label>
-  );
+    ),
+  }));
+  return <Combo id={id} etiqueta={etiqueta} opciones={opciones} valor={valor} onCambiar={onCambiar} placeholder="Escribe un sitio" />;
 }
 
 function TarjetaOpcion({ titulo, sello, ruta, calculo, onAbrir, destacada, ahorro, deExperiencia }) {
@@ -175,20 +170,21 @@ export function ListaRutas({ demo, datos, contexto, nombres, onRenombrar, onAbri
     <div className="space-y-4">
       <h1 className="titulo pt-2 text-[32px] text-tinta">¿A dónde vas?</h1>
 
-      <Tarjeta className="relative">
-        <SelectorLugar etiqueta="Desde" valor={origen} lugares={lugares} onCambiar={setOrigen} />
-        <div className="mx-3 border-t-2 border-dashed border-[#111]/30" />
-        <SelectorLugar etiqueta="Hasta" valor={destino} lugares={lugares} onCambiar={setDestino} />
-        <button
-          onClick={() => {
-            setOrigen(destino);
-            setDestino(origen);
-          }}
-          aria-label="Intercambiar origen y destino"
-          className="boton-pegatina absolute right-10 top-1/2 flex h-[40px] w-[40px] -translate-y-1/2 items-center justify-center rounded-full bg-amarillo text-[18px] font-bold"
-        >
-          ⇅
-        </button>
+      <Tarjeta className="relative space-y-3 p-4">
+        <SelectorLugar id="lugar-desde" etiqueta="Desde" valor={origen} lugares={lugares} onCambiar={setOrigen} />
+        <div className="flex justify-center">
+          <button
+            onClick={() => {
+              setOrigen(destino);
+              setDestino(origen);
+            }}
+            aria-label="Intercambiar origen y destino"
+            className="boton-pegatina flex h-[40px] min-w-[120px] items-center justify-center gap-1 rounded-full bg-amarillo px-4 text-[15px] font-bold"
+          >
+            ⇅ Dar la vuelta
+          </button>
+        </div>
+        <SelectorLugar id="lugar-hasta" etiqueta="Hasta" valor={destino} lugares={lugares} onCambiar={setDestino} />
       </Tarjeta>
 
       {origen === destino ? (
@@ -378,46 +374,6 @@ function OpcionEspera({ o, elegida, recomendada, onElegir, modo }) {
   );
 }
 
-// Tren visto desde arriba con el vagón donde conviene ponerse para el transbordo
-function Vagones({ vagon, onCambiar }) {
-  const posiciones = [
-    { id: "cabeza", texto: "Cabeza" },
-    { id: "centro", texto: "Centro" },
-    { id: "cola", texto: "Cola" },
-  ];
-  const indice = { cabeza: [0, 1], centro: [2, 3], cola: [4, 5] }[vagon] ?? [];
-  return (
-    <div className="mt-2 rounded-xl border-2 border-[#111] bg-tarjeta p-3">
-      <p className="text-[14px] font-bold text-tinta">
-        Tu truco: ponte en {vagon === "cola" ? "el último vagón" : vagon === "cabeza" ? "el primer vagón" : "los vagones del centro"}
-      </p>
-      <div className="mt-2 flex items-center gap-1" role="img" aria-label={`Vagón recomendado: ${vagon}`}>
-        <span className="text-[12px] font-bold text-suave">← sentido</span>
-        {Array.from({ length: 6 }, (_, i) => (
-          <span
-            key={i}
-            className={`h-[18px] flex-1 border-2 border-[#111] ${i === 0 ? "rounded-l-full" : ""} ${i === 5 ? "rounded-r-md" : "rounded-sm"} ${
-              indice.includes(i) ? "bg-amarillo" : "bg-hundido"
-            }`}
-          />
-        ))}
-      </div>
-      <div className="mt-2 flex gap-2" role="radiogroup" aria-label="Dónde te pones">
-        {posiciones.map((p) => (
-          <button
-            key={p.id}
-            role="radio"
-            aria-checked={vagon === p.id}
-            onClick={() => onCambiar(p.id)}
-            className={`boton-pegatina min-h-[40px] flex-1 rounded-lg text-[14px] font-bold ${vagon === p.id ? "bg-amarillo" : "bg-tarjeta"}`}
-          >
-            {p.texto}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function AvisoBajada({ activo, onCambiar, parada }) {
   return (
@@ -539,9 +495,7 @@ export function DetalleRuta({ ruta, datos, contexto, nombres, onRenombrar, onVol
                   <span className="text-[15px] font-bold text-tinta">{t.texto}</span>
                   <span className="ml-auto shrink-0 text-[14px] text-tinta-2">{t.minutos} min</span>
                 </div>
-                {t.tipo === "transbordo" && t.vagon && (
-                  <Vagones vagon={vagones[clave] ?? t.vagon} onCambiar={(v) => cambiarVagon(clave, v)} />
-                )}
+
               </Paso>
             );
           }
@@ -578,6 +532,15 @@ export function DetalleRuta({ ruta, datos, contexto, nombres, onRenombrar, onVol
                       <summary className="min-h-[36px] py-1.5">{t.paradas.length} paradas entre medias</summary>
                       <p>{t.paradas.join(" · ")}</p>
                     </details>
+                  )}
+                  {(t.tipo === "metro" || t.tipo === "tren") && (
+                    <Vagones
+                      total={t.vagon?.total ?? 6}
+                      numeros={vagones[`${ruta.id}-${i}`] ?? t.vagon?.numeros ?? []}
+                      motivo={t.vagon?.motivo}
+                      color={metro ? COLOR_METRO[t.linea] ?? "#2335F5" : "#C8102E"}
+                      onCambiar={(n) => cambiarVagon(`${ruta.id}-${i}`, n)}
+                    />
                   )}
                   <AvisoBajada activo={!!avisos[i]} onCambiar={() => setAvisos((a) => ({ ...a, [i]: !a[i] }))} parada={bajada} />
                 </div>

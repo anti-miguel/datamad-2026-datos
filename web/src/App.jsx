@@ -12,6 +12,7 @@ import Avisos from "./pantallas/Avisos.jsx";
 import Info from "./pantallas/Info.jsx";
 import { ListaRutas, DetalleRuta } from "./pantallas/Rutas.jsx";
 import Login from "./pantallas/Login.jsx";
+import { AvisoAbono, leerAbono, guardarAbono } from "./componentes/Abono.jsx";
 import { posicionVehiculo } from "./lib/ventana.js";
 import { aMinutos, calcularLlegada, contextoActual, iconoDeRed, llegadasVivas } from "./lib/util.js";
 
@@ -86,6 +87,17 @@ export default function App() {
   const [rutaId, setRutaId] = useState(null);
   const [bajada, setBajada] = useState(null);
   const [sesion, setSesion] = useState(leerSesion);
+  const [abono, setAbono] = useState(() => leerAbono());
+
+  function cambiarAbono(a) {
+    guardarAbono(a);
+    setAbono(a);
+  }
+
+  function verAbono() {
+    setPantalla("paradas");
+    setTimeout(() => document.getElementById("abono")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+  }
 
   function entrar(s) {
     try {
@@ -260,8 +272,17 @@ export default function App() {
   return (
     <div className="mx-auto min-h-dvh max-w-[430px]">
       <main className={`px-4 pt-4 ${conFranja ? "pb-[210px]" : "pb-[100px]"}`}>
+        {pantalla !== "paradas" && pantalla !== "avisos" && <AvisoAbono abono={abono} onVer={verAbono} />}
         <section id="pantalla-paradas" hidden={pantalla !== "paradas"}>
-          <Paradas demo={demo} favoritas={favoritas} nombres={nombres} usuario={sesion.nombre} onAbrirParada={abrirParada} />
+          <Paradas
+            demo={demo}
+            favoritas={favoritas}
+            nombres={nombres}
+            usuario={sesion.nombre}
+            abono={abono}
+            onCambiarAbono={cambiarAbono}
+            onAbrirParada={abrirParada}
+          />
         </section>
 
         {parada && (
